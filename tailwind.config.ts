@@ -16,6 +16,7 @@ module.exports = {
         accent: "#729762",
         primary: "#597445",
         secondary: "#658147",
+        textColor:'#000000'
       },
     },
   },
