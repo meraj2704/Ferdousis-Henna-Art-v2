@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,14 +12,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#E7F0DC",
+        background: "#C1CFA1",
         textLight: "#E7F0DC",
         accent: "#729762",
         primary: "#597445",
         secondary: "#658147",
-        textColor:'#000000'
+        textColor: "#000000",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
