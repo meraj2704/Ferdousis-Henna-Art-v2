@@ -31,35 +31,40 @@ const Nav = () => {
   return (
     <div
       className={`w-full top-0 z-50  ${
-        isScrolled ? "fixed bg-background  shadow-lg" : "absolute bg-transparent"
+        isScrolled
+          ? "fixed bg-background  shadow-lg"
+          : "absolute bg-transparent"
       }`}
     >
-      <nav className="container mx-auto flex justify-between items-center py-4 px-5 md:px-10 xl:px-0">
-        <div>
-          
-        </div>
+      <nav className="container mx-auto flex justify-between items-center font-bold py-4 px-5 md:px-10 xl:px-0">
+        <div></div>
         <div className="flex items-center gap-5">
           <Link href={"/"}>
-            <p className="uppercase text-textColor hover:text-primary">Home</p>
-          </Link>
-          <Link href={"/products"}>
-            {" "}
-            <p className="uppercase text-textColor hover:text-primary cursor-pointer">
-              All Products
+            <p className="relative inline-block uppercase text-textColor transition duration-300 group">
+              <span className="relative z-[60] group-hover:text-primary">Home</span>
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
             </p>
           </Link>
-          <Link href={"/products"}>
-            {" "}
-            <p className="uppercase text-textColor hover:text-primary cursor-pointer">
-              Booking
+          <Link href={"/"}>
+            <p className="relative inline-block uppercase text-textColor transition duration-300 group">
+              <span className="relative z-[60] group-hover:text-primary">All Products</span>
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
             </p>
           </Link>
-          <Link href={"/products"}>
-            {" "}
-            <p className="uppercase text-textColor hover:text-primary cursor-pointer">
-              Contact Us
+          <Link href={"/"}>
+            <p className="relative inline-block uppercase text-textColor transition duration-300 group">
+              <span className="relative z-[60] group-hover:text-primary">Booking</span>
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
             </p>
           </Link>
+          <Link href={"/"}>
+            <p className="relative inline-block uppercase text-textColor transition duration-300 group">
+              <span className="relative z-[60] group-hover:text-primary">Contact Us</span>
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
+            </p>
+          </Link>
+
+          
         </div>
         <div className="flex gap-4">
           <CiSearch className="text-textColor hover:text-primary" />

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Rakkas } from "next/font/google";
+import { Inter, Khand, Rakkas } from "next/font/google";
 import "./globals.css";
 import WrapProvider from "./WrapProvider";
 import Nav from "@/components/share/Nav/Nav";
 
 // const inter = Inter({ subsets: ["latin"] });
-const rakkas = Rakkas({ weight: '400',subsets: ["latin"] });
+const rakkas = Khand({ weight: '400',subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Ferdousi's Henna Art - Premium Henna Products & Artist Booking",
