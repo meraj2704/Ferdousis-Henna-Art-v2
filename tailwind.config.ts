@@ -10,16 +10,13 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors:{
-        primary: '#3498db',
-        secondary: '#f1c40f',
-        danger: '#e74c3c',
-        success: '#2ecc71',
-        warning: '#ff9f43',
-        info: '#34495e',
-        light: '#ecf0f1',
-        dark: '#34495e'
-      }
+      colors: {
+        background: "#E7F0DC",
+        textLight: "#E7F0DC",
+        accent: "#729762",
+        primary: "#597445",
+        secondary: "#658147",
+      },
     },
   },
   plugins: [],
