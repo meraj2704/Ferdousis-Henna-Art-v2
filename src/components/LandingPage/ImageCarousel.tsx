@@ -1,3 +1,4 @@
+'use client'
 import * as React from "react";
 import {
   Carousel,
@@ -7,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Autoplay from 'embla-carousel-autoplay'
 
 const images = [
   {
@@ -20,20 +22,19 @@ const images = [
   {
     url: "/images/home/carousel3.jpg",
     title: "City Lights",
-  },
-  {
-    url: "/images/home/carousel1.jpg",
-    title: "Forest Path",
-  },
-  {
-    url: "/images/home/carousel2.jpg",
-    title: "Ocean Breeze",
-  },
+  }
 ];
 
 export function ImageCarousel() {
   return (
-    <Carousel className="w-full h-[calc(100vh-80px)] relative"> {/* Assuming your nav is 80px height */}
+    <Carousel
+     plugins={[
+      Autoplay({
+        delay: 2000,
+        stopOnInteraction: false,
+        jump: true,
+      }),
+    ]} className="w-full h-[calc(100vh-80px)] relative">
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={index} className="w-full h-full relative">
@@ -41,17 +42,15 @@ export function ImageCarousel() {
               <Image
                 src={image.url}
                 alt={image.title}
-                // width={1000}
-                // height={900}
-                fill
-                objectFit="cover"  
-                className="w-full h-full"
+                // fill
+                width={1920}
+                height={620}
+                className="w-full h-[calc(100vh-110px)] object-cover"
+               
               />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <h1 className="text-white text-3xl md:text-5xl font-bold px-4 py-2 bg-black bg-opacity-60 rounded-lg">
-                  {image.title}
-                </h1>
-              </div>
+            </div>
+            <div className="absolute w-full h-full top-0 left-0 right-0 bg-gradient-to-t from-black  bg-blur to-transparent">
+
             </div>
           </CarouselItem>
         ))}
