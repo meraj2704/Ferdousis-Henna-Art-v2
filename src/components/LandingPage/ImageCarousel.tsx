@@ -46,7 +46,7 @@ export function ImageCarousel() {
           delay: 3000,
         }),
       ]}
-      className="w-full h-[calc(100vh-150px)]"
+      className="w-full h-[calc(100vh-350px)]"
     >
       <CarouselContent>
         {images.map((image, index) => (
@@ -57,11 +57,11 @@ export function ImageCarousel() {
                 alt={image.title}
                 width={1920}
                 height={620}
-                className="w-full h-[calc(100vh-110px)] object-cover"
+                className="w-full h-[calc(100vh-450px)] lg:h-[calc(100vh-350px)] object-cover"
               />
             </div>
             <div className="absolute w-full h-full  top-0 left-0 right-0 bg-gradient-to-t from-black to-transparent flex flex-col justify-center items-center p-8 ">
-              <h2 className="text-white text-2xl md:3xl lg:5xl xl:text-8xl font-semibold text-opacity-80 mb-4 ">
+              <h2 className="text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold text-opacity-90 mb-4 ">
                 {image.title}
               </h2>
               <p className="text-white text-lg mb-6">{image.description}</p>
