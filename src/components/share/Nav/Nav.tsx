@@ -54,7 +54,7 @@ const Nav = () => {
       >
         <nav className="container mx-auto flex justify-between items-center font-bold py-4 px-5 md:px-10 xl:px-0">
           <div>
-            <Image src={logo} alt="Logo" width={50} height={50} />
+            <Image src={logo} alt="Logo" width={50} height={50} priority />
           </div>
           <div className="flex items-center gap-5">
             <Link href={"/"}>
