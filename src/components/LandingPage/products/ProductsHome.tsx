@@ -9,7 +9,7 @@ const ProductsHome = () => {
     {
       id: 1,
       name: "Beautiful Henna Pattern",
-      price: 49.99,
+      price: 120,
       imageUrl: "/images/product/product1.jpeg",
       description:
         "A gorgeous henna pattern perfect for weddings and special occasions.",
@@ -17,7 +17,7 @@ const ProductsHome = () => {
     {
       id: 2,
       name: "Elegant Henna Design",
-      price: 39.99,
+      price: 110,
       imageUrl: "/images/product/product2.jpeg",
       description:
         "This elegant design brings out the beauty of traditional henna art.",
@@ -25,7 +25,7 @@ const ProductsHome = () => {
     {
       id: 3,
       name: "Beautiful Henna Pattern",
-      price: 49.99,
+      price: 105,
       imageUrl: "/images/product/product3.jpeg",
       description:
         "A gorgeous henna pattern perfect for weddings and special occasions.",
@@ -33,7 +33,7 @@ const ProductsHome = () => {
     {
       id: 4,
       name: "Beautiful Henna Pattern",
-      price: 49.99,
+      price: 90,
       imageUrl: "/images/product/product4.jpeg",
       description:
         "A gorgeous henna pattern perfect for weddings and special occasions.",
@@ -56,7 +56,7 @@ const ProductsHome = () => {
           />
         ))}
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center mt-4 lg:mt-6">
         <ButtonF variant="primary">See All</ButtonF>
       </div>
     </div>

@@ -38,9 +38,9 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
           </p>
         </div>
         {/* Product Price */}
-        <div className="flex justify-between items-center mb-2 lg:mb-4">
+        <div className="flex justify-between items-center">
           <span className="text-xl font-bold text-primary">
-            ${product.price}
+            {product.price} <span className="text-sm">TK</span>
           </span>
           <ButtonF variant="primary">Add To Cart</ButtonF>
         </div>
