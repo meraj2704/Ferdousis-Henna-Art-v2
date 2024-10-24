@@ -153,7 +153,6 @@ const Navbar = () => {
 
       <div
         className={`navbar font-semibold transition duration-30 h-20 lg:h-24   ${
-          // className={`navbar font-semibold hover:bg-white bg-black duration-300 hover:text-black text-white  h-24 hover:border-b hover:border-b-brandColor ${
           isNavbarFixed
             ? "fixed top-0 left-0 w-full z-[100] bg-background shadow-2xl"
             : ""

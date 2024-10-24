@@ -1,5 +1,4 @@
-import { TfiClose } from "react-icons/tfi";
-import { isValidElement, useEffect } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 
 interface DrawerCompProps {
@@ -34,7 +33,6 @@ const ToggleNavbar = ({
   isNavbarFixed,
   pathName,
 }: DrawerCompProps) => {
-  // Prevent body from scrolling when the drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -43,7 +41,7 @@ const ToggleNavbar = ({
     }
 
     return () => {
-      document.body.style.overflow = "auto"; // Ensure the body can scroll again when component unmounts
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
