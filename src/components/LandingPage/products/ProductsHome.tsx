@@ -25,7 +25,7 @@ const ProductsHome = () => {
   return (
     <div className="container mx-auto px-2 2xl:px-0">
       <SectionTitle title="Products" />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+      <div className="grid grid-cols-1 smL:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
         {products?.map((product: any) => (
           <ProductCart
             key={product.id}

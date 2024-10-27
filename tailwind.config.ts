@@ -11,6 +11,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        smS: "320px",
+        smM: "375px",
+        smL: "425px",
+        xs: "475px",
+      },
       colors: {
         background: "#E7F0DC",
         textLight: "#E7F0DC",
