@@ -26,12 +26,12 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
       </div>
 
       {/* Product Information */}
-      <div className="p-3 lg:p-6 flex flex-col justify-between">
+      <div className="p-2 lg:p-6 flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">
+          <h3 className="text-lg font-semibold text-gray-800 mb-1 md:mb-2">
             {product.name}
           </h3>
-          <p className="text-gray-600 text-sm mb-4">
+          <p className="text-gray-600 text-sm mb-2 md:mb-4">
             {product.description.length > 100
               ? product.description.substring(0, 100) + "..."
               : product.description}
