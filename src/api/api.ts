@@ -6,9 +6,9 @@ let url = "http://103.219.160.253:5454/drug-website";
 
 //? Get product details
 
-export const getProductDetails = async () => {
+export const getAlProducts = async () => {
 	try {
-		const response = await axios.get(`${url}/api/SpecilizedProducts`);
+		const response = await axios.get(`/products.json`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
