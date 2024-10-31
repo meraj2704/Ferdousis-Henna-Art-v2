@@ -38,7 +38,7 @@ const images = [
 ];
 
 export function ImageCarousel() {
-  const [emblaRef] = useEmblaCarousel({ loop: true });
+  // const [emblaRef] = useEmblaCarousel({ loop: true });
   return (
     <Carousel
       plugins={[
@@ -46,6 +46,7 @@ export function ImageCarousel() {
           delay: 3000,
         }),
       ]}
+      opts={{ loop: true }}
       className="w-full h-[calc(100vh-600px)] lg:h-[calc(100vh-550px)]"
     >
       <CarouselContent>
@@ -66,7 +67,7 @@ export function ImageCarousel() {
               </h2>
               <p className="text-white text-lg mb-6">{image.description}</p>
               <Link href={image.link}>
-              <ButtonF variant="primary">{image.cta}</ButtonF>
+                <ButtonF variant="primary">{image.cta}</ButtonF>
               </Link>
             </div>
           </CarouselItem>
@@ -77,3 +78,65 @@ export function ImageCarousel() {
     </Carousel>
   );
 }
+
+// import React, { useEffect } from 'react'
+// import {
+//   Carousel,
+//   CarouselContent,
+//   CarouselItem,
+//   CarouselNext,
+//   CarouselPrevious,
+//   CarouselApi,
+// } from "@/components/ui/carousel"
+// import Image from 'next/image'
+
+// const imageUrls = [
+//    "/images/rough/img1.jpg",
+//    "/images/rough/img2.jpg",
+//    "/images/rough/img3.jpg"
+// ]
+
+// const Rough = () => {
+//   const carouselInterval = 3000 // Set the interval time in milliseconds
+//   const [api, setApi] = React.useState<CarouselApi | null>(null)
+
+//   useEffect(() => {
+//     if (!api) return
+
+//     const interval = setInterval(() => {
+//       api.scrollNext()
+//     }, carouselInterval)
+
+//     return () => clearInterval(interval)
+//   }, [api, carouselInterval])
+
+//   return (
+//     <div className="w-full h-screen overflow-hidden">
+//       <Carousel className="w-full h-full" setApi={setApi} opts={{ loop: true }}> {/* Enable loop here */}
+//         <CarouselContent>
+//           {imageUrls.map((url, index) => (
+//             <CarouselItem key={index}>
+//               <div className="w-full h-full relative">
+//                 <Image
+//                   src={url}
+//                   alt={`Slide ${index + 1}`}
+//                   width={900}
+//                   height={900}
+//                   className="object-cover w-full h-full"
+//                 />
+
+//                 <div className='absolute inset-0 text-5xl text-red-400'>
+//                   Hello World
+//                 </div>
+//               </div>
+//             </CarouselItem>
+//           )}
+//         </CarouselContent>
+//         <CarouselPrevious />
+//         <CarouselNext />
+//       </Carousel>
+//     </div>
+
+// }
+
+// export default Rough
