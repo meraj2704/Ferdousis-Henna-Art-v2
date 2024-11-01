@@ -161,7 +161,7 @@ const Navbar = () => {
         onMouseLeave={() => setHovered(false)}
       >
         <div className="relative h-full">
-          <div className="container mx-auto h-full  flex justify-between gap-5 px-5">
+          <div className="container mx-auto h-full  flex justify-between gap-5 px-2 2xl:px-0">
             <div className="flex justify-center items-center">
               <Image src={logo} alt="Logo" width={50} height={50} priority />
             </div>
@@ -199,7 +199,7 @@ const Navbar = () => {
                 </p>
               </Link>
             </div>
-            <div className="flex justify-center items-center text-xl text-primary md:hidden">
+            <div className="flex justify-center items-center text-2xl text-primary md:hidden">
               Ferdousi's Henna Art
             </div>
             <div className="flex items-center gap-3">

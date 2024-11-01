@@ -6,6 +6,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { ProductI } from "../interface/Products";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
+import Link from "next/link";
+import ButtonF from "../customUi/ButtonF";
+import Delivery from "./Delivery";
 
 const SingleProduct: React.FC = () => {
   const params = useParams();
@@ -43,34 +56,56 @@ const SingleProduct: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-10">
+    <div className="container mx-auto px-2 2xl:px-0">
       {/* Product Image */}
       <div className="my-4 flex items-center gap-3">
-        <IoIosArrowRoundBack />
-        <p>Home</p>
+        <Link href="/">
+          <IoIosArrowRoundBack />
+        </Link>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink className="text-primary font-semibold" href="/">
+                Home
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{product.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/2 h-1/2">
+      <div className="flex flex-col md:flex-row gap-5">
+        <div className="md:w-1/2 h-[415px] md:h-[515px]">
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-full rounded-lg object-cover"
+            className="object-cover w-full h-full rounded-lg "
           />
         </div>
 
         {/* Product Details */}
-        <div className="md:w-1/2 md:pl-6">
-          <h2 className="text-3xl font-semibold text-primary mb-2">
+        <div className="md:w-1/2 space-y-4">
+          <div className="flex justify-start items-center">
+            <div className="rounded-full border border-primary py-1 px-8">
+              Mehendi
+            </div>
+          </div>
+          <h2 className="text-3xl font-semibold text-primary">
             {product.name}
           </h2>
-          <p className="text-gray-600 mb-4">{product.description}</p>
-          <p className="text-xl font-bold text-accent mb-4">${product.price}</p>
-          <button
-            className="bg-accent text-white py-3 px-6 rounded-lg hover:bg-primary transition-colors duration-300"
-            onClick={() => handleAddToCart(product.id)}
-          >
-            Add to Cart
-          </button>
+          <p className="text-xl font-bold text-accent">
+            {product.price} <span className="text-sm">TK</span>
+          </p>
+          <div className="w-full flex items-center gap-4 ">
+            <ButtonF className="flex-1">Add To Cart</ButtonF>
+            <div className="rounded-full border border-primary flex justify-center items-center p-2 group hover:bg-primary">
+              <MdOutlineFavoriteBorder className="text-primary" />
+            </div>
+          </div>
+          <p className="text-gray-600">{product.description}</p>
+          <Delivery />
         </div>
       </div>
     </div>
