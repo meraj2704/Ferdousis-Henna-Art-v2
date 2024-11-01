@@ -28,7 +28,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
       </div>
 
       {/* Product Information */}
-      <div className="p-3 lg:p-6 flex flex-col justify-between">
+      <div className="p-2 lg:p-6 flex flex-col justify-between">
         <div>
           <Link href={`/products/${product.id}`}>
             <h3 className="text-lg font-semibold text-gray-800 mb-2 hover:underline">

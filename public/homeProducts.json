@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Beautiful Henna Pattern",
+    "price": 120,
+    "imageUrl": "/images/product/product1.jpeg",
+    "description": "A gorgeous henna pattern perfect for weddings and special occasions."
+  },
+  {
+    "id": 2,
+    "name": "Elegant Henna Design",
+    "price": 110,
+    "imageUrl": "/images/product/product2.jpeg",
+    "description": "This elegant design brings out the beauty of traditional henna art."
+  },
+  {
+    "id": 3,
+    "name": "Beautiful Henna Pattern",
+    "price": 105,
+    "imageUrl": "/images/product/product3.jpeg",
+    "description": "A gorgeous henna pattern perfect for weddings and special occasions."
+  },
+  {
+    "id": 4,
+    "name": "Beautiful Henna Pattern",
+    "price": 90,
+    "imageUrl": "/images/product/product4.jpeg",
+    "description": "A gorgeous henna pattern perfect for weddings and special occasions."
+  }
+]

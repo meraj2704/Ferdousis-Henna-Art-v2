@@ -25,8 +25,10 @@ const ProductsHome = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching products: {error.message}</p>;
 
+  console.log("products data", products);
+
   return (
-    <div className="container mx-auto px-5 2xl:px-0">
+    <div className="container mx-auto px-2 2xl:px-0">
       <SectionTitle title="Products" />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
         {products?.map((product: ProductI) => (

@@ -3,9 +3,10 @@ import { Inter, Khand, Rakkas } from "next/font/google";
 import "./globals.css";
 import WrapProvider from "./WrapProvider";
 import Nav from "@/components/share/Nav/Nav";
+import Navbar from "@/components/share/Nav/Navbar";
 
 // const inter = Inter({ subsets: ["latin"] });
-const rakkas = Khand({ weight: '400',subsets: ["latin"] });
+const rakkas = Khand({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Ferdousi's Henna Art - Premium Henna Products & Artist Booking",
@@ -54,8 +55,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <WrapProvider>
-        <body  className={`${rakkas.className} bg-background`}>
-          <Nav />
+        <body className={`${rakkas.className} bg-background`}>
+          <Navbar />
           {children}
         </body>
       </WrapProvider>
