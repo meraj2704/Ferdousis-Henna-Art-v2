@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 import { useState, useEffect } from "react";
 import { ProductI } from "../interface/Products";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const SingleProduct: React.FC = () => {
   const params = useParams();
@@ -22,18 +23,17 @@ const SingleProduct: React.FC = () => {
 
   console.log("data", products);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching products: {error.message}</p>;
-
   useEffect(() => {
-    const foundProduct = products.find(
+    const foundProduct = products?.find(
       (p: ProductI) => p.id === parseInt(id as string)
     );
     if (foundProduct) {
       setProduct(foundProduct);
     }
-  }, [id]);
+  }, [id, products]);
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching products: {error.message}</p>;
   const handleAddToCart = (id: number) => {
     console.log("Product added to cart:", id);
   };
@@ -43,14 +43,18 @@ const SingleProduct: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="container mx-auto px-10">
       {/* Product Image */}
+      <div className="my-4 flex items-center gap-3">
+        <IoIosArrowRoundBack />
+        <p>Home</p>
+      </div>
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/2">
+        <div className="md:w-1/2 h-1/2">
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-auto rounded-lg object-cover"
+            className="w-full h-full rounded-lg object-cover"
           />
         </div>
 
@@ -59,8 +63,8 @@ const SingleProduct: React.FC = () => {
           <h2 className="text-3xl font-semibold text-primary mb-2">
             {product.name}
           </h2>
-          <p className="text-xl font-bold text-accent mb-4">${product.price}</p>
           <p className="text-gray-600 mb-4">{product.description}</p>
+          <p className="text-xl font-bold text-accent mb-4">${product.price}</p>
           <button
             className="bg-accent text-white py-3 px-6 rounded-lg hover:bg-primary transition-colors duration-300"
             onClick={() => handleAddToCart(product.id)}
