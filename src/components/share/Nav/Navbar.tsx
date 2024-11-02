@@ -2,119 +2,20 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import {
-  FaGlobe,
-  FaSearch,
-  FaBars,
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-} from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaBars, FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import Link from "next/link";
-import { IoIosArrowDown } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import ToggleNavbar from "./ToggleNavbar";
 import { TfiClose } from "react-icons/tfi";
 import { CiShoppingCart } from "react-icons/ci";
 import { MdFavorite } from "react-icons/md";
 
-const products = [
-  {
-    name: "Kitchen",
-    path: "/kitchen-area",
-    submenu: [
-      {
-        name: "Trending Now",
-        path: "/trending-now",
-      },
-      {
-        name: "Standard Kitchen",
-        path: "",
-      },
-      {
-        name: "Luxury Kitchen",
-        path: "",
-      },
-      {
-        name: "Economy Kitchen",
-        path: "",
-      },
-      {
-        name: "Couple Kitchen",
-        path: "",
-      },
-      {
-        name: "Parallel Kitchen",
-        path: "",
-      },
-    ],
-  },
-  {
-    name: "Counter Top",
-    path: "",
-    submenu: [
-      {
-        name: "Granite",
-        path: "",
-      },
-      {
-        name: "Acrylic Solid Surface",
-        path: "",
-      },
-      {
-        name: "Sintered",
-        path: "",
-      },
-      {
-        name: "HPL",
-        path: "",
-      },
-      {
-        name: "CPL",
-        path: "",
-      },
-    ],
-  },
-  {
-    name: "Wardrobes",
-    path: "",
-  },
-  {
-    name: "Walk-In Closets",
-    path: "/walk-in-closets",
-  },
-  {
-    name: "Vanities",
-    path: "/vanities",
-  },
-  {
-    name: "Accessories",
-    path: "/accessories",
-  },
-];
 const logo = "/images/logo.PNG";
-const KitchenLogoColored = "/images/navbar/colorLogo.png";
-const KitchenLogoWhite = "/images/navbar/whiteLogo.png";
-const kitchenLogo = "/images/kitchen/kitchen-logo.png";
+
 const Navbar = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [isHovered, setHovered] = useState(false);
   const [isNavbarFixed, setNavbarFixed] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathName = usePathname();
-  // const [activeSubmenu]
-
-  const [activeProduct, setActiveProduct] = useState<string | null>(null);
-
-  const handleMouseEnter = (productName: string) => {
-    setActiveProduct(productName);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveProduct(null);
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       const topbarHeight = 80;
@@ -157,8 +58,6 @@ const Navbar = () => {
             ? "fixed top-0 left-0 w-full z-[100] bg-background shadow-2xl"
             : ""
         }`}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
       >
         <div className="relative h-full">
           <div className="container mx-auto h-full  flex justify-between gap-5 px-2 2xl:px-0">
