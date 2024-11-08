@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import CounterReducer from "../Reducer/CounterSlice";
 import cartReducer from "../Reducer/cartSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 

@@ -8,6 +8,7 @@ interface CartItem extends ProductI {
 
 interface CartState {
   items: CartItem[];
+  flag:boolean;
 }
 
 // Get cart items from local storage
@@ -21,6 +22,7 @@ const getInitialCart = (): CartItem[] => {
 
 const initialState: CartState = {
   items: getInitialCart(),
+  flag:false
 };
  const cartSlice = createSlice({
   name: "cart",
@@ -34,10 +36,12 @@ const initialState: CartState = {
         state.items.push({ ...action.payload, quantity: 1 });
       }
       localStorage.setItem("cart", JSON.stringify(state.items));
+      state.flag = !state.flag;
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
       localStorage.setItem("cart", JSON.stringify(state.items));
+      state.flag =!state.flag;
     },
     updateQuantity: (
       state,
@@ -51,6 +55,7 @@ const initialState: CartState = {
         }
       }
       localStorage.setItem("cart", JSON.stringify(state.items));
+      state.flag =!state.flag;
     },
     loadCartFromStorage: (state) => {
       const savedCart = localStorage.getItem("cart");

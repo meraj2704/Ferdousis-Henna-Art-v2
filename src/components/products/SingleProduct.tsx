@@ -28,7 +28,6 @@ const SingleProduct: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = params;
   const [product, setProduct] = useState<any>(null);
-  const counter = useAppSelector((state) => console.log("state", state));
 
   const {
     isLoading,
@@ -38,6 +37,8 @@ const SingleProduct: React.FC = () => {
     queryKey: ["allProducts"],
     queryFn: getAlProducts,
   });
+
+  
 
   console.log("data", products);
 

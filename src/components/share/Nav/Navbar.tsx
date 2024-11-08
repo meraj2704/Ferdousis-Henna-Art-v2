@@ -9,6 +9,7 @@ import ToggleNavbar from "./ToggleNavbar";
 import { TfiClose } from "react-icons/tfi";
 import { CiShoppingCart } from "react-icons/ci";
 import { MdFavorite } from "react-icons/md";
+import CartIcon from "./CartIcon";
 const logo = "/images/logo.PNG";
 
 const Navbar = () => {
@@ -102,7 +103,9 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="flex gap-2">
-                <CiShoppingCart className="text-textColor text-2xl hover:text-primary" />
+                <Link href={"/cart"}>
+                  <CartIcon />
+                </Link>
                 <MdFavorite className="text-red-700 text-2xl" />
               </div>
               <div className="transition-all duration-300">
