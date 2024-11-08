@@ -9,7 +9,6 @@ import ToggleNavbar from "./ToggleNavbar";
 import { TfiClose } from "react-icons/tfi";
 import { CiShoppingCart } from "react-icons/ci";
 import { MdFavorite } from "react-icons/md";
-
 const logo = "/images/logo.PNG";
 
 const Navbar = () => {
@@ -73,7 +72,7 @@ const Navbar = () => {
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
                 </p>
               </Link>
-              <Link href={"/"}>
+              <Link href={"/products"}>
                 <p className="relative inline-block uppercase text-textColor transition duration-300 group">
                   <span className="relative z-[60] group-hover:text-primary">
                     All Products

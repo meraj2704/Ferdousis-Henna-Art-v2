@@ -15,7 +15,7 @@ const menu = [
   },
   {
     name: "All Products",
-    path: "",
+    path: "/products",
   },
   {
     name: "Booking",
