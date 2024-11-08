@@ -19,11 +19,16 @@ import {
 import Link from "next/link";
 import ButtonF from "../customUi/ButtonF";
 import Delivery from "./Delivery";
+import { useAppDispatch, useAppSelector } from "@/redux/Store/store";
+import { addToCart } from "@/redux/Reducer/cartSlice";
+import { toast } from "sonner";
 
 const SingleProduct: React.FC = () => {
   const params = useParams();
+  const dispatch = useAppDispatch();
   const { id } = params;
   const [product, setProduct] = useState<any>(null);
+  const counter = useAppSelector((state) => console.log("state", state));
 
   const {
     isLoading,
@@ -47,8 +52,9 @@ const SingleProduct: React.FC = () => {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching products: {error.message}</p>;
-  const handleAddToCart = (id: number) => {
-    console.log("Product added to cart:", id);
+  const handleAddToCart = (product: ProductI) => {
+    dispatch(addToCart(product));
+    toast.success("Product added successfully");
   };
 
   if (!product) {
@@ -99,7 +105,12 @@ const SingleProduct: React.FC = () => {
             {product.price} <span className="text-sm">TK</span>
           </p>
           <div className="w-full flex items-center gap-4 ">
-            <ButtonF className="flex-1">Add To Cart</ButtonF>
+            <ButtonF
+              className="flex-1"
+              onClick={() => handleAddToCart(product)}
+            >
+              Add To Cart
+            </ButtonF>
             <div className="rounded-full border border-primary flex justify-center items-center p-2 group hover:bg-primary">
               <MdOutlineFavoriteBorder className="text-primary" />
             </div>

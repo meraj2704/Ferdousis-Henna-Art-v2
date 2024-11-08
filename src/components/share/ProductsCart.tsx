@@ -2,6 +2,8 @@
 import React from "react";
 import ButtonF from "../customUi/ButtonF";
 import Link from "next/link";
+import Image from "next/image";
+import { ProductI } from "../interface/Products";
 
 interface ProductCartProps {
   product: {
@@ -11,18 +13,19 @@ interface ProductCartProps {
     imageUrl: string;
     description: string;
   };
-  onAddToCart: (id: number) => void;
+  onAddToCart: (product: ProductI) => void;
 }
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
-  
   return (
     <div className="max-w-sm rounded overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300">
       {/* Product Image */}
       <div className="relative h-40 lg:h-64">
-        <img
+        <Image
           src={product.imageUrl}
           alt={product.name}
+          width={300}
+          height={350}
           className="object-cover w-full h-full"
         />
       </div>
@@ -46,7 +49,9 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
           <span className="text-xl font-bold text-primary">
             {product.price} <span className="text-sm">TK</span>
           </span>
-          <ButtonF variant="primary">Add To Cart</ButtonF>
+          <ButtonF variant="primary" onClick={() => onAddToCart(product)}>
+            Add To Cart
+          </ButtonF>
         </div>
       </div>
     </div>

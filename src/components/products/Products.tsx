@@ -1,13 +1,16 @@
 "use client";
 import { getAlProducts } from "@/api/api";
-import ButtonF from "@/components/customUi/ButtonF";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import { ProductI } from "@/components/interface/Products";
 import ProductCart from "@/components/share/ProductsCart";
+import { addToCart } from "@/redux/Reducer/cartSlice";
+import { useAppDispatch } from "@/redux/Store/store";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { toast } from "sonner";
 
 const Products = () => {
+  const dispatch = useAppDispatch();
   const {
     isLoading,
     error,
@@ -17,10 +20,11 @@ const Products = () => {
     queryFn: getAlProducts,
   });
 
-  const handleAddToCart = (id: number) => {
-    console.log("Product added to cart:", id);
+  const handleAddToCart = (product: ProductI) => {
+    console.log("Product added to cart:", product.id);
+    dispatch(addToCart(product));
+    toast.success('Product added successfully!')
   };
-  console.log("data", products);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching products: {error.message}</p>;
