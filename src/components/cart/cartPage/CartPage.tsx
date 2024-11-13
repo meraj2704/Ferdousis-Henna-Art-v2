@@ -48,9 +48,8 @@ const CartPage = () => {
     );
   };
 
-  // Don't render cart content until client-side rendering
   if (!isClient) {
-    return null; // or a loading spinner
+    return null;
   }
 
   if (cartItems.length === 0) {
