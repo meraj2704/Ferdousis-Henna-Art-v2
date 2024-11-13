@@ -6,7 +6,7 @@ const Hero = () => {
     <div className="w-full h-[704px] relative">
       <HeroCarousel />
       <div
-        className={`${styles.gradientBackground} absolute w-full h-full top-0 left-0 right-0 bottom-0 `}
+        className={`${styles.gradientBackground} absolute w-full h-full inset-0 `}
       >
         <div className="container mx-auto text-7xl text-green-600 h-full flex flex-col justify-center items-start">
           ATI Limited
