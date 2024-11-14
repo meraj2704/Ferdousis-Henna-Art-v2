@@ -1,10 +1,10 @@
-import Hero from '@/components/test/Hero';
+
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            <Hero/>
+            <h1>Test</h1>
         </div>
     );
 };
