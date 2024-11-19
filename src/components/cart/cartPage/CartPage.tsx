@@ -133,7 +133,7 @@ const CartPage = () => {
           <p>Total: {getTotalPrice().toFixed(2)} <span className="text-sm">TK</span></p>
         </div>
         <Link
-          href="/checkout"
+          href="/check-out"
           className="bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition"
         >
           Proceed to Checkout
