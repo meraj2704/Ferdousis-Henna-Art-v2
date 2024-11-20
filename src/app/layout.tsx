@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Khand, Rakkas } from "next/font/google";
+import { Khand } from "next/font/google";
 import "./globals.css";
 import WrapProvider from "./WrapProvider";
-import Nav from "@/components/share/Nav/Nav";
-import Navbar from "@/components/share/Nav/Navbar";
 import { Toaster } from "@/components/ui/sonner";
-import Footer from "@/components/share/footer/Footer";
 
-// const inter = Inter({ subsets: ["latin"] });
 const rakkas = Khand({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -58,9 +54,7 @@ export default function RootLayout({
     <html lang="en">
       <WrapProvider>
         <body className={`${rakkas.className} bg-background`}>
-          <Navbar />
           {children}
-          <Footer />
           <Toaster richColors />
         </body>
       </WrapProvider>
