@@ -5,6 +5,7 @@ import WrapProvider from "./WrapProvider";
 import Nav from "@/components/share/Nav/Nav";
 import Navbar from "@/components/share/Nav/Navbar";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/share/footer/Footer";
 
 // const inter = Inter({ subsets: ["latin"] });
 const rakkas = Khand({ weight: "400", subsets: ["latin"] });
@@ -59,7 +60,8 @@ export default function RootLayout({
         <body className={`${rakkas.className} bg-background`}>
           <Navbar />
           {children}
-          <Toaster richColors/>
+          <Footer />
+          <Toaster richColors />
         </body>
       </WrapProvider>
     </html>

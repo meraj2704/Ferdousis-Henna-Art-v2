@@ -83,15 +83,15 @@ const Nav = () => {
                 <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
               </p>
             </Link>
-            <Link href={"/"}>
+            {/* <Link href={"/"}>
               <p className="relative inline-block uppercase text-textColor transition duration-300 group">
                 <span className="relative z-[60] group-hover:text-primary">
                   Booking
                 </span>
                 <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
               </p>
-            </Link>
-            <Link href={"/"}>
+            </Link> */}
+            <Link href={"/contact"}>
               <p className="relative inline-block uppercase text-textColor transition duration-300 group">
                 <span className="relative z-[60] group-hover:text-primary">
                   Contact Us

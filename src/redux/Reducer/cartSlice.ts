@@ -8,7 +8,7 @@ interface CartItem extends ProductI {
 
 interface CartState {
   items: CartItem[];
-  flag:boolean;
+  flag: boolean;
 }
 
 // Get cart items from local storage
@@ -22,9 +22,9 @@ const getInitialCart = (): CartItem[] => {
 
 const initialState: CartState = {
   items: getInitialCart(),
-  flag:false
+  flag: false,
 };
- const cartSlice = createSlice({
+const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -41,7 +41,7 @@ const initialState: CartState = {
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
       localStorage.setItem("cart", JSON.stringify(state.items));
-      state.flag =!state.flag;
+      state.flag = !state.flag;
     },
     updateQuantity: (
       state,
@@ -51,20 +51,32 @@ const initialState: CartState = {
       if (item) {
         item.quantity = action.payload.quantity;
         if (item.quantity <= 0) {
-          state.items = state.items.filter((item) => item.id !== action.payload.id);
+          state.items = state.items.filter(
+            (item) => item.id !== action.payload.id
+          );
         }
       }
       localStorage.setItem("cart", JSON.stringify(state.items));
-      state.flag =!state.flag;
+      state.flag = !state.flag;
     },
     loadCartFromStorage: (state) => {
       const savedCart = localStorage.getItem("cart");
       state.items = savedCart ? JSON.parse(savedCart) : [];
     },
+    clearCart: (state) => {
+      state.items = [];
+      localStorage.removeItem("cart");
+      state.flag = !state.flag;
+    },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, loadCartFromStorage } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  loadCartFromStorage,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

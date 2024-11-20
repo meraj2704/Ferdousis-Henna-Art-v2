@@ -17,13 +17,13 @@ const menu = [
     name: "All Products",
     path: "/products",
   },
-  {
-    name: "Booking",
-    path: "",
-  },
+  // {
+  //   name: "Booking",
+  //   path: "",
+  // },
   {
     name: "Contact",
-    path: "",
+    path: "/contact",
   },
 ];
 
