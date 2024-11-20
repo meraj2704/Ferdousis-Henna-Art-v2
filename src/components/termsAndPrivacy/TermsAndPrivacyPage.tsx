@@ -50,8 +50,8 @@ const termsAndPrivacyContent = {
 
 const TermsAndPrivacyPage = () => {
   return (
-    <div className="bg-background">
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <>
+      <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold text-center mb-8 text-primary">
           Terms and Privacy Policy
         </h1>
@@ -97,7 +97,7 @@ const TermsAndPrivacyPage = () => {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

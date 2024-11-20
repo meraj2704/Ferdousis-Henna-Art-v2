@@ -16,11 +16,11 @@ const CartIcon = () => {
   return (
     <div className="relative">
       {items.length > 0 && (
-        <div className="absolute -top-2 -left-2 bg-primary text-white w-5 h-5 text-xs flex justify-center items-center rounded-full p-1">
+        <div className="absolute -top-2 -left-2 bg-primary text-white w-6 h-6 text-sm flex justify-center items-center rounded-full p-1">
           {items.length}
         </div>
       )}
-      <CiShoppingCart className="text-textColor text-2xl hover:text-primary" />
+      <CiShoppingCart className="text-textColor text-4xl font-bold hover:text-primary" />
     </div>
   );
 };

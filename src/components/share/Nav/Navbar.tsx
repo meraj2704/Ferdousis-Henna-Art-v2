@@ -89,6 +89,14 @@ const Navbar = () => {
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
                 </p>
               </Link> */}
+              <Link href={"/about"}>
+                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
+                  <span className="relative z-[60] group-hover:text-primary">
+                    About Us
+                  </span>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
+                </p>
+              </Link>
               <Link href={"/contact"}>
                 <p className="relative inline-block uppercase text-textColor transition duration-300 group">
                   <span className="relative z-[60] group-hover:text-primary">
@@ -106,7 +114,6 @@ const Navbar = () => {
                 <Link href={"/cart"}>
                   <CartIcon />
                 </Link>
-                <MdFavorite className="text-red-700 text-2xl" />
               </div>
               <div className="transition-all duration-300">
                 {isMobileMenuOpen ? (
