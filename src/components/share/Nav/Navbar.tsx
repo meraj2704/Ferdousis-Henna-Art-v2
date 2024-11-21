@@ -7,10 +7,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ToggleNavbar from "./ToggleNavbar";
 import { TfiClose } from "react-icons/tfi";
-import { CiShoppingCart } from "react-icons/ci";
-import { MdFavorite } from "react-icons/md";
 import CartIcon from "./CartIcon";
-const logo = "/images/logo.PNG";
+import NavItem from "./NavItem";
+import Logo from "../Logo";
 
 const Navbar = () => {
   const [isNavbarFixed, setNavbarFixed] = useState(false);
@@ -61,50 +60,12 @@ const Navbar = () => {
       >
         <div className="relative h-full">
           <div className="container mx-auto h-full  flex justify-between gap-5 px-2 2xl:px-0">
-            <div className="flex justify-center items-center">
-              <Image src={logo} alt="Logo" width={50} height={50} priority />
-            </div>
+            <Logo context="nav"/>
             <div className="hidden md:flex items-center gap-5">
-              <Link href={"/"}>
-                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
-                  <span className="relative z-[60] group-hover:text-primary">
-                    Home
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
-                </p>
-              </Link>
-              <Link href={"/products"}>
-                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
-                  <span className="relative z-[60] group-hover:text-primary">
-                    All Products
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
-                </p>
-              </Link>
-              {/* <Link href={"/"}>
-                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
-                  <span className="relative z-[60] group-hover:text-primary">
-                    Booking
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
-                </p>
-              </Link> */}
-              <Link href={"/about"}>
-                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
-                  <span className="relative z-[60] group-hover:text-primary">
-                    About Us
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
-                </p>
-              </Link>
-              <Link href={"/contact"}>
-                <p className="relative inline-block uppercase text-textColor transition duration-300 group">
-                  <span className="relative z-[60] group-hover:text-primary">
-                    Contact Us
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-primary w-0 transition-all duration-300 group-hover:w-full"></span>
-                </p>
-              </Link>
+              <NavItem path="/" name="Home" />
+              <NavItem path="/products" name="All Products" />
+              <NavItem path="/about" name="About" />
+              <NavItem path="/contact" name="Contact" />
             </div>
             <div className="flex justify-center items-center text-2xl text-primary md:hidden">
               Ferdousi's Henna Art
