@@ -5,7 +5,7 @@ import UserInfo from "./UserInfo";
 
 const DashboardHeader: React.FC = () => {
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-primary text-textLight shadow-md">
+    <header className="fixed top-0 z-[999] h-20 w-full lg:w-[calc(100vw-256px)] flex items-center justify-between px-6 py-4 bg-primary text-textLight shadow-md">
       <div className="block lg:hidden">
         <Logo context="dashboard" />
       </div>

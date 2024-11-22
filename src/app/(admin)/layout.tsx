@@ -9,11 +9,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="w-64 hidden lg:block">
         <Sidebar />
       </div>
-      <div className="flex-1 ">
-        <div>
+      <div className="flex-1">
+        <div className="w-full">
           <DashboardHeader />
         </div>
-        <div className="grow w-full h-full flex">
+        <div className="grow w-full h-full flex  mt-20">
           <div className="flex-1">{children}</div>
         </div>
       </div>
