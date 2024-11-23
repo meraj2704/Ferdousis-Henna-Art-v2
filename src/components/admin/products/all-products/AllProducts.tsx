@@ -195,7 +195,7 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <Link
-                className="h-full w-full"
+                className="w-full"
                 href={`/admin/products/${product.id}`}
               >
                 View
@@ -251,7 +251,9 @@ export function AllProducts() {
     <div className="container mx-auto w-full md:px-3 space-y-4">
       <div className="flex justify-between items-center pt-4">
         <p className="text-xl font-medium text-primary">All Products</p>
-        <ButtonF>Add New Products</ButtonF>
+        <Link href={'/admin/products/add-product'}>
+          <ButtonF>Add New Products</ButtonF>
+        </Link>
       </div>
       <div className="flex items-center gap-10">
         <Input
