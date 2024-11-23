@@ -4,13 +4,75 @@ import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useSidebarItems, { SidebarMenu } from "./useSidebarItems";
 import Logo from "../Logo";
+import { PiSignpostDuotone } from "react-icons/pi";
+import { CiLogout } from "react-icons/ci";
+import { LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
+
+// LayoutDashboard
+export const adminSidebarItems: SidebarMenu = {
+  menu: [
+    {
+      label: "Dashboard",
+      icon: LayoutDashboard,
+      href: "/admin/dashboard",
+    },
+    {
+      label: "Products",
+      icon: ShoppingBasket,
+      subItems: [
+        {
+          label: "All Products",
+          icon: ListPlus,
+          href: "/admin/products/all-products",
+        },
+        {
+          label: "Add Product",
+          icon: Plus,
+          href: "/admin/products/add-product",
+        },
+      ],
+    },
+    {
+      label: "Post",
+      icon: PiSignpostDuotone,
+      subItems: [
+        {
+          label: "All Posts",
+          icon: ListPlus,
+          href: "/admin/all-posts",
+        },
+        {
+          label: "Add post",
+          icon: Plus,
+          href: "/admin/add-post",
+        },
+      ],
+    },
+  ],
+  extra: {
+    label: "Logout",
+    icon: CiLogout,
+    href: "/",
+  },
+};
+
+export interface SidebarItem {
+  label: string;
+  icon: any;
+  href?: string;
+  subItems?: SidebarItem[];
+}
+
+export interface SidebarMenu {
+  menu: SidebarItem[];
+  extra: SidebarItem;
+}
 
 const Sidebar = () => {
   const pathName = typeof window !== "undefined" ? usePathname() : "";
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
-  const selectedSidebarItems: SidebarMenu = useSidebarItems(pathName);
+  // const selectedSidebarItems: SidebarMenu = useSidebarItems(pathName);
 
   const handleToggle = (index: number) => {
     setOpenIndexes((prev) => {
@@ -34,7 +96,7 @@ const Sidebar = () => {
         </div>
         <main className="grow w-full flex flex-col justify-between">
           <div className="grow">
-            {selectedSidebarItems.menu.map((item, index) => (
+            {adminSidebarItems.menu.map((item, index) => (
               <div key={index} className="w-full grow">
                 {item.subItems ? (
                   <>
