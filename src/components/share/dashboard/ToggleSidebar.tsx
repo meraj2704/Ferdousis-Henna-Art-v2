@@ -49,7 +49,7 @@ const ToggleSidebar = ({ isOpen, onClose, pathName }: DrawerCompProps) => {
             <>
               <div
                 onClick={() => handleToggle(index)}
-                className={`w-full h-16 pl-10 flex justify-start items-center gap-3 hover:bg-secondary ${
+                className={`w-full h-16 pl-10 flex justify-start items-center gap-3 hover:bg-secondary border-t-[0.5px] border-t-background ${
                   openIndexes.has(index) ? "bg-complementary" : ""
                 } group ${pathName === `${item.href}` ? "bg-white" : ""}`}
               >
@@ -89,7 +89,7 @@ const ToggleSidebar = ({ isOpen, onClose, pathName }: DrawerCompProps) => {
                     <Link key={subIndex} href={`${subItem.href}`}>
                       <div
                        onClick={onClose}
-                        className={`h-16 pl-16 flex justify-start items-center gap-3 w-full hover:bg-secondary group ${
+                        className={`h-16 pl-16 flex justify-start items-center gap-3 w-full hover:bg-secondary group border-t-[0.5px] border-t-background ${
                           pathName === `${subItem.href}` ? "bg-white" : ""
                         }`}
                       >
@@ -123,7 +123,7 @@ const ToggleSidebar = ({ isOpen, onClose, pathName }: DrawerCompProps) => {
             <Link href={`${item.href}`}>
               <div
                onClick={onClose}
-                className={`h-16 pl-10 flex justify-start items-center gap-3 w-full hover:bg-secondary group ${
+                className={`h-16 pl-10 flex justify-start items-center gap-3 w-full hover:bg-secondary group border-t-[0.5px] border-t-background ${
                   pathName === `${item.href}` ? "bg-white" : ""
                 }`}
               >
