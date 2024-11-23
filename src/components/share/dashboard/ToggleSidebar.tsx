@@ -14,11 +14,11 @@ const menu = [
   },
   {
     name: "All Products",
-    path: "/admin/all-products",
+    path: "/admin/products/all-products",
   },
   {
     name: "Add Products",
-    path: "/admin/add-product",
+    path: "/admin/products/add-product",
   },
   {
     name: "About Us",

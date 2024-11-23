@@ -36,7 +36,6 @@ const DashboardHeader: React.FC = () => {
         )}
       </div>
       <div className="hidden lg:block">
-        ;0
         <UserInfo userName="Ferdousi" />
       </div>
       <div className="flex-1 flex justify-end items-center">

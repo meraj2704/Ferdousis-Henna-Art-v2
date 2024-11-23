@@ -14,7 +14,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -38,6 +37,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getAlProducts } from "@/api/api";
 import Image from "next/image";
+import ButtonF from "@/components/customUi/ButtonF";
+import Link from "next/link";
 
 // const data: Payment[] = [
 //   {
@@ -148,11 +149,18 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey:"imageUrl",
-    header:"Image",
-    cell:({row}) => (
-      <Image src={row.getValue("imageUrl")} alt="product image" width={100} height={100} priority className="w-12 h-12 object-cover rounded"/>
-    )
+    accessorKey: "imageUrl",
+    header: "Image",
+    cell: ({ row }) => (
+      <Image
+        src={row.getValue("imageUrl")}
+        alt="product image"
+        width={100}
+        height={100}
+        priority
+        className="w-12 h-12 object-cover rounded"
+      />
+    ),
   },
   // {
   //   accessorKey: "price",
@@ -173,7 +181,7 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const product = row.original;
 
       return (
         <DropdownMenu>
@@ -185,14 +193,19 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(String(payment.id))}
-            >
-              Copy payment ID
+            <DropdownMenuItem>
+              <Link
+                href={{
+                  pathname: `/admin/products/${product.id}`,
+                  query: { redirect: "/admin/products/all-products" },
+                }}
+              >
+                View
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -238,8 +251,11 @@ export function AllProducts() {
 
   return (
     <div className="container mx-auto w-full md:px-3 space-y-4">
-      <div className="text-xl font-medium text-primary pt-4">All Products</div>
-      <div className="flex items-center">
+      <div className="flex justify-between items-center pt-4">
+        <p className="text-xl font-medium text-primary">All Products</p>
+        <ButtonF>Add New Products</ButtonF>
+      </div>
+      <div className="flex items-center gap-10">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
