@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UseFormRegister, FieldError } from "react-hook-form";
 
 interface ImageInputProps {
@@ -6,6 +6,7 @@ interface ImageInputProps {
   name: string;
   register: UseFormRegister<any>;
   error?: FieldError;
+  defaultImage?: string;
   required?: boolean;
 }
 
@@ -14,9 +15,15 @@ const ImageInput: React.FC<ImageInputProps> = ({
   name,
   register,
   error,
+  defaultImage,
   required = false,
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  useEffect(() => {
+    if (defaultImage) {
+      setImagePreview(defaultImage);
+    }
+  }, [defaultImage]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,7 +47,10 @@ const ImageInput: React.FC<ImageInputProps> = ({
           }}
           className="hidden"
         />
-        <label htmlFor={name} className="cursor-pointer text-primary text-center w-full h-full py-6">
+        <label
+          htmlFor={name}
+          className="cursor-pointer text-primary text-center w-full h-full py-6"
+        >
           {imagePreview ? "Change Image" : "Click or Drag to Upload Image"}
         </label>
 

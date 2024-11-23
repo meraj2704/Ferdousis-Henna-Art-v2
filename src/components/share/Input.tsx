@@ -22,7 +22,9 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2 col-span-1">
-      <label className="text-gray-800 font-medium">{label}</label>
+      <label className="text-gray-800 font-medium">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
       <input
         type={type}
         placeholder={placeholder}
@@ -32,7 +34,9 @@ const Input: React.FC<InputProps> = ({
         }`}
       />
       {error && (
-        <p className="text-sm text-red-500">{error.message || `${label} is required`}</p>
+        <p className="text-sm text-red-500">
+          {error.message || `${label} is required`}
+        </p>
       )}
     </div>
   );

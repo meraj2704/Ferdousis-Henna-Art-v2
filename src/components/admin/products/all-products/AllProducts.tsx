@@ -193,16 +193,13 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link
-                className="w-full"
-                href={`/admin/products/${product.id}`}
-              >
-                View
-              </Link>
-            </DropdownMenuItem>
+            <Link href={`/admin/products/${product.id}`}>
+              <DropdownMenuItem>View</DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <Link href={`/admin/products/edit/${product.id}`}>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -251,7 +248,7 @@ export function AllProducts() {
     <div className="container mx-auto w-full md:px-3 space-y-4">
       <div className="flex justify-between items-center pt-4">
         <p className="text-xl font-medium text-primary">All Products</p>
-        <Link href={'/admin/products/add-product'}>
+        <Link href={"/admin/products/add-product"}>
           <ButtonF>Add New Products</ButtonF>
         </Link>
       </div>

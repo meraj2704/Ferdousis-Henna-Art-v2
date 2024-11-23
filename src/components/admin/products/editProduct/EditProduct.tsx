@@ -1,11 +1,28 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getAlProducts } from "@/api/api";
+
+type Product = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  description: string;
+  price: number;
+  category?: string;
+  stock?: number;
+  createdAt?: string;
+  totalSales?: number;
+  revenueGenerated?: number;
+  active?: boolean;
+};
 
 interface ProductFormValues {
   name: string;
@@ -34,18 +51,11 @@ const schema = yup.object().shape({
   image: yup
     .mixed()
     .required("Image is required")
-    .test("fileSize", "File is too large", (value: any) => {
-      console.log("value of image is", value);
-      return value && value[0] && value[0].size <= 5000000;
-    })
-    .test("fileType", "Unsupported File Format", (value: any) => {
-      return (
-        value && value[0] && ["image/jpeg", "image/png"].includes(value[0].type)
-      );
-    }),
 });
 
-const AddProductForm: React.FC = () => {
+const EditProduct: React.FC = () => {
+  const params = useParams();
+  const { id } = params;
   const {
     register,
     handleSubmit,
@@ -55,7 +65,28 @@ const AddProductForm: React.FC = () => {
     formState: { errors },
   } = useForm<ProductFormValues>({
     resolver: yupResolver(schema) as any,
+    defaultValues: {},
   });
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["allProducts"],
+    queryFn: getAlProducts,
+  });
+  const product = data?.find((product: Product) => product.id === Number(id));
+
+  useEffect(() => {
+    if (product) {
+      setValue("name", product.name);
+      setValue("price", product.price);
+      setValue("discountPercentage", product.discountPercentage);
+      setValue("discountedPrice", product.discountedPrice);
+      setValue("stockQuantity", product.stockQuantity);
+      setValue("description", product.description);
+      setValue("image", product.imageUrl);
+    } else {
+      reset();
+    }
+  }, [product, reset]);
 
   const price = watch("price");
   const discountPercentage = watch("discountPercentage");
@@ -78,7 +109,7 @@ const AddProductForm: React.FC = () => {
   const breadCrumbItems = [
     { label: "Home", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
-    { label: "Add New product" },
+    { label: "Edit product" },
   ];
 
   return (
@@ -89,7 +120,9 @@ const AddProductForm: React.FC = () => {
       <div>
         <DynamicBreadcrumb items={breadCrumbItems} />
       </div>
-      <h2 className="text-xl font-semibold text-primary">Add New Product</h2>
+      <h2 className="text-xl font-semibold text-primary">
+        Edit Product : {product?.name}
+      </h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Input
           label="Product Name"
@@ -118,7 +151,7 @@ const AddProductForm: React.FC = () => {
           placeholder="Enter discount percentage"
           register={register}
           error={errors.discountPercentage}
-          // required
+        //   required
         />
         <Input
           label="Discounted price"
@@ -127,7 +160,7 @@ const AddProductForm: React.FC = () => {
           placeholder="Enter discount percentage"
           register={register}
           error={errors.discountPercentage}
-          // required
+        //   required
         />
         <Input
           label="Stock Quantity"
@@ -156,6 +189,7 @@ const AddProductForm: React.FC = () => {
           name="image"
           register={register}
           error={errors.image}
+          defaultImage={product?.imageUrl || null}
           required
         />
       </div>
@@ -171,4 +205,4 @@ const AddProductForm: React.FC = () => {
   );
 };
 
-export default AddProductForm;
+export default EditProduct;

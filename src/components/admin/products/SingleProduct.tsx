@@ -3,6 +3,7 @@ import { getAlProducts } from "@/api/api";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 
@@ -129,12 +130,11 @@ const AdminProductDetails = () => {
 
         {/* Actions */}
         <div className="flex space-x-4 w-full">
-          <button
-            className="w-full bg-primary text-textLight py-2 px-4 rounded-md hover:bg-secondary transition"
-            onClick={() => alert("Edit Product Coming Soon!")}
-          >
-            Edit Product
-          </button>
+          <Link className="w-full" href={`/admin/products/edit/${product?.id}`}>
+            <button className="w-full bg-primary text-textLight py-2 px-4 rounded-md hover:bg-secondary transition">
+              Edit Product
+            </button>
+          </Link>
           <button
             className="w-full bg-red-600 text-textLight py-2 px-4 rounded-md hover:bg-red-500 transition"
             onClick={() => alert("Delete Product Coming Soon!")}
