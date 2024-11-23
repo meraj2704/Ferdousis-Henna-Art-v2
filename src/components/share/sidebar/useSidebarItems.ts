@@ -18,12 +18,12 @@ export const adminSidebarItems: SidebarMenu = {
         {
           label: "All Products",
           icon: MdOutlineProductionQuantityLimits,
-          href: "/admin/all-products",
+          href: "/admin/products/all-products",
         },
         {
           label: "Add Product",
           icon: MdOutlineProductionQuantityLimits,
-          href: "/admin/add-product",
+          href: "/admin/products/add-product",
         },
       ],
     },

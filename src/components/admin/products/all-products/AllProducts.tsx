@@ -195,10 +195,8 @@ export const columns: ColumnDef<Product>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <Link
-                href={{
-                  pathname: `/admin/products/${product.id}`,
-                  query: { redirect: "/admin/products/all-products" },
-                }}
+                className="h-full w-full"
+                href={`/admin/products/${product.id}`}
               >
                 View
               </Link>
