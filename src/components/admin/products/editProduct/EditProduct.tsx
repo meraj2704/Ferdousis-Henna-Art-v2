@@ -48,9 +48,7 @@ const schema = yup.object().shape({
   discountedPrice: yup.number(),
   stockQuantity: yup.number().nullable(),
   description: yup.string().required("Description is required"),
-  image: yup
-    .mixed()
-    .required("Image is required")
+  image: yup.mixed().required("Image is required"),
 });
 
 const EditProduct: React.FC = () => {
@@ -107,7 +105,7 @@ const EditProduct: React.FC = () => {
     console.error("Form validation error:", e);
   };
   const breadCrumbItems = [
-    { label: "Home", href: "/admin/dashboard" },
+    { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
     { label: "Edit product" },
   ];
@@ -151,7 +149,7 @@ const EditProduct: React.FC = () => {
           placeholder="Enter discount percentage"
           register={register}
           error={errors.discountPercentage}
-        //   required
+          //   required
         />
         <Input
           label="Discounted price"
@@ -160,7 +158,7 @@ const EditProduct: React.FC = () => {
           placeholder="Enter discount percentage"
           register={register}
           error={errors.discountPercentage}
-        //   required
+          //   required
         />
         <Input
           label="Stock Quantity"

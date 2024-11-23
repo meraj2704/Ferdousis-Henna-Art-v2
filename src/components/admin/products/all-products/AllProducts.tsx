@@ -39,39 +39,8 @@ import { getAlProducts } from "@/api/api";
 import Image from "next/image";
 import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
-
-// const data: Payment[] = [
-//   {
-//     id: "m5gr84i9",
-//     amount: 316,
-//     status: "success",
-//     email: "ken99@yahoo.com",
-//   },
-//   {
-//     id: "3u1reuv4",
-//     amount: 242,
-//     status: "success",
-//     email: "Abe45@gmail.com",
-//   },
-//   {
-//     id: "derv1ws0",
-//     amount: 837,
-//     status: "processing",
-//     email: "Monserrat44@gmail.com",
-//   },
-//   {
-//     id: "5kma53ae",
-//     amount: 874,
-//     status: "success",
-//     email: "Silas22@gmail.com",
-//   },
-//   {
-//     id: "bhqecj4p",
-//     amount: 721,
-//     status: "failed",
-//     email: "carmella@hotmail.com",
-//   },
-// ];
+import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 
 export type Payment = {
   id: string;
@@ -116,13 +85,6 @@ export const columns: ColumnDef<Product>[] = [
     header: "Name",
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
-  // {
-  //   accessorKey: "status",
-  //   header: "Status",
-  //   cell: ({ row }) => (
-  //     <div className="capitalize">{row.getValue("status")}</div>
-  //   ),
-  // },
   {
     accessorKey: "price",
     header: ({ column }) => {
@@ -162,21 +124,6 @@ export const columns: ColumnDef<Product>[] = [
       />
     ),
   },
-  // {
-  //   accessorKey: "price",
-  //   header: () => <div className="text-right">Price</div>,
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("amount"));
-
-  //     // Format the amount as a dollar amount
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(amount);
-
-  //     return <div className="text-right font-medium">{formatted}</div>;
-  //   },
-  // },
   {
     id: "actions",
     enableHiding: false,
@@ -196,11 +143,25 @@ export const columns: ColumnDef<Product>[] = [
             <Link href={`/admin/products/${product.id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator />
             <Link href={`/admin/products/edit/${product.id}`}>
               <DropdownMenuItem>Edit</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <DynamicAlertDialogue
+                triggerText="Delete"
+                triggerClass="w-full text-sm rounded-sm text-left pl-2 py-1 hover:bg-accent hover:text-textLight"
+                title={`Are sure yor want to delete ${product.name}?`}
+                content="This action cannot be undone. This will permanently delete your
+            product and remove your product data from our servers."
+                onAction={() => {
+                  console.log("delete");
+                  alert("Product deleted successfully!");
+                }}
+                cancelText="Cancel"
+                actionText="Delete"
+                actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
+              />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -244,9 +205,22 @@ export function AllProducts() {
     },
   });
 
+  const breadCrumbItems = [
+    {
+      label: "Dashboard",
+      href: "/admin/dashboard",
+    },
+    {
+      label: "All Products",
+    },
+  ];
+
   return (
     <div className="container mx-auto w-full md:px-3 space-y-4">
-      <div className="flex justify-between items-center pt-4">
+      <div className="pt-4">
+        <DynamicBreadcrumb items={breadCrumbItems} />
+      </div>
+      <div className="flex justify-between items-center">
         <p className="text-xl font-medium text-primary">All Products</p>
         <Link href={"/admin/products/add-product"}>
           <ButtonF>Add New Products</ButtonF>

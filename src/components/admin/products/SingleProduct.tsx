@@ -1,5 +1,6 @@
 "use client";
 import { getAlProducts } from "@/api/api";
+import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -34,7 +35,7 @@ const AdminProductDetails = () => {
 
   const product = data?.find((product: Product) => product.id === Number(id));
   const breadCrumbItems = [
-    { label: "Home", href: "/admin/dashboard" },
+    { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
     { label: product?.name },
   ];
@@ -135,12 +136,22 @@ const AdminProductDetails = () => {
               Edit Product
             </button>
           </Link>
-          <button
-            className="w-full bg-red-600 text-textLight py-2 px-4 rounded-md hover:bg-red-500 transition"
-            onClick={() => alert("Delete Product Coming Soon!")}
-          >
-            Delete Product
-          </button>
+          <div className="w-full flex justify-center items-center bg-red-600 text-textLight py-2 px-4 rounded-md hover:bg-red-500 transition">
+            <DynamicAlertDialogue
+              triggerText="Delete Product"
+              triggerClass="w-full text-center"
+              title={`Are sure yor want to delete ${product.name}?`}
+              content="This action cannot be undone. This will permanently delete your
+            product and remove your product data from our servers."
+              onAction={() => {
+                console.log("delete");
+                alert("Product deleted successfully!");
+              }}
+              cancelText="Cancel"
+              actionText="Delete"
+              actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
+            />
+          </div>
           <button
             className={`w-full ${
               product.active

@@ -76,7 +76,7 @@ const AddProductForm: React.FC = () => {
     console.error("Form validation error:", e);
   };
   const breadCrumbItems = [
-    { label: "Home", href: "/admin/dashboard" },
+    { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
     { label: "Add New product" },
   ];
