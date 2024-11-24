@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import Logo from "../Logo";
 import { PiSignpostDuotone } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
-import { LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
+import { BringToFront, LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
 
 // LayoutDashboard
 export const adminSidebarItems: SidebarMenu = {
@@ -17,6 +17,27 @@ export const adminSidebarItems: SidebarMenu = {
       label: "Dashboard",
       icon: LayoutDashboard,
       href: "/admin/dashboard",
+    },
+    {
+      label: "Orders",
+      icon: BringToFront,
+      href: "/admin/orders",
+    },
+    {
+      label: "Products",
+      icon: ShoppingBasket,
+      subItems: [
+        {
+          label: "All Products",
+          icon: ListPlus,
+          href: "/admin/products/all-products",
+        },
+        {
+          label: "Add Product",
+          icon: Plus,
+          href: "/admin/products/add-product",
+        },
+      ],
     },
     {
       label: "Products",

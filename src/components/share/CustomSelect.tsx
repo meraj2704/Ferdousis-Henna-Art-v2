@@ -37,10 +37,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         render={({ field }) => (
           <>
             <Select onValueChange={field.onChange}>
-              <SelectTrigger className="w-full border rounded-md px-4 py-2 bg-white text-base focus:outline-primary">
+              <SelectTrigger className="w-full border rounded-md px-4 py-2 bg-background text-base focus:outline-primary">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-background">
                 {options.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}

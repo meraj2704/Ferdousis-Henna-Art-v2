@@ -14,3 +14,11 @@ export const getAlProducts = async () => {
 		console.log(error);
 	}
 };
+export const getAlOrders = async () => {
+	try {
+		const response = await axios.get(`/orders.json`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+};
