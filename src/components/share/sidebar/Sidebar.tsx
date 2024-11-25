@@ -8,7 +8,15 @@ import { usePathname } from "next/navigation";
 import Logo from "../Logo";
 import { PiSignpostDuotone } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
-import { BringToFront, Image, LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
+import {
+  BringToFront,
+  Image,
+  LayoutDashboard,
+  ListPlus,
+  MessageCircleIcon,
+  Plus,
+  ShoppingBasket,
+} from "lucide-react";
 
 // LayoutDashboard
 export const adminSidebarItems: SidebarMenu = {
@@ -51,7 +59,7 @@ export const adminSidebarItems: SidebarMenu = {
         {
           label: "Add Photos",
           icon: Plus,
-          href: "/admin/products/add-product",
+          href: "/admin/photo-gallery/add-photo",
         },
       ],
     },
@@ -70,6 +78,11 @@ export const adminSidebarItems: SidebarMenu = {
           href: "/admin/add-post",
         },
       ],
+    },
+    {
+      label: "Messages",
+      icon: MessageCircleIcon,
+      href: "/admin/messages",
     },
   ],
   extra: {

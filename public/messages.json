@@ -1,0 +1,77 @@
+[
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "message": "Hello, I would like to learn more about your services."
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "message": "Can you provide pricing details?"
+  },
+  {
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "message": "I am interested in collaborating on a project."
+  },
+  {
+    "name": "Bob Williams",
+    "email": "bob.williams@example.com",
+    "message": "What are your business hours?"
+  },
+  {
+    "name": "Emily Brown",
+    "email": "emily.brown@example.com",
+    "message": "Do you offer discounts for bulk purchases?"
+  },
+  {
+    "name": "Chris Davis",
+    "email": "chris.davis@example.com",
+    "message": "I need technical support for my account."
+  },
+  {
+    "name": "Laura Wilson",
+    "email": "laura.wilson@example.com",
+    "message": "How can I schedule a consultation?"
+  },
+  {
+    "name": "Michael Lee",
+    "email": "michael.lee@example.com",
+    "message": "Can you send me a brochure of your services?"
+  },
+  {
+    "name": "Sophia Martinez",
+    "email": "sophia.martinez@example.com",
+    "message": "Is there a phone number I can reach you at?"
+  },
+  {
+    "name": "David Anderson",
+    "email": "david.anderson@example.com",
+    "message": "I am facing an issue with the payment process."
+  },
+  {
+    "name": "Olivia Taylor",
+    "email": "olivia.taylor@example.com",
+    "message": "Thank you for the excellent support!"
+  },
+  {
+    "name": "James Thomas",
+    "email": "james.thomas@example.com",
+    "message": "How do I reset my account password?"
+  },
+  {
+    "name": "Isabella Moore",
+    "email": "isabella.moore@example.com",
+    "message": "Can you customize a package for my business?"
+  },
+  {
+    "name": "William Martin",
+    "email": "william.martin@example.com",
+    "message": "I would like to schedule a product demo."
+  },
+  {
+    "name": "Charlotte Clark",
+    "email": "charlotte.clark@example.com",
+    "message": "What payment methods do you accept?"
+  }
+]
