@@ -38,3 +38,12 @@ export const getAllMessages = async () => {
     console.log(error);
   }
 };
+
+export const getAllReviews = async () => {
+  try {
+    const response = await axios.get(`/reviews.json`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

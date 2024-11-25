@@ -16,6 +16,7 @@ import {
   MessageCircleIcon,
   Plus,
   ShoppingBasket,
+  Star,
 } from "lucide-react";
 
 // LayoutDashboard
@@ -76,6 +77,22 @@ export const adminSidebarItems: SidebarMenu = {
           label: "Add post",
           icon: Plus,
           href: "/admin/add-post",
+        },
+      ],
+    },
+    {
+      label: "Reviews",
+      icon: Star,
+      subItems: [
+        {
+          label: "All Reviews",
+          icon: ListPlus,
+          href: "/admin/reviews/all-reviews",
+        },
+        {
+          label: "Add Review",
+          icon: Plus,
+          href: "/admin/reviews/add-reviews",
         },
       ],
     },
