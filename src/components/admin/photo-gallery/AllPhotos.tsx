@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -49,6 +48,7 @@ import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalData, setModalOpen } from "@/redux/Reducer/modalSlice";
 import { RootState } from "@/redux/Store/store";
+import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 
 export type Payment = {
   id: string;
@@ -109,12 +109,30 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "action",
-    header: "",
+    header: () => {
+      return <div className="w-full text-center">Actions</div>;
+    },
     cell: ({ row }) => {
       const data = row.original;
       const dispatch = useDispatch();
       return (
-        <ButtonF onClick={() => dispatch(setModalData(data))}>View</ButtonF>
+        <div className="flex items-center justify-center gap-2">
+          <ButtonF onClick={() => dispatch(setModalData(data))}>View</ButtonF>
+          <DynamicAlertDialogue
+            triggerText="Delete"
+            triggerClass="rounded-md text-center px-4 py-2 bg-red-700 hover:bg-bg-500 text-textLight"
+            title={`Are sure yor want to delete ${data.name} image ?`}
+            content="This action cannot be undone. This will permanently delete your
+            product and remove your product data from our servers."
+            onAction={() => {
+              console.log("delete");
+              alert("Product deleted successfully!");
+            }}
+            cancelText="Cancel"
+            actionText="Delete"
+            actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
+          />
+        </div>
       );
     },
   },
@@ -176,7 +194,7 @@ export function AllPhotos() {
       </div>
       <div className="flex justify-between items-center">
         <p className="text-xl font-medium text-primary">All Photos</p>
-        <Link href={"/admin/products/add-product"}>
+        <Link href={"/admin/photo-gallery/add-photo"}>
           <ButtonF>Add New Photo</ButtonF>
         </Link>
       </div>
