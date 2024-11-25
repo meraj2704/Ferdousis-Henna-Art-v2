@@ -46,7 +46,7 @@ export const adminSidebarItems: SidebarMenu = {
         {
           label: "All Photos",
           icon: ListPlus,
-          href: "/admin/products/all-products",
+          href: "/admin/photo-gallery/all-photos",
         },
         {
           label: "Add Photos",

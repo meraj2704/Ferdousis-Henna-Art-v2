@@ -22,3 +22,11 @@ export const getAlOrders = async () => {
 		console.log(error);
 	}
 };
+export const getAllPhotos = async () => {
+	try {
+		const response = await axios.get(`/photos.json`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+};

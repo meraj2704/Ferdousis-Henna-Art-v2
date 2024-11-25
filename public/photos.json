@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "Beautiful Henna Pattern",
+    "imageUrl": "/images/product/product1.jpeg"
+  },
+  {
+    "id": 2,
+    "name": "Elegant Henna Design",
+    "price": 110,
+    "imageUrl": "/images/product/product2.jpeg"
+  },
+  {
+    "id": 3,
+    "name": "Beautiful Henna Pattern",
+    "price": 105,
+    "imageUrl": "/images/product/product3.jpeg"
+  },
+  {
+    "id": 4,
+    "name": "Beautiful Henna Pattern",
+    "price": 90,
+    "imageUrl": "/images/product/product4.jpeg"
+  }
+]
