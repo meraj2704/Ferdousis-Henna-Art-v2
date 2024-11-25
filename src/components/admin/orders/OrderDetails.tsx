@@ -1,5 +1,6 @@
 "use client";
 import { getAlOrders } from "@/api/api";
+import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import {
   Select,
   SelectContent,
@@ -33,15 +34,23 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className="container mx-auto px-3">
+    <div className="container mx-auto px-4 space-y-5 py-5">
+      <DynamicBreadcrumb
+        items={[
+          { label: "Dashboard", href: "/admin/dashboard" },
+          {label:'Orders' ,href: "/admin/orders" },
+          { label: order?.orderId },
+        ]}
+      />
       <h2 className="text-xl font-semibold text-center text-textColor">
         Order ID: {order?.orderId}
       </h2>
 
-      <div className="mt-4">
+      <div className="">
         <h3 className="font-bold text-primary">User Information:</h3>
         <p>
-          <strong>Name:</strong> {order?.user.name}
+          <strong>Name:</strong>
+          <span className="font-bold">{order?.user.name} </span>
         </p>
         <p>
           <strong>Email:</strong> {order?.user.email}
@@ -56,7 +65,7 @@ const OrderDetails = () => {
         </p>
       </div>
 
-      <div className="mt-4">
+      <div className="">
         <h3 className="font-bold text-primary">Products:</h3>
         {order?.products.map((product: any) => (
           <div
@@ -78,8 +87,8 @@ const OrderDetails = () => {
         ))}
       </div>
 
-      <div className="mt-4">
-        <h3 className="font-bold text-primary">order? Summary:</h3>
+      <div className="">
+        <h3 className="font-bold text-primary">Order Summary:</h3>
         <p>
           <strong>Subtotal:</strong> ${order?.orderDetails.subtotal}
         </p>
@@ -94,7 +103,7 @@ const OrderDetails = () => {
         </p>
       </div>
 
-      <div className="mt-4">
+      <div className=" space-y-2">
         <h3 className="font-bold text-primary">Order Status:</h3>
         <div
           className={`px-4 py-2 rounded-md text-center ${
@@ -103,11 +112,12 @@ const OrderDetails = () => {
         >
           {order?.orderStatus}
         </div>
+        <h3 className="font-bold text-primary">Update Order Status</h3>
         <Select
           value={order?.orderStatus}
           onValueChange={(newStatus) => handleStatusChange(order.id, newStatus)}
         >
-          <SelectTrigger className="w-full bg-background mt-4">
+          <SelectTrigger className="w-full bg-background">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent className="bg-background">
@@ -118,7 +128,7 @@ const OrderDetails = () => {
         </Select>
       </div>
 
-      <div className="mt-4">
+      <div className="">
         <p>
           <strong>Payment Status:</strong> {order?.paymentStatus}
         </p>
@@ -127,7 +137,7 @@ const OrderDetails = () => {
         </p>
       </div>
 
-      <div className="mt-4">
+      <div className="">
         <p>
           <strong>Created At:</strong>{" "}
           {new Date(order?.createdAt).toLocaleString()}

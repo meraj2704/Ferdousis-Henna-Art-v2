@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import Logo from "../Logo";
 import { PiSignpostDuotone } from "react-icons/pi";
 import { CiLogout } from "react-icons/ci";
-import { BringToFront, LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
+import { BringToFront, Image, LayoutDashboard, ListPlus, Plus, ShoppingBasket } from "lucide-react";
 
 // LayoutDashboard
 export const adminSidebarItems: SidebarMenu = {
@@ -40,16 +40,16 @@ export const adminSidebarItems: SidebarMenu = {
       ],
     },
     {
-      label: "Products",
-      icon: ShoppingBasket,
+      label: "Photo Gallery",
+      icon: Image,
       subItems: [
         {
-          label: "All Products",
+          label: "All Photos",
           icon: ListPlus,
           href: "/admin/products/all-products",
         },
         {
-          label: "Add Product",
+          label: "Add Photos",
           icon: Plus,
           href: "/admin/products/add-product",
         },
@@ -110,7 +110,7 @@ const Sidebar = () => {
 
   return (
     <section
-      className={`print:hidden bg-primary h-screen fixed w-64 z-10 overflow-auto scrollbar`}
+      className={`print:hidden bg-primary h-[calc[100vh-80px]] fixed w-64 z-10 overflow-auto scrollbar`}
     >
       <aside className="h-full flex flex-col pb-10">
         <div className="h-20 w-full bg-secondary py-4 pr-4 flex justify-between items-center">
