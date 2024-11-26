@@ -71,7 +71,7 @@ const EditPost: React.FC = () => {
         description: post.description,
         buttonName: post.buttonName,
         link: post.link,
-        image: post.image,
+        image: post.imageUrl,
       };
       reset(resetData);
       if (post.type === "manual") {
@@ -193,6 +193,7 @@ const EditPost: React.FC = () => {
         name="image"
         register={register}
         error={errors.image}
+        defaultImage={post?.imageUrl}
         required
       />
       <button
