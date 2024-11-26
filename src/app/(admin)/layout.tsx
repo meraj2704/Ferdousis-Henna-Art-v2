@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <DashboardHeader />
         </div>
         <div className="grow w-full h-full flex  mt-20">
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 p-5">{children}</div>
         </div>
       </div>
     </div>

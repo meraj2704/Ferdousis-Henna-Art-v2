@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "type": "poster",
+    "buttonName": "Explore Now",
+    "link": "/poster-section-1",
+    "imageUrl": "/images/home/carousel1.jpg"
+  },
+  {
+    "id": 2,
+    "type": "manual",
+    "title": "Learn the Basics",
+    "description": "Dive into our beginner's guide to mastering new skills step by step.",
+    "buttonName": "Get Started",
+    "link": "/manual-guide-1",
+    "imageUrl": "/images/home/carousel2.jpg"
+  },
+  {
+    "id": 3,
+    "type": "poster",
+    "buttonName": "View Collection",
+    "link": "/poster-section-2",
+    "imageUrl": "/images/home/carousel3.jpg"
+  },
+  {
+    "id": 4,
+    "type": "manual",
+    "title": "Advanced Techniques",
+    "description": "Take your skills to the next level with our advanced tutorials.",
+    "buttonName": "Learn More",
+    "link": "/manual-guide-2",
+    "imageUrl": "/images/home/carousel1.jpg"
+  },
+  {
+    "id": 5,
+    "type": "manual",
+    "title": "How to Cook Like a Pro",
+    "description": "Master the art of cooking with our comprehensive guide.",
+    "buttonName": "Start Now",
+    "link": "/manual-guide-3",
+    "imageUrl": "/images/home/carousel2.jpg"
+  },
+  {
+    "id": 6,
+    "type": "poster",
+    "buttonName": "Discover Deals",
+    "link": "/poster-section-3",
+    "imageUrl": "/images/home/carousel3.jpg"
+  },
+  {
+    "id": 13,
+    "type": "manual",
+    "title": "Fitness Made Easy",
+    "description": "Learn how to stay fit with minimal effort and maximum results.",
+    "buttonName": "Join Now",
+    "link": "/manual-guide-4",
+    "imageUrl": "/images/home/carousel1.jpg"
+  },
+  {
+    "id": 14,
+    "type": "poster",
+    "buttonName": "Shop Now",
+    "link": "/poster-section-4",
+    "imageUrl": "/images/home/carousel2.jpg"
+  },
+  {
+    "id": 15,
+    "type": "manual",
+    "title": "Travel the World",
+    "description": "Explore hidden gems and popular destinations with our travel guide.",
+    "buttonName": "Explore",
+    "link": "/manual-guide-5",
+    "imageUrl": "/images/home/carousel3.jpg"
+  },
+  {
+    "id": 7,
+    "type": "poster",
+    "buttonName": "Sign Up Today",
+    "link": "/poster-section-5",
+    "imageUrl": "/images/home/carousel1.jpg"
+  },
+  {
+    "id": 8,
+    "type": "manual",
+    "title": "Digital Marketing 101",
+    "description": "Start your journey in digital marketing with easy-to-follow steps.",
+    "buttonName": "Enroll Now",
+    "link": "/manual-guide-6",
+    "imageUrl": "/images/home/carousel2.jpg"
+  },
+  {
+    "id": 9,
+    "type": "manual",
+    "title": "Healthy Eating",
+    "description": "Discover delicious and nutritious recipes for a healthier lifestyle.",
+    "buttonName": "Read More",
+    "link": "/manual-guide-7",
+    "imageUrl": "/images/home/carousel3.jpg"
+  },
+  {
+    "id": 10,
+    "type": "poster",
+    "buttonName": "Browse Now",
+    "link": "/poster-section-6",
+    "imageUrl": "/images/home/carousel1.jpg"
+  },
+  {
+    "id": 11,
+    "type": "manual",
+    "title": "Master Photography",
+    "description": "Learn to capture stunning photos with our step-by-step guide.",
+    "buttonName": "Start Capturing",
+    "link": "/manual-guide-8",
+    "imageUrl": "/images/home/carousel2.jpg"
+  },
+  {
+    "id": 12,
+    "type": "poster",
+    "buttonName": "See What's New",
+    "link": "/poster-section-7",
+    "imageUrl": "/images/home/carousel3.jpg"
+  }
+]

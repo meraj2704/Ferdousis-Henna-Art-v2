@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import { useParams } from "next/navigation";
+import { getAllPosts } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
+import { Post } from "./AllPost";
 
 const schema = yup.object().shape({
   type: yup
@@ -39,19 +43,42 @@ const schema = yup.object().shape({
     }),
 });
 
-const AddPost: React.FC = () => {
+const EditPost: React.FC = () => {
+  const params = useParams();
+  const { id } = params;
   const [isManual, setIsManual] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     control,
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      type: "poster",
-    },
+    defaultValues: {},
   });
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["allPosts"],
+    queryFn: getAllPosts,
+  });
+  const post = data?.find((post: Post) => post.id === Number(id));
+  useEffect(() => {
+    if (post) {
+      const resetData = {
+        type: post.type,
+        title: post.title,
+        description: post.description,
+        buttonName: post.buttonName,
+        link: post.link,
+        image: post.image,
+      };
+      reset(resetData);
+      if (post.type === "manual") {
+        setIsManual(true);
+      }
+    }
+  }, [reset, post]);
 
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
@@ -60,8 +87,8 @@ const AddPost: React.FC = () => {
 
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
-    { label: "All Posts", href: "/admin/posts/all-posts" },
-    { label: "Add New Post" },
+    { label: "All Posts", href: "/admin/post/all-posts" },
+    { label: "Edit Post" },
   ];
 
   return (
@@ -72,7 +99,7 @@ const AddPost: React.FC = () => {
       <div>
         <DynamicBreadcrumb items={breadCrumbItems} />
       </div>
-      <h2 className="text-xl font-semibold text-primary">Add New Post</h2>
+      <h2 className="text-xl font-semibold text-primary">Edit Post</h2>
       <div className="flex items-center gap-4">
         <label className="text-gray-800 font-medium">Type:</label>
         <Controller
@@ -178,4 +205,4 @@ const AddPost: React.FC = () => {
   );
 };
 
-export default AddPost;
+export default EditPost;
