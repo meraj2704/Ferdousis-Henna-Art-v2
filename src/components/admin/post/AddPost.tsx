@@ -117,8 +117,6 @@ const AddPost: React.FC = () => {
           )}
         />
       </div>
-
-      {/* Conditional Fields for Manual */}
       {isManual && (
         <>
           <Input
@@ -157,8 +155,6 @@ const AddPost: React.FC = () => {
           />
         </>
       )}
-
-      {/* Common Field for Image */}
       <ImageInput
         label="Image"
         name="image"
@@ -166,8 +162,6 @@ const AddPost: React.FC = () => {
         error={errors.image}
         required
       />
-
-      {/* Submit Button */}
       <button
         type="submit"
         className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
