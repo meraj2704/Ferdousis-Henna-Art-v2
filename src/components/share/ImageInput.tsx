@@ -5,7 +5,7 @@ interface ImageInputProps {
   label: string;
   name: string;
   register: UseFormRegister<any>;
-  error?: FieldError;
+  error?: FieldError | null | undefined;
   defaultImage?: string;
   required?: boolean;
 }

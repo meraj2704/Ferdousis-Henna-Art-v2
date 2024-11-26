@@ -71,12 +71,12 @@ export const adminSidebarItems: SidebarMenu = {
         {
           label: "All Posts",
           icon: ListPlus,
-          href: "/admin/all-posts",
+          href: "/admin/post/all-posts",
         },
         {
           label: "Add post",
           icon: Plus,
-          href: "/admin/add-post",
+          href: "/admin/post/add-post",
         },
       ],
     },
