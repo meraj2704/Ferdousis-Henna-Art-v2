@@ -37,7 +37,7 @@ const images = [
   },
 ];
 
-export function ImageCarousel() {
+const ImageCarousel = () => {
   // const [emblaRef] = useEmblaCarousel({ loop: true });
   return (
     <Carousel
@@ -78,7 +78,7 @@ export function ImageCarousel() {
     </Carousel>
   );
 }
-
+export default ImageCarousel;
 // import React, { useEffect } from 'react'
 // import {
 //   Carousel,
