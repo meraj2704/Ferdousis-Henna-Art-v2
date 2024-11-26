@@ -6,12 +6,13 @@ import {
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-8 mt-12">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-1 md:px-2">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {/* Quick Links */}
           <div>
@@ -45,45 +46,38 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/ChandpurMehendi.Artist?mibextid=ZbWKwL"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary"
               >
                 <FaFacebookF size={24} />
               </a>
-              <a
+              {/* <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary"
               >
-                <FaTwitter size={24} />
-              </a>
+                <FaWhatsapp size={24} />
+              </a> */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/ferdousis_henna_art?igsh=dzB4eXQ5dTkyc3g1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary"
               >
                 <FaInstagram size={24} />
               </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary"
-              >
-                <FaLinkedinIn size={24} />
-              </a>
+              
             </div>
           </div>
 
           {/* Contact Information */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <p className="text-gray-400">Email: contact@yourdomain.com</p>
-            <p className="text-gray-400">Phone: +123-456-7890</p>
+            <p className="text-gray-400">Email: ferdousis.henna.art@gmail.com</p>
+            <p className="text-gray-400">Phone: 01758486560</p>
           </div>
 
           {/* Newsletter */}
@@ -105,7 +99,7 @@ const Footer = () => {
 
         <div className="mt-8 border-t border-gray-700 pt-6 text-center text-sm">
           <p>
-            &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+            &copy; {new Date().getFullYear()} Ferdousi's Henna Art All rights reserved.
           </p>
         </div>
       </div>

@@ -65,7 +65,7 @@ const ImageCarousel = () => {
               <h2 className="text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold text-opacity-90 mb-4 ">
                 {image.title}
               </h2>
-              <p className="text-white text-lg mb-6">{image.description}</p>
+              <p className="text-white text-center text-lg mb-6">{image.description}</p>
               <Link href={image.link}>
                 <ButtonF variant="primary">{image.cta}</ButtonF>
               </Link>

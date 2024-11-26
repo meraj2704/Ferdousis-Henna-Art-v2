@@ -15,7 +15,7 @@ const ButtonF: React.FC<ButtonProps> = ({
   type = "button",
   className = "",
 }) => {
-  const baseStyles = "px-4 py-2 rounded-md font-semibold transition duration-300";
+  const baseStyles = "px-3 md:px-4 py-2 rounded-md text-sm md:text-base font-semibold transition duration-300";
   
   const variants = {
     primary: "bg-primary text-textLight hover:bg-accent",

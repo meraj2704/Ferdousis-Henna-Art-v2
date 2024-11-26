@@ -33,17 +33,15 @@ const Navbar = () => {
     <div>
       <div className="bg-gray-800 text-white py-2 flex justify-center space-x-4">
         <a
-          href="https://facebook.com"
+          href="https://www.facebook.com/ChandpurMehendi.Artist?mibextid=ZbWKwL"
           target="_blank"
           rel="noopener noreferrer"
         >
           <FaFacebook className="text-xl hover:text-primary transition duration-300" />
         </a>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-          <FaTwitter className="text-xl hover:text-primary transition duration-300" />
-        </a>
+        
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/ferdousis_henna_art?igsh=dzB4eXQ5dTkyc3g1"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -54,12 +52,12 @@ const Navbar = () => {
       <div
         className={`navbar font-semibold transition duration-30 h-20 lg:h-24   ${
           isNavbarFixed
-            ? "fixed top-0 left-0 w-full z-[100] bg-background shadow-2xl"
+            ? "fixed top-0 left-0 w-full z-[100] bg-background shadow-2xl" 
             : ""
         }`}
       >
         <div className="relative h-full">
-          <div className="container mx-auto h-full  flex justify-between gap-5 px-2 2xl:px-0">
+          <div className="container mx-auto h-full  flex justify-between gap-5 px-1 md:px-2 2xl:px-0">
             <Logo context="nav"/>
             <div className="hidden md:flex items-center gap-5">
               <NavItem path="/" name="Home" />
