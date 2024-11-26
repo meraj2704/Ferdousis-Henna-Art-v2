@@ -7,7 +7,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 
-// Validation Schema
 const schema = yup.object().shape({
   type: yup
     .string()
@@ -34,6 +33,7 @@ const schema = yup.object().shape({
 
   image: yup
     .mixed()
+    .nullable()
     .required("Image is required")
     .test("fileSize", "File is too large", (value: any) => {
       console.log("value of image is", value);
@@ -82,8 +82,14 @@ const AddPost: React.FC = () => {
                 {...field}
                 checked={!isManual}
                 onCheckedChange={(checked) => {
-                  field.onChange(checked ? "poster" : "manual");
-                  setIsManual(!checked);
+                  if (checked) {
+                    field.onChange("poster");
+                    setIsManual(false);
+                  }
+                  else {
+                    field.onChange("manual");
+                    setIsManual(true);
+                  }
                 }}
                 id="poster"
                 className="mr-2"
@@ -94,8 +100,14 @@ const AddPost: React.FC = () => {
                 {...field}
                 checked={isManual}
                 onCheckedChange={(checked) => {
-                  field.onChange(checked ? "manual" : "poster");
-                  setIsManual(checked);
+                  if (checked) {
+                    field.onChange("manual");
+                    setIsManual(true);
+                  }
+                  else {
+                    field.onChange("poster");
+                    setIsManual(false);
+                  }
                 }}
                 id="manual"
                 className="ml-4"
