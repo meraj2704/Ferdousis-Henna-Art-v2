@@ -1,5 +1,5 @@
 "use client";
-import { getAlProducts } from "@/api/api";
+import { getAlProductsHome } from "@/api/api";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import { ProductI } from "@/components/interface/Products";
 import ProductCart from "@/components/share/ProductsCart";
@@ -16,14 +16,14 @@ const Products = () => {
     error,
     data: products,
   } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAlProducts,
+    queryKey: ["allProductsHome"],
+    queryFn: getAlProductsHome,
   });
 
   const handleAddToCart = (product: ProductI) => {
     console.log("Product added to cart:", product.id);
     dispatch(addToCart(product));
-    toast.success('Product added successfully!')
+    toast.success("Product added successfully!");
   };
 
   if (isLoading) return <p>Loading...</p>;

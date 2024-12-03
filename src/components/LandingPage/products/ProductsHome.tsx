@@ -1,5 +1,5 @@
 "use client";
-import { getAlProducts } from "@/api/api";
+import { getAlProducts, getAlProductsHome } from "@/api/api";
 import ButtonF from "@/components/customUi/ButtonF";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import { ProductI } from "@/components/interface/Products";
@@ -17,8 +17,8 @@ const ProductsHome = () => {
     error,
     data: products,
   } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAlProducts,
+    queryKey: ["allProductsHome"],
+    queryFn: getAlProductsHome,
   });
 
   const handleAddToCart = (product: ProductI) => {

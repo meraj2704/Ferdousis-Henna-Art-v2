@@ -1,5 +1,5 @@
 "use client";
-import { getAlProducts } from "@/api/api";
+import { getAlProducts, getAlProductsHome } from "@/api/api";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useQuery } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ const AdminProductDetails = () => {
   const { id } = params;
   const { isLoading, error, data } = useQuery({
     queryKey: ["allProducts"],
-    queryFn: getAlProducts,
+    queryFn: getAlProductsHome,
   });
 
   if (isLoading) return <p>Loading...</p>;

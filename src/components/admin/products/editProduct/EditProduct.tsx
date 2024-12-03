@@ -8,7 +8,7 @@ import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getAlProducts } from "@/api/api";
+import { getAlProducts, getAlProductsHome } from "@/api/api";
 
 type Product = {
   id: number;
@@ -68,7 +68,7 @@ const EditProduct: React.FC = () => {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["allProducts"],
-    queryFn: getAlProducts,
+    queryFn: getAlProductsHome,
   });
   const product = data?.find((product: Product) => product.id === Number(id));
 

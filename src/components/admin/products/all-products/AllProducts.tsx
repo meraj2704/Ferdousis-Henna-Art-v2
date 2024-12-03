@@ -41,13 +41,7 @@ import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { useFetchData } from "@/hooks/useApi";
 
 export type Product = {
   id: number;
@@ -170,14 +164,18 @@ export const columns: ColumnDef<Product>[] = [
 ];
 
 export function AllProducts() {
-  const {
-    isLoading,
-    error,
-    data = [],
-  } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAlProducts,
-  });
+  // const {
+  //   isLoading,
+  //   error,
+  //   data = [],
+  // } = useQuery({
+  //   queryKey: ["dashboardAllProduct"],
+  //   queryFn: getAlProducts,
+  // });
+  const { data, isLoading, error } = useFetchData(
+    ["products"],
+    "product/all-products"
+  );
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -229,9 +227,9 @@ export function AllProducts() {
       <div className="flex items-center gap-10">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

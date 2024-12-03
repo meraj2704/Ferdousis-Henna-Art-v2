@@ -67,8 +67,28 @@ const AddProductForm: React.FC = () => {
     setValue("discountedPrice", discountedPrice);
   }
 
-  const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
+  const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
     console.log("Product Data:", data);
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("price", data.price.toString());
+    formData.append(
+      "discountPercentage",
+      data.discountPercentage?.toString() || "0"
+    );
+    formData.append("discountedPrice", data.discountedPrice?.toString() || "0");
+    formData.append("quantity", data.stockQuantity?.toString() || "0");
+    formData.append("description", data.description);
+    if (data.image) {
+      formData.append("file", data.image[0]);
+    }
+    try {
+      
+    } catch (error: any) {
+      console.error("Error uploading image:", error);
+      // Handle error here
+    }
+
     reset();
   };
 

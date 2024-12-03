@@ -54,7 +54,9 @@ const Navbar = () => {
           isNavbarFixed
             ? "fixed top-0 left-0 w-full z-[100] bg-background shadow-2xl" 
             : ""
-        }`}
+        }`
+      
+      }
       >
         <div className="relative h-full">
           <div className="container mx-auto h-full  flex justify-between gap-5 px-1 md:px-2 2xl:px-0">
