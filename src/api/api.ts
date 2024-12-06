@@ -3,7 +3,7 @@ import axiosInstance, { url } from "./axiosInstance";
 
 export const apiGet = async (endPoint: string) => {
   const { data } = await axiosInstance.get(endPoint);
-  return data;
+  return data?.data;
 };
 
 export const apiPost = async (endPoint: string, payLoad: any) => {

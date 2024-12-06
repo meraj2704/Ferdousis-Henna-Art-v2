@@ -42,6 +42,7 @@ import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { useFetchData } from "@/hooks/useApi";
+import Loader from "@/components/share/Loader";
 
 export type Product = {
   id: number;
@@ -105,11 +106,11 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "image",
     header: "Image",
     cell: ({ row }) => (
       <Image
-        src={row.getValue("imageUrl")}
+        src={row.getValue("image")}
         alt="product image"
         width={100}
         height={100}
@@ -172,10 +173,12 @@ export function AllProducts() {
   //   queryKey: ["dashboardAllProduct"],
   //   queryFn: getAlProducts,
   // });
-  const { data, isLoading, error } = useFetchData(
-    ["products"],
-    "product/all-products"
-  );
+  const {
+    data = [],
+    isLoading,
+    error,
+  } = useFetchData(["products"], "product/all-products");
+  console.log("all products data", data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -213,7 +216,11 @@ export function AllProducts() {
     },
   ];
 
+  if (isLoading) return <Loader />;
+
   return (
+    // <>
+    // </>
     <div className="container mx-auto w-full md:px-3 space-y-4">
       <div className="pt-4">
         <DynamicBreadcrumb items={breadCrumbItems} />
@@ -281,8 +288,8 @@ export function AllProducts() {
             ))}
           </TableHeader>
           <TableBody>
-            {table?.getRowModel().rows?.length ? (
-              table?.getRowModel().rows.map((row: any) => (
+            {table?.getRowModel()?.rows?.length ? (
+              table?.getRowModel()?.rows.map((row: any) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
