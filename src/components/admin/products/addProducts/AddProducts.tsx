@@ -1,11 +1,14 @@
 "use client";
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import { useAddData } from "@/hooks/useApi";
+import { Checkbox } from "@/components/ui/checkbox";
+import MiniLoader from "@/components/share/MiniLoader";
 
 interface ProductFormValues {
   name: string;
@@ -14,6 +17,7 @@ interface ProductFormValues {
   discountedPrice: number | null;
   stockQuantity: number | null;
   description: string;
+  active?: boolean;
   image: FileList | null;
 }
 
@@ -31,6 +35,7 @@ const schema = yup.object().shape({
   discountedPrice: yup.number(),
   stockQuantity: yup.number().nullable(),
   description: yup.string().required("Description is required"),
+  active: yup.boolean(),
   image: yup
     .mixed()
     .required("Image is required")
@@ -47,6 +52,7 @@ const schema = yup.object().shape({
 
 const AddProductForm: React.FC = () => {
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -56,6 +62,10 @@ const AddProductForm: React.FC = () => {
   } = useForm<ProductFormValues>({
     resolver: yupResolver(schema) as any,
   });
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const addProduct = useAddData(["products"], "product/add-product");
 
   const price = watch("price");
   const discountPercentage = watch("discountPercentage");
@@ -68,7 +78,7 @@ const AddProductForm: React.FC = () => {
   }
 
   const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
-    console.log("Product Data:", data);
+    setLoading(true);
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("price", data.price.toString());
@@ -79,17 +89,30 @@ const AddProductForm: React.FC = () => {
     formData.append("discountedPrice", data.discountedPrice?.toString() || "0");
     formData.append("quantity", data.stockQuantity?.toString() || "0");
     formData.append("description", data.description);
+    formData.append("active", data.active ? "true" : "false");
     if (data.image) {
       formData.append("file", data.image[0]);
     }
     try {
-      
+      addProduct.mutate(formData, {
+        onSuccess: () => {
+          alert("Product added successfully");
+          reset();
+          setLoading(false);
+        },
+        onError: (error: any) => {
+          console.error("Error adding product:", error);
+          // Handle error here
+          setLoading(false);
+        },
+      });
     } catch (error: any) {
       console.error("Error uploading image:", error);
-      // Handle error here
+      setLoading(false);
+      // Handle error hereset
+    } finally {
+      setLoading(false);
     }
-
-    reset();
   };
 
   const onError = (e: any) => {
@@ -178,14 +201,45 @@ const AddProductForm: React.FC = () => {
           error={errors.image}
           required
         />
+        <div className="flex items-center space-x-2">
+          <Controller
+            name="active"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className="mr-2"
+              />
+            )}
+          />
+          <label
+            htmlFor="active"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Active
+          </label>
+        </div>
+        {errors.active && (
+          <p className="text-red-500 text-sm">{errors.active.message}</p>
+        )}
       </div>
       {/* Product Name */}
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring flex items-center justify-center"
+        disabled={loading} // Optional: Disables button while loading
       >
-        Add Product
+        {loading ? (
+          <>
+            <MiniLoader />
+            <span className="ml-2">Adding...</span>{" "}
+            {/* Optional text while loading */}
+          </>
+        ) : (
+          "Add Product"
+        )}
       </button>
     </form>
   );
