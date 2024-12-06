@@ -41,14 +41,15 @@ import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
-import { useFetchData } from "@/hooks/useApi";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import Loader from "@/components/share/Loader";
+import { toast } from "sonner";
 
 export type Product = {
-  id: number;
+  _id: string;
   name: string;
   price: number;
-  imageUrl: string;
+  image: string;
   description: string;
 };
 
@@ -124,7 +125,21 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const product = row.original;
-
+      console.log("product", product);
+      const deleteProduct = useDeleteData(
+        ["products"],
+        `product/product-delete`
+      );
+      const handleDelete = (id: string) => {
+        deleteProduct.mutate(id, {
+          onSuccess: () => {
+            toast.success("Product deleted successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to delete product!");
+          },
+        });
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -135,10 +150,10 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link href={`/admin/products/${product.id}`}>
+            <Link href={`/admin/products/${product._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
-            <Link href={`/admin/products/edit/${product.id}`}>
+            <Link href={`/admin/products/edit/${product._id}`}>
               <DropdownMenuItem>Edit</DropdownMenuItem>
             </Link>
             <DropdownMenuItem asChild>
@@ -148,10 +163,7 @@ export const columns: ColumnDef<Product>[] = [
                 title={`Are sure yor want to delete ${product.name}?`}
                 content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-                onAction={() => {
-                  console.log("delete");
-                  alert("Product deleted successfully!");
-                }}
+                onAction={() => handleDelete(product?._id)}
                 cancelText="Cancel"
                 actionText="Delete"
                 actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
@@ -165,14 +177,6 @@ export const columns: ColumnDef<Product>[] = [
 ];
 
 export function AllProducts() {
-  // const {
-  //   isLoading,
-  //   error,
-  //   data = [],
-  // } = useQuery({
-  //   queryKey: ["dashboardAllProduct"],
-  //   queryFn: getAlProducts,
-  // });
   const {
     data = [],
     isLoading,

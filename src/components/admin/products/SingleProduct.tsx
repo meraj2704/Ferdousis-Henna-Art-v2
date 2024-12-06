@@ -2,16 +2,19 @@
 import { getAlProducts, getAlProductsHome } from "@/api/api";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import Loader from "@/components/share/Loader";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 type Product = {
-  id: number;
+  _id: string;
   name: string;
-  imageUrl: string;
+  image: string;
   description: string;
   price: number;
   category?: string;
@@ -25,15 +28,29 @@ type Product = {
 const AdminProductDetails = () => {
   const params = useParams();
   const { id } = params;
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["allProducts"],
-    queryFn: getAlProductsHome,
-  });
+  const router = useRouter();
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useFetchData(["product"], `product/product-details/${id}`);
 
-  if (isLoading) return <p>Loading...</p>;
+  const deleteProduct = useDeleteData(["products"], `product/product-delete`);
+  const handleDelete = (id: string) => {
+    deleteProduct.mutate(id, {
+      onSuccess: () => {
+        toast.success("Product deleted successfully!");
+        router.push("/admin/products/all-products");
+      },
+      onError: () => {
+        toast.error("Failed to delete product!");
+      },
+    });
+  };
+
+  if (isLoading) return <Loader />;
   if (error) return <p>Error fetching data</p>;
 
-  const product = data?.find((product: Product) => product.id === Number(id));
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
@@ -49,8 +66,8 @@ const AdminProductDetails = () => {
         <div className="flex flex-col md:flex-row items-start md:space-x-6">
           <div className="relative w-full md:w-1/2 h-64 md:h-80">
             <Image
-              src={product.imageUrl}
-              alt={product.name}
+              src={product?.image}
+              alt={product?.name}
               layout="fill"
               objectFit="cover"
               className="rounded-lg"
@@ -143,10 +160,7 @@ const AdminProductDetails = () => {
               title={`Are sure yor want to delete ${product.name}?`}
               content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-              onAction={() => {
-                console.log("delete");
-                alert("Product deleted successfully!");
-              }}
+              onAction={() => handleDelete(product?._id)}
               cancelText="Cancel"
               actionText="Delete"
               actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
