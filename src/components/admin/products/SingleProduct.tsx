@@ -1,10 +1,8 @@
 "use client";
-import { getAlProducts, getAlProductsHome } from "@/api/api";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import Loader from "@/components/share/Loader";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -61,7 +59,6 @@ const AdminProductDetails = () => {
   return (
     <div className="min-h-screen bg-background text-textColor px-4 py-10">
       <div className="container mx-auto space-y-6">
-        {/* Product Image Section */}
         <DynamicBreadcrumb items={breadCrumbItems} />
         <div className="flex flex-col md:flex-row items-start md:space-x-6">
           <div className="relative w-full md:w-1/2 h-64 md:h-80">
