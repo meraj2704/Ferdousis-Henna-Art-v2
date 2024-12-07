@@ -12,6 +12,7 @@ import { schema } from "./Schema";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import Loader from "@/components/share/Loader";
+import MiniLoader from "@/components/share/MiniLoader";
 const EditProduct: React.FC = () => {
   const router = useRouter();
   const params = useParams();
@@ -39,7 +40,6 @@ const EditProduct: React.FC = () => {
     isLoading,
     error,
   } = useFetchData(["product"], `product/product-details/${id}`);
-
 
   useEffect(() => {
     if (product) {
@@ -207,9 +207,16 @@ const EditProduct: React.FC = () => {
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring flex justify-center items-center mb-10"
       >
-        Add Product
+        {editProduct.status === "pending" ? (
+          <>
+            <MiniLoader />
+            <span className="ml-2">Updating...</span>
+          </>
+        ) : (
+          <>Update</>
+        )}
       </button>
     </form>
   );
