@@ -9,30 +9,18 @@ import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
-type Product = {
-  _id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: number;
-  category?: string;
-  stock?: number;
-  createdAt?: string;
-  totalSales?: number;
-  revenueGenerated?: number;
-  active?: boolean;
-};
-
 const AdminProductDetails = () => {
   const params = useParams();
   const { id } = params;
   const router = useRouter();
+
+  // data fetch
   const {
     data: product,
     isLoading,
     error,
   } = useFetchData(["product"], `product/product-details/${id}`);
-
+// delete products
   const deleteProduct = useDeleteData(["products"], `product/product-delete`);
   const handleDelete = (id: string) => {
     deleteProduct.mutate(id, {
@@ -48,7 +36,7 @@ const AdminProductDetails = () => {
 
   if (isLoading) return <Loader />;
   if (error) return <p>Error fetching data</p>;
-
+// bread crumbs lists
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
@@ -98,7 +86,7 @@ const AdminProductDetails = () => {
                   {product.stock && product.stock > 0
                     ? `${product.stock} units available`
                     : "Out of stock"}
-                </span>
+                </span>{" "}
               </p>
             </div>
           </div>

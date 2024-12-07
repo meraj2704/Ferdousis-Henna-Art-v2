@@ -2,54 +2,14 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useAddData } from "@/hooks/useApi";
 import { Checkbox } from "@/components/ui/checkbox";
 import MiniLoader from "@/components/share/MiniLoader";
-
-interface ProductFormValues {
-  name: string;
-  price: number;
-  discountPercentage: number | null;
-  discountedPrice: number | null;
-  stockQuantity: number | null;
-  description: string;
-  active?: boolean;
-  image: FileList | null;
-}
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  price: yup.number().required("Price is required"),
-  discountPercentage: yup
-    .number()
-    .nullable()
-    .transform((value, originalValue) => {
-      return originalValue === "" ? null : value;
-    })
-    .min(0, "Discount percentage can not be negative")
-    .max(100, "Discount percentage can not exceed 100"),
-  discountedPrice: yup.number(),
-  stockQuantity: yup.number().nullable(),
-  description: yup.string().required("Description is required"),
-  active: yup.boolean(),
-  image: yup
-    .mixed()
-    .required("Image is required")
-    .test("fileSize", "File is too large", (value: any) => {
-      console.log("value of image is", value);
-      return value && value[0] && value[0].size <= 5000000;
-    })
-    .test("fileType", "Unsupported File Format", (value: any) => {
-      return (
-        value && value[0] && ["image/jpeg", "image/png"].includes(value[0].type)
-      );
-    }),
-});
-
+import { AddProductI } from "@/types/Types";
+import { schema } from "./Schema";
 const AddProductForm: React.FC = () => {
   const {
     control,
@@ -59,14 +19,14 @@ const AddProductForm: React.FC = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<ProductFormValues>({
+  } = useForm<AddProductI>({
     resolver: yupResolver(schema) as any,
   });
-
+  // states
   const [loading, setLoading] = useState<boolean>(false);
-
+  // add product api mutations
   const addProduct = useAddData(["products"], "product/add-product");
-
+// 
   const price = watch("price");
   const discountPercentage = watch("discountPercentage");
   if (discountPercentage) {
@@ -77,7 +37,7 @@ const AddProductForm: React.FC = () => {
     setValue("discountedPrice", discountedPrice);
   }
 
-  const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<AddProductI> = async (data) => {
     setLoading(true);
     const formData = new FormData();
     formData.append("name", data.name);
@@ -87,7 +47,7 @@ const AddProductForm: React.FC = () => {
       data.discountPercentage?.toString() || "0"
     );
     formData.append("discountedPrice", data.discountedPrice?.toString() || "0");
-    formData.append("quantity", data.stockQuantity?.toString() || "0");
+    formData.append("quantity", data.quantity?.toString() || "0");
     formData.append("description", data.description);
     formData.append("active", data.active ? "true" : "false");
     if (data.image) {
@@ -174,11 +134,11 @@ const AddProductForm: React.FC = () => {
         />
         <Input
           label="Stock Quantity"
-          name="stockQuantity"
+          name="quantity"
           type="number"
           placeholder="Enter product quantity"
           register={register}
-          error={errors.stockQuantity}
+          error={errors.quantity}
           required
         />
 

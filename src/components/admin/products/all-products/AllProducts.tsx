@@ -44,14 +44,9 @@ import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import Loader from "@/components/share/Loader";
 import { toast } from "sonner";
+import { Product } from "@/types/Types";
 
-export type Product = {
-  _id: string;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-};
+
 
 export const columns: ColumnDef<Product>[] = [
   {
