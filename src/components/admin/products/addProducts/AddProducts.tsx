@@ -26,9 +26,10 @@ const AddProductForm: React.FC = () => {
     resolver: yupResolver(schema) as any,
   });
   // states
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   // add product api mutations
   const addProduct = useAddData(["products"], "product/add-product");
+  console.log("status", addProduct.status);
   //
   const price = watch("price");
   const discountPercentage = watch("discountPercentage");
@@ -40,8 +41,9 @@ const AddProductForm: React.FC = () => {
     setValue("discountedPrice", discountedPrice);
   }
 
-  const onSubmit: SubmitHandler<AddProductI> = async (data) => {
-    setLoading(true);
+  const onSubmit: SubmitHandler<AddProductI> = (data) => {
+    // setLoading(true);
+
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("price", data.price.toString());
@@ -57,24 +59,25 @@ const AddProductForm: React.FC = () => {
       formData.append("image", data.image[0]);
     }
     try {
+      // console.log("loading state", loading);
       addProduct.mutate(formData, {
         onSuccess: () => {
           toast.success("Product added successfully");
           reset();
-          setLoading(false);
+          // setLoading(false);
           router.push(`/admin/products/all-products`);
         },
         onError: (error: any) => {
           toast.error("Failed to add product");
-          setLoading(false);
+          // setLoading(false);
         },
       });
     } catch (error: any) {
       console.error("Error uploading image:", error);
-      setLoading(false);
+      // setLoading(false);
       // Handle error hereset
     } finally {
-      setLoading(false);
+      // setLoading(false);.
     }
   };
 
@@ -192,13 +195,11 @@ const AddProductForm: React.FC = () => {
       <button
         type="submit"
         className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring flex items-center justify-center"
-        disabled={loading} // Optional: Disables button while loading
       >
-        {loading ? (
+        {addProduct.status === "pending" ? (
           <>
             <MiniLoader />
-            <span className="ml-2">Adding...</span>{" "}
-            {/* Optional text while loading */}
+            <span className="ml-2">Adding...</span>
           </>
         ) : (
           "Add Product"

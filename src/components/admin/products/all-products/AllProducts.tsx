@@ -44,8 +44,6 @@ import Loader from "@/components/share/Loader";
 import { toast } from "sonner";
 import { Product } from "@/types/Types";
 
-
-
 export const columns: ColumnDef<Product>[] = [
   {
     id: "select",
@@ -143,7 +141,6 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const product = row.original;
-      console.log("product", product);
       const deleteProduct = useDeleteData(
         ["products"],
         `product/product-delete`
