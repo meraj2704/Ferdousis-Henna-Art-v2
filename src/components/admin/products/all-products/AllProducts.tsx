@@ -34,8 +34,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAlProducts } from "@/api/api";
 import Image from "next/image";
 import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
@@ -91,6 +89,31 @@ export const columns: ColumnDef<Product>[] = [
     },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("price"));
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "BDT",
+      }).format(amount);
+
+      return <div className="text-left font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "discountedPrice",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex items-center gap-1"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Discount Price
+          <ArrowUpDown className="h-4 w-4" />
+        </button>
+      );
+    },
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("discountedPrice"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {

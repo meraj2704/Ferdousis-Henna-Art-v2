@@ -10,7 +10,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import MiniLoader from "@/components/share/MiniLoader";
 import { AddProductI } from "@/types/Types";
 import { schema } from "./Schema";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const AddProductForm: React.FC = () => {
+  const router = useRouter();
   const {
     control,
     register,
@@ -26,7 +29,7 @@ const AddProductForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   // add product api mutations
   const addProduct = useAddData(["products"], "product/add-product");
-// 
+  //
   const price = watch("price");
   const discountPercentage = watch("discountPercentage");
   if (discountPercentage) {
@@ -51,18 +54,18 @@ const AddProductForm: React.FC = () => {
     formData.append("description", data.description);
     formData.append("active", data.active ? "true" : "false");
     if (data.image) {
-      formData.append("file", data.image[0]);
+      formData.append("image", data.image[0]);
     }
     try {
       addProduct.mutate(formData, {
         onSuccess: () => {
-          alert("Product added successfully");
+          toast.success("Product added successfully");
           reset();
           setLoading(false);
+          router.push(`/admin/products/all-products`);
         },
         onError: (error: any) => {
-          console.error("Error adding product:", error);
-          // Handle error here
+          toast.error("Failed to add product");
           setLoading(false);
         },
       });

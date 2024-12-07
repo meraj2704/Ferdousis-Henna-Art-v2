@@ -40,7 +40,6 @@ const EditProduct: React.FC = () => {
     error,
   } = useFetchData(["product"], `product/product-details/${id}`);
 
-  console.log("fetch product data", product);
 
   useEffect(() => {
     if (product) {
@@ -67,7 +66,6 @@ const EditProduct: React.FC = () => {
   }
 
   const onSubmit: SubmitHandler<AddProductI> = (data) => {
-    console.log(" submitted Product Data:", data);
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("price", data.price.toString());
@@ -80,7 +78,7 @@ const EditProduct: React.FC = () => {
     formData.append("description", data.description);
     formData.append("active", data.active ? "true" : "false");
     if (data.image) {
-      formData.append("file", data.image[0]);
+      formData.append("image", data.image[0]);
     }
     editProduct.mutate(formData, {
       onSuccess: () => {
