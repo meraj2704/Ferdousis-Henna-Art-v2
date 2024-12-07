@@ -1,7 +1,6 @@
-'use client'
+"use client";
 import { useAppSelector, useAppDispatch } from "@/redux/Store/store";
 import { removeFromCart, updateQuantity } from "@/redux/Reducer/cartSlice";
-import { ProductI } from "@/components/interface/Products";
 import React, { useEffect, useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 import { FaPlus, FaMinus } from "react-icons/fa";
@@ -9,8 +8,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { CiCirclePlus } from "react-icons/ci";
+import { Product } from "@/types/Types";
 
-interface CartProductI extends ProductI {
+interface CartProductI extends Product {
   quantity: number;
 }
 
@@ -26,18 +26,18 @@ const CartPage = () => {
     setIsClient(true);
   }, []);
 
-  const handleRemoveItem = (id: number, name: string) => {
+  const handleRemoveItem = (id: string, name: string) => {
     dispatch(removeFromCart(id));
     toast.error(`${name} removed from cart!`);
   };
 
   const handleIncreaseQuantity = (item: CartProductI) => {
-    dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
+    dispatch(updateQuantity({ id: item._id, quantity: item.quantity + 1 }));
   };
 
   const handleDecreaseQuantity = (item: CartProductI) => {
     if (item.quantity > 1) {
-      dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
+      dispatch(updateQuantity({ id: item._id, quantity: item.quantity - 1 }));
     }
   };
 
@@ -78,12 +78,12 @@ const CartPage = () => {
         {/* Cart Item List */}
         {cartItems.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             className="w-full flex justify-between gap-4  items-center border-b py-4"
           >
             <div className="">
               <Image
-                src={item.imageUrl}
+                src={item.image}
                 alt={item.name}
                 width={200}
                 height={200}
@@ -91,7 +91,7 @@ const CartPage = () => {
               />
             </div>
             <div className="flex flex-col">
-              <Link href={`/products/${item.id}`}>
+              <Link href={`/products/${item._id}`}>
                 <h2 className="text-lg font-semibold text-gray-800">
                   {item.name}
                 </h2>
@@ -117,7 +117,7 @@ const CartPage = () => {
                 </button>
               </div>
               <button
-                onClick={() => handleRemoveItem(item.id, item.name)}
+                onClick={() => handleRemoveItem(item._id, item.name)}
                 className="text-gray-600 hover:text-red-600 transition"
               >
                 <IoTrashOutline className="text-xl" />
@@ -130,7 +130,10 @@ const CartPage = () => {
       {/* Cart Summary */}
       <div className="flex justify-between items-center mt-6 border-t pt-6">
         <div className="text-lg font-semibold text-gray-800">
-          <p>Total: {getTotalPrice().toFixed(2)} <span className="text-sm">TK</span></p>
+          <p>
+            Total: {getTotalPrice().toFixed(2)}{" "}
+            <span className="text-sm">TK</span>
+          </p>
         </div>
         <Link
           href="/check-out"

@@ -2,30 +2,29 @@
 import { getAlProductsHome } from "@/api/api";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import ProductCart from "@/components/share/ProductsCart";
+import { useFetchData } from "@/hooks/useApi";
 import { addToCart } from "@/redux/Reducer/cartSlice";
 import { useAppDispatch } from "@/redux/Store/store";
 import { Product } from "@/types/Types";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
+import Loader from "../share/Loader";
 
 const Products = () => {
   const dispatch = useAppDispatch();
   const {
+    data: products,
     isLoading,
     error,
-    data: products,
-  } = useQuery({
-    queryKey: ["allProductsHome"],
-    queryFn: getAlProductsHome,
-  });
+  } = useFetchData(["clientAllProducts"], `product/client/all-products`);
 
   const handleAddToCart = (product: Product) => {
     dispatch(addToCart(product));
     toast.success("Product added successfully!");
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (error) return <p>Error fetching products: {error.message}</p>;
 
   console.log("products data", products);

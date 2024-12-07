@@ -190,7 +190,7 @@ const CheckoutPage = () => {
           <div className="space-y-4">
             {cartItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex justify-between items-center border-b pb-2 text-sm"
               >
                 <p className="font-medium text-gray-800">{item.name}</p>

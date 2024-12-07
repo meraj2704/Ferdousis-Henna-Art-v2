@@ -51,14 +51,14 @@ import {
 } from "@/components/ui/select";
 
 export type Payment = {
-  id: string;
+  _id: string;
   amount: number;
   status: "pending" | "processing" | "success" | "failed";
   email: string;
 };
 
 export type Product = {
-  id: number;
+  _id: string;
   name: string;
   price: number;
   imageUrl: string;

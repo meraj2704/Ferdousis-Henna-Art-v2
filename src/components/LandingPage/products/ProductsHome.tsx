@@ -7,6 +7,7 @@ import { useFetchData } from "@/hooks/useApi";
 import { addToCart } from "@/redux/Reducer/cartSlice";
 import { useAppDispatch } from "@/redux/Store/store";
 import { Product } from "@/types/Types";
+import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
 
@@ -41,7 +42,10 @@ const ProductsHome = () => {
         ))}
       </div>
       <div className="flex justify-center items-center mt-4 lg:mt-6">
-        <ButtonF variant="primary">See All</ButtonF>
+        <Link href={"/products"}>
+          {" "}
+          <ButtonF variant="primary">See All</ButtonF>
+        </Link>
       </div>
     </div>
   );
