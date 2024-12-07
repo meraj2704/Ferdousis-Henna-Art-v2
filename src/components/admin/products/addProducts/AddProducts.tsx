@@ -25,9 +25,6 @@ const AddProductForm: React.FC = () => {
   } = useForm<AddProductI>({
     resolver: yupResolver(schema) as any,
   });
-  // states
-  // const [loading, setLoading] = useState<boolean>(false);
-  // add product api mutations
   const addProduct = useAddData(["products"], "product/add-product");
   console.log("status", addProduct.status);
   //
@@ -59,25 +56,18 @@ const AddProductForm: React.FC = () => {
       formData.append("image", data.image[0]);
     }
     try {
-      // console.log("loading state", loading);
       addProduct.mutate(formData, {
         onSuccess: () => {
           toast.success("Product added successfully");
           reset();
-          // setLoading(false);
           router.push(`/admin/products/all-products`);
         },
         onError: (error: any) => {
           toast.error("Failed to add product");
-          // setLoading(false);
         },
       });
     } catch (error: any) {
       console.error("Error uploading image:", error);
-      // setLoading(false);
-      // Handle error hereset
-    } finally {
-      // setLoading(false);.
     }
   };
 

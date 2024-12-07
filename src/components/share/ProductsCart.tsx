@@ -3,17 +3,19 @@ import React from "react";
 import ButtonF from "../customUi/ButtonF";
 import Link from "next/link";
 import Image from "next/image";
-import { ProductI } from "../interface/Products";
+import { Product } from "@/types/Types";
 
 interface ProductCartProps {
   product: {
-    id: number;
+    _id: string;
     name: string;
     price: number;
-    imageUrl: string;
+    image: string;
+    discountPercentage: number;
+    discountedPrice: number;
     description: string;
   };
-  onAddToCart: (product: ProductI) => void;
+  onAddToCart: (product: Product) => void;
 }
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
@@ -22,7 +24,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
       {/* Product Image */}
       <div className="relative h-40 lg:h-64">
         <Image
-          src={product.imageUrl}
+          src={product.image}
           alt={product.name}
           width={300}
           height={350}
@@ -33,7 +35,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
       {/* Product Information */}
       <div className="p-2 lg:p-6 flex flex-col justify-between">
         <div>
-          <Link href={`/products/${product.id}`}>
+          <Link href={`/products/${product._id}`}>
             <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-2 hover:underline">
               {product.name}
             </h3>
@@ -43,7 +45,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
               ? product.description.substring(0, 100) + "..."
               : product.description}
           </p>
-        </div> 
+        </div>
         {/* Product Price */}
         <div className="flex justify-between items-center">
           <span className="text-lg md:text-xl font-bold text-primary">

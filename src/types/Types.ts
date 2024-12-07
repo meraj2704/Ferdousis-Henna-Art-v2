@@ -19,6 +19,8 @@ export interface Address {
     name: string;
     price: number;
     image: string;
+    discountPercentage: number;
+    discountedPrice: number;
     description: string;
   };
   

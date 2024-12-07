@@ -1,10 +1,10 @@
 "use client";
 import { getAlProductsHome } from "@/api/api";
 import SectionTitle from "@/components/customUi/SectionTitle";
-import { ProductI } from "@/components/interface/Products";
 import ProductCart from "@/components/share/ProductsCart";
 import { addToCart } from "@/redux/Reducer/cartSlice";
 import { useAppDispatch } from "@/redux/Store/store";
+import { Product } from "@/types/Types";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
@@ -20,8 +20,7 @@ const Products = () => {
     queryFn: getAlProductsHome,
   });
 
-  const handleAddToCart = (product: ProductI) => {
-    console.log("Product added to cart:", product.id);
+  const handleAddToCart = (product: Product) => {
     dispatch(addToCart(product));
     toast.success("Product added successfully!");
   };
@@ -35,9 +34,9 @@ const Products = () => {
     <div className="container mx-auto px-2 2xl:px-0">
       <SectionTitle title="All Products" />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
-        {products?.map((product: ProductI) => (
+        {products?.map((product: Product) => (
           <ProductCart
-            key={product.id}
+            key={product._id}
             product={product}
             onAddToCart={handleAddToCart}
           />
