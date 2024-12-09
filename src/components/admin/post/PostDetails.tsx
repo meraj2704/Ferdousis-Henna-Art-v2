@@ -1,43 +1,33 @@
 "use client";
-import { getAllPosts } from "@/api/api"; // API function to fetch posts
+
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
-import { useQuery } from "@tanstack/react-query";
+import Loader from "@/components/share/Loader";
+import { useFetchData } from "@/hooks/useApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
 
-export type Post = {
-  id: number;
-  type: string; // "poster" or "manual"
-  title?: string;
-  description?: string;
-  buttonName: string;
-  link: string;
-  imageUrl: string;
-};
-
 const PostDetails = () => {
   const params = useParams();
   const { id } = params;
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["allPosts"],
-    queryFn: getAllPosts,
-  });
+  const { isLoading, error, data } = useFetchData(
+    ["postDetails"],
+    `hero-post/post-details/${id}`
+  );
 
-  if (isLoading) return <p className="text-center text-lg">Loading...</p>;
+  if (isLoading) return <Loader />;
   if (error) return <p className="text-center text-lg">Error fetching data</p>;
 
-  const post = data?.find((post: Post) => post.id === Number(id));
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Posts", href: "/admin/post/all-posts" },
-    { label: post?.title || "Post Details" },
+    { label: data?.title || "Post Details" },
   ];
 
-  if (!post) return <p className="text-center text-lg">Post not found</p>;
+  if (!data) return <p className="text-center text-lg">Post not found</p>;
 
   return (
     <>
@@ -48,8 +38,8 @@ const PostDetails = () => {
         {/* Post Image */}
         <div className="relative w-full h-64 md:h-80 lg:h-96">
           <Image
-            src={post.imageUrl}
-            alt={post.title || "Post Image"}
+            src={data?.image}
+            alt={data?.title || "Post Image"}
             layout="fill"
             objectFit="cover"
             className="rounded-lg shadow-lg"
@@ -58,28 +48,28 @@ const PostDetails = () => {
 
         {/* Post Details */}
         <div className=" shadow-md rounded-lg p-6 space-y-4">
-          {post.type !== "poster" && (
+          {data.type !== "poster" && (
             <>
               <h1 className="text-2xl font-bold text-gray-900">
-                {post.title || "Untitled Post"}
+                {data.title || "Untitled Post"}
               </h1>
               <p className="text-gray-700">
-                {post.description || "No description provided."}
+                {data.description || "No description provided."}
               </p>
             </>
           )}
           <a
-            href={post.link}
+            href={data.link}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            {post.buttonName}
+            {data.buttonName}
           </a>
         </div>
 
         <div className="flex space-x-4 w-full">
-          <Link className="w-full" href={`/admin/post/edit/${post?.id}`}>
+          <Link className="w-full" href={`/admin/post/edit/${data?._id}`}>
             <button className="w-full bg-primary text-textLight py-2 px-4 rounded-md hover:bg-secondary transition">
               Edit Product
             </button>
@@ -102,13 +92,13 @@ const PostDetails = () => {
           </div>
           <button
             className={`w-full ${
-              post?.active
+              data?.active
                 ? "bg-green-700 text-textLight hover:bg-green-500"
                 : "bg-yellow-600 text-textLight hover:bg-yellow-500"
             } py-2 px-4 rounded-md transition`}
             onClick={() => alert("Toggle Status Coming Soon!")}
           >
-            {post?.active ? "Deactivate" : "Activate"}
+            {data?.active ? "Deactivate" : "Activate"}
           </button>
         </div>
       </div>

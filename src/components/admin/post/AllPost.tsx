@@ -41,25 +41,13 @@ import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
+import { useFetchData } from "@/hooks/useApi";
+import Loader from "@/components/share/Loader";
+import { PostI } from "@/types/Types";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
 
-export type Post = {
-    id:number;
-  type: string;
-  title?: string;
-  description?: number;
-  buttonName: string;
-  link: string;
-  imageUrl: string;
-};
 
-export const columns: ColumnDef<Post>[] = [
+export const columns: ColumnDef<PostI>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -90,15 +78,17 @@ export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "buttonName",
     header: "Button Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("buttonName")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("buttonName")}</div>
+    ),
   },
-  
+
   {
-    accessorKey: "imageUrl",
+    accessorKey: "image",
     header: "Image",
     cell: ({ row }) => (
       <Image
-        src={row.getValue("imageUrl")}
+        src={row.getValue("image")}
         alt="product image"
         width={100}
         height={100}
@@ -111,7 +101,7 @@ export const columns: ColumnDef<Post>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const product = row.original;
+      const post = row.original;
 
       return (
         <DropdownMenu>
@@ -123,10 +113,10 @@ export const columns: ColumnDef<Post>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link href={`/admin/post/${product.id}`}>
+            <Link href={`/admin/post/${post._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
-            <Link href={`/admin/post/edit/${product.id}`}>
+            <Link href={`/admin/post/edit/${post._id}`}>
               <DropdownMenuItem>Edit</DropdownMenuItem>
             </Link>
             <DropdownMenuItem asChild>
@@ -154,13 +144,10 @@ export const columns: ColumnDef<Post>[] = [
 
 export function AllPosts() {
   const {
+    data = [],
     isLoading,
     error,
-    data = [],
-  } = useQuery({
-    queryKey: ["allPosts"],
-    queryFn: getAllPosts,
-  });
+  } = useFetchData(["allPosts"], `hero-post/get-all-posts`);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -198,15 +185,17 @@ export function AllPosts() {
     },
   ];
 
+  if (isLoading) return <Loader />;
+
   return (
     <div className="container mx-auto w-full md:px-3 space-y-4">
       <div className="pt-4">
         <DynamicBreadcrumb items={breadCrumbItems} />
       </div>
       <div className="flex justify-between items-center">
-        <p className="text-xl font-medium text-primary">All Products</p>
+        <p className="text-xl font-medium text-primary">All Hero Posts</p>
         <Link href={"/admin/products/add-product"}>
-          <ButtonF>Add New Products</ButtonF>
+          <ButtonF>Add New Post</ButtonF>
         </Link>
       </div>
       <div className="flex items-center gap-10">
