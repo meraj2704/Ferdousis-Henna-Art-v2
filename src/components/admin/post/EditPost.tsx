@@ -10,7 +10,8 @@ import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useParams } from "next/navigation";
 import { getAllPosts } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
-import { Post } from "./AllPost";
+import { PostI } from "@/types/Types";
+import { useFetchData } from "@/hooks/useApi";
 
 const schema = yup.object().shape({
   type: yup
@@ -58,11 +59,11 @@ const EditPost: React.FC = () => {
     defaultValues: {},
   });
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["allPosts"],
-    queryFn: getAllPosts,
-  });
-  const post = data?.find((post: Post) => post.id === Number(id));
+  const {
+    isLoading,
+    error,
+    data: post,
+  } = useFetchData(["postDetails"], `hero-post/post-details/${id}`);
   useEffect(() => {
     if (post) {
       const resetData = {
@@ -71,7 +72,7 @@ const EditPost: React.FC = () => {
         description: post.description,
         buttonName: post.buttonName,
         link: post.link,
-        image: post.imageUrl,
+        image: post.image,
       };
       reset(resetData);
       if (post.type === "manual") {
@@ -193,14 +194,14 @@ const EditPost: React.FC = () => {
         name="image"
         register={register}
         error={errors.image}
-        defaultImage={post?.imageUrl}
+        defaultImage={post?.image}
         required
       />
       <button
         type="submit"
         className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
       >
-        Add Post
+        Update Post
       </button>
     </form>
   );

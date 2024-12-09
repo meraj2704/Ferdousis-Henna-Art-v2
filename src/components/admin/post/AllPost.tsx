@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {  ChevronDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -22,7 +22,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -34,18 +33,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAllPosts, getAlProducts } from "@/api/api";
 import Image from "next/image";
 import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
-import { useFetchData } from "@/hooks/useApi";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import Loader from "@/components/share/Loader";
 import { PostI } from "@/types/Types";
-
-
+import { toast } from "sonner";
 
 export const columns: ColumnDef<PostI>[] = [
   {
@@ -102,7 +98,18 @@ export const columns: ColumnDef<PostI>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const post = row.original;
-
+      const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`);
+      const handleDelete = (id: string) => {
+        deletePost.mutate(id, {
+          onSuccess: () => {
+            toast.success("Post deleted successfully!");
+            // router.push("/admin/post/all-posts");
+          },
+          onError: () => {
+            toast.error("Failed to delete Post!");
+          },
+        });
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -126,10 +133,7 @@ export const columns: ColumnDef<PostI>[] = [
                 title={`Are sure yor want to delete ?`}
                 content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-                onAction={() => {
-                  console.log("delete");
-                  alert("Product deleted successfully!");
-                }}
+                onAction={() => handleDelete(post._id)}
                 cancelText="Cancel"
                 actionText="Delete"
                 actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
@@ -194,7 +198,7 @@ export function AllPosts() {
       </div>
       <div className="flex justify-between items-center">
         <p className="text-xl font-medium text-primary">All Hero Posts</p>
-        <Link href={"/admin/products/add-product"}>
+        <Link href={"/admin/post/add-post"}>
           <ButtonF>Add New Post</ButtonF>
         </Link>
       </div>

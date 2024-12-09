@@ -1,61 +1,64 @@
 "use client";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
-
-const schema = yup.object().shape({
-  type: yup
-    .string()
-    .oneOf(["poster", "manual"], "Type must be either 'poster' or 'manual'")
-    .required("Please select a type"),
-  title: yup.string().when("type", ([val]) => {
-    if (val === "manual") return yup.string().required("Title is required");
-    else return yup.string().notRequired();
-  }),
-  description: yup.string().when("type", ([val]) => {
-    if (val === "manual")
-      return yup.string().required("Description is required");
-    else return yup.string().notRequired();
-  }),
-  buttonName: yup.string().required("Button name is required"),
-  link: yup.string().required("Link is required"),
-  image: yup
-    .mixed()
-    .nullable()
-    .required("Image is required")
-    .test("fileSize", "File is too large", (value: any) => {
-      console.log("value of image is", value);
-      return value && value[0] && value[0].size <= 5000000;
-    })
-    .test("fileType", "Unsupported File Format", (value: any) => {
-      return (
-        value && value[0] && ["image/jpeg", "image/png"].includes(value[0].type)
-      );
-    }),
-});
+import { schema } from "./Schema";
+import { useAddData } from "@/hooks/useApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const AddPost: React.FC = () => {
-  const [isManual, setIsManual] = useState<boolean>(false);
+  const router = useRouter();
+  const [isManual, setIsManual] = useState<boolean>(true);
+  const addPost = useAddData(["allPosts"], `hero-post/create-post`);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     control,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: "poster",
+      type: "manual",
+      active: true,
     },
   });
 
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
     alert("Form submitted successfully!");
+    const formData = new FormData();
+    formData.append("type", data.type);
+    if (data.type === "manual") {
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+    }
+    formData.append("buttonName", data.buttonName);
+    formData.append("link", data.link);
+    formData.append("active", data.active ? "true" : "false");
+    if (data.image) {
+      formData.append("image", data.image[0]);
+    }
+    try {
+      addPost.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Post added successfully");
+          reset();
+          router.push(`/admin/post/all-posts`);
+        },
+        onError: (error: any) => {
+          toast.error("Failed to add post");
+        },
+      });
+    } catch (error: any) {
+      console.error("Error uploading post:", error);
+      toast.error("Failed to add post");
+    }
   };
 
   const breadCrumbItems = [
@@ -116,6 +119,25 @@ const AddPost: React.FC = () => {
             </>
           )}
         />
+      </div>
+      <div className="flex items-center space-x-2">
+        <Controller
+          name="active"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className="mr-2"
+            />
+          )}
+        />
+        <label
+          htmlFor="active"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Active
+        </label>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">

@@ -64,3 +64,12 @@ export interface PostI {
   image: string;
   active: boolean;
 }
+export interface AddPostI {
+  type: string;
+  title?: string;
+  description?: string;
+  buttonName: string;
+  link: string;
+  image: FileList | null;
+  active: boolean;
+}

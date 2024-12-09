@@ -3,20 +3,33 @@
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import Loader from "@/components/share/Loader";
-import { useFetchData } from "@/hooks/useApi";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const PostDetails = () => {
   const params = useParams();
+  const router = useRouter();
   const { id } = params;
-
   const { isLoading, error, data } = useFetchData(
     ["postDetails"],
     `hero-post/post-details/${id}`
   );
+  const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`);
+  const handleDelete = (id: string) => {
+    deletePost.mutate(id, {
+      onSuccess: () => {
+        toast.success("Post deleted successfully!");
+        router.push("/admin/post/all-posts");
+      },
+      onError: () => {
+        toast.error("Failed to delete Post!");
+      },
+    });
+  };
 
   if (isLoading) return <Loader />;
   if (error) return <p className="text-center text-lg">Error fetching data</p>;
@@ -81,10 +94,7 @@ const PostDetails = () => {
               title={`Are sure yor want to delete ?`}
               content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-              onAction={() => {
-                console.log("delete");
-                alert("Product deleted successfully!");
-              }}
+              onAction={() => handleDelete(data?._id as string)}
               cancelText="Cancel"
               actionText="Delete"
               actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
