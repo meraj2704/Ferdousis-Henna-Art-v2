@@ -10,6 +10,7 @@ import { schema } from "./Schema";
 import { useAddData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import MiniLoader from "@/components/share/MiniLoader";
 
 const AddPost: React.FC = () => {
   const router = useRouter();
@@ -31,7 +32,6 @@ const AddPost: React.FC = () => {
 
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
-    alert("Form submitted successfully!");
     const formData = new FormData();
     formData.append("type", data.type);
     if (data.type === "manual") {
@@ -192,9 +192,16 @@ const AddPost: React.FC = () => {
       />
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex justify-center items-center"
       >
-        Add Post
+        {addPost.status === "pending" ? (
+          <>
+            <MiniLoader />
+            <span className="ml-2">Adding...</span>
+          </>
+        ) : (
+          <>Add</>
+        )}
       </button>
     </form>
   );

@@ -7,44 +7,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
-import { useParams } from "next/navigation";
-import { getAllPosts } from "@/api/api";
-import { useQuery } from "@tanstack/react-query";
-import { PostI } from "@/types/Types";
-import { useFetchData } from "@/hooks/useApi";
-
-const schema = yup.object().shape({
-  type: yup
-    .string()
-    .oneOf(["poster", "manual"], "Type must be either 'poster' or 'manual'")
-    .required("Please select a type"),
-  title: yup.string().when("type", ([val]) => {
-    if (val === "manual") return yup.string().required("Title is required");
-    else return yup.string().notRequired();
-  }),
-  description: yup.string().when("type", ([val]) => {
-    if (val === "manual")
-      return yup.string().required("Description is required");
-    else return yup.string().notRequired();
-  }),
-  buttonName: yup.string().required("Button name is required"),
-  link: yup.string().required("Link is required"),
-  image: yup
-    .mixed()
-    .nullable()
-    .required("Image is required")
-    .test("fileSize", "File is too large", (value: any) => {
-      console.log("value of image is", value);
-      return value && value[0] && value[0].size <= 5000000;
-    })
-    .test("fileType", "Unsupported File Format", (value: any) => {
-      return (
-        value && value[0] && ["image/jpeg", "image/png"].includes(value[0].type)
-      );
-    }),
-});
+import { useParams, useRouter } from "next/navigation";
+import { useFetchData, useUpdateData } from "@/hooks/useApi";
+import { toast } from "sonner";
+import { editSchema } from "./Schema";
+import MiniLoader from "@/components/share/MiniLoader";
 
 const EditPost: React.FC = () => {
+  const router = useRouter();
   const params = useParams();
   const { id } = params;
   const [isManual, setIsManual] = useState<boolean>(false);
@@ -55,9 +25,13 @@ const EditPost: React.FC = () => {
     formState: { errors },
     control,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(editSchema),
     defaultValues: {},
   });
+  const editPost = useUpdateData(
+    ["allProducts"],
+    `hero-post/post-update/${id}`
+  );
 
   const {
     isLoading,
@@ -73,6 +47,7 @@ const EditPost: React.FC = () => {
         buttonName: post.buttonName,
         link: post.link,
         image: post.image,
+        active: post.active,
       };
       reset(resetData);
       if (post.type === "manual") {
@@ -83,7 +58,34 @@ const EditPost: React.FC = () => {
 
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
-    alert("Form submitted successfully!");
+
+    const formData = new FormData();
+    formData.append("type", data.type);
+    if (data.type === "manual") {
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+    }
+    formData.append("buttonName", data.buttonName);
+    formData.append("link", data.link);
+    formData.append("active", data.active ? "true" : "false");
+    if (data.image) {
+      formData.append("image", data.image[0]);
+    }
+    try {
+      editPost.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Post updated successfully");
+          reset();
+          router.push(`/admin/post/all-posts`);
+        },
+        onError: (error: any) => {
+          toast.error("Failed to update post");
+        },
+      });
+    } catch (error: any) {
+      console.error("Error uploading post:", error);
+      toast.error("Failed to update post");
+    }
   };
 
   const breadCrumbItems = [
@@ -145,6 +147,25 @@ const EditPost: React.FC = () => {
           )}
         />
       </div>
+      <div className="flex items-center space-x-2">
+        <Controller
+          name="active"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className="mr-2"
+            />
+          )}
+        />
+        <label
+          htmlFor="active"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Active
+        </label>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {isManual && (
@@ -193,15 +214,22 @@ const EditPost: React.FC = () => {
         label="Image"
         name="image"
         register={register}
-        error={errors.image}
+        error={errors?.image}
         defaultImage={post?.image}
         required
       />
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex justify-center items-center"
       >
-        Update Post
+        {editPost.status === "pending" ? (
+          <>
+            <MiniLoader />
+            <span className="ml-2">Updating...</span>
+          </>
+        ) : (
+          <>Update</>
+        )}
       </button>
     </form>
   );

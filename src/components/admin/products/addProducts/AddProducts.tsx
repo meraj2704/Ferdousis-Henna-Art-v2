@@ -184,7 +184,7 @@ const AddProductForm: React.FC = () => {
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring flex items-center justify-center mb-10"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex items-center justify-center mb-10"
       >
         {addProduct.status === "pending" ? (
           <>

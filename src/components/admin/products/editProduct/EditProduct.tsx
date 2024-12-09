@@ -207,7 +207,7 @@ const EditProduct: React.FC = () => {
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring flex justify-center items-center mb-10"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none  flex justify-center items-center mb-10"
       >
         {editProduct.status === "pending" ? (
           <>
