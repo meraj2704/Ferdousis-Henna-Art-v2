@@ -73,3 +73,12 @@ export interface AddPostI {
   image: FileList | null;
   active: boolean;
 }
+
+export interface ClientPostI{
+  _id: string;
+  title?: string;
+  description?: string;
+  buttonName: string;
+  link: string;
+  image: string;
+}

@@ -3,6 +3,7 @@ import ButtonF from "@/components/customUi/ButtonF";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import Loader from "@/components/share/Loader";
 import ProductCart from "@/components/share/ProductsCart";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchData } from "@/hooks/useApi";
 import { addToCart } from "@/redux/Reducer/cartSlice";
 import { useAppDispatch } from "@/redux/Store/store";
@@ -24,7 +25,16 @@ const ProductsHome = () => {
   };
   console.log("data", products);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) {
+    return (
+      <div className="mt-20 px-10 w-full  flex items-center justify-between">
+        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
+      </div>
+    );
+  }
   if (error) return <p>Error fetching products: {error.message}</p>;
 
   console.log("products data", products);
