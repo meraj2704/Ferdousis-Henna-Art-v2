@@ -6,7 +6,7 @@ import ImageCarousel from "./ImageCarousel";
 
 const Hero = () => {
   return (
-    <div className="w-full h-full space-y-10 lg:space-y-16">
+    <div className="w-full h-full space-y-5 md:space-y-10 lg:space-y-16">
       <ImageCarousel />
       <ProductsHome />
       <Review />

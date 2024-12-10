@@ -38,7 +38,7 @@ const ImageCarousel = () => {
         }),
       ]}
       opts={{ loop: true }}
-      className="w-full h-[calc(100vh-600px)] lg:h-[calc(100vh-550px)]"
+      className="w-full h-[40vh] lg:h-[calc(100vh-550px)]"
     >
       <CarouselContent>
         {data?.map((post: ClientPostI, index: number) => (
@@ -49,7 +49,7 @@ const ImageCarousel = () => {
                 alt={post.buttonName}
                 width={1920}
                 height={620}
-                className="w-full h-[calc(100vh-600px)] lg:h-[calc(100vh-550px)] object-cover"
+                className="w-full h-[40vh] lg:h-[calc(100vh-550px)] object-cover"
               />
             </div>
             <div className="absolute w-full h-full  top-0 left-0 right-0 bg-gradient-to-t from-black to-transparent flex flex-col justify-center items-center p-8 ">
