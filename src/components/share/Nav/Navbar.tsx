@@ -36,7 +36,7 @@ const Navbar = () => {
     <div>
       {/* Top Bar */}
       <div className="bg-gray-800 text-white py-2">
-        <div className="container mx-auto flex justify-between items-center space-x-4">
+        <div className="container mx-auto flex justify-between items-center space-x-4 px-1 md:px-2">
           <div>Haziganj, Chandpur</div>
           <div className="flex items-center gap-2">
             <a
@@ -67,18 +67,20 @@ const Navbar = () => {
         }`}
       >
         <div className="relative h-full">
-          <div className="container mx-auto h-full flex justify-between gap-5 px-1 md:px-2 2xl:px-0">
-            <Logo context="nav" />
-            <div className="hidden md:flex items-center gap-5">
+          <div className="container mx-auto h-full flex justify-between items-center lg:grid lg:grid-cols-3 gap-5 px-1 md:px-2">
+            <div className="col-span-1 flex justify-start items-center">
+              <Logo context="nav" />
+            </div>
+            <div className="hidden md:flex justify-center items-center gap-5">
               <NavItem path="/" name="Home" />
               <NavItem path="/products" name="All Products" />
               <NavItem path="/about" name="About" />
               <NavItem path="/contact" name="Contact" />
             </div>
-            <div className="flex justify-center items-center text-2xl text-primary md:hidden">
+            <div className="smM:flex justify-center items-center text-2xl text-primary hidden md:hidden">
               Ferdousi's Henna Art
             </div>
-            <div className="flex items-center gap-3">
+            <div className="col-span-1  flex justify-end items-center gap-3">
               <div className="flex gap-2">
                 <Link href="/cart">
                   <CartIcon />

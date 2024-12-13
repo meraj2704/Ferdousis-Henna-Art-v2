@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 import Loader from "../share/Loader";
+import { Skeleton } from "../ui/skeleton";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,16 @@ const Products = () => {
     toast.success("Product added successfully!");
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading) {
+    return (
+      <div className="container mx-auto w-full  flex items-center justify-between gap-5">
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden md:block" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden lg:block" />
+      </div>
+    );
+  }
   if (error) return <p>Error fetching products: {error.message}</p>;
 
   console.log("products data", products);
