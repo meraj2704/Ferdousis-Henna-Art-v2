@@ -24,7 +24,7 @@ const ImageCarousel = () => {
 
   if (isLoading) {
     return (
-      <div className="mt-20 px-10 w-full h-[calc(100vh-600px)] lg:h-[calc(100vh-550px)] flex items-center justify-center">
+      <div className="container mx-auto w-full h-[40vh] lg:h-[calc(100vh-550px)] flex items-center justify-center">
         <Skeleton className="w-full h-full rounded-xl" />
       </div>
     );

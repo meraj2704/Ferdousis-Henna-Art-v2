@@ -27,11 +27,11 @@ const ProductsHome = () => {
 
   if (isLoading) {
     return (
-      <div className="mt-20 px-10 w-full  flex items-center justify-between">
-        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
-        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
-        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
-        <Skeleton className="w-[300px] h-[400px] rounded-xl" />
+      <div className="container mx-auto mt-20 w-full  flex items-center justify-between gap-5">
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden md:block" />
+        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden lg:block" />
       </div>
     );
   }
