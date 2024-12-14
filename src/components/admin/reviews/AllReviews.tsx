@@ -39,8 +39,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAllPhotos, getAllReviews } from "@/api/api";
 import Image from "next/image";
 import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
@@ -49,6 +47,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalData, setModalOpen } from "@/redux/Reducer/modalSlice";
 import { RootState } from "@/redux/Store/store";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
+import { toast } from "sonner";
 
 export type Payment = {
   id: string;
@@ -58,9 +58,9 @@ export type Payment = {
 };
 
 export type Reviews = {
-  name: string;
-
-  imageUrl: string;
+  _id: string;
+  title: string;
+  image: string;
 };
 
 export const columns: ColumnDef<Reviews>[] = [
@@ -87,16 +87,18 @@ export const columns: ColumnDef<Reviews>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("title")}</div>
+    ),
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "image",
     header: "Image",
     cell: ({ row }) => (
       <Image
-        src={row.getValue("imageUrl")}
+        src={row.getValue("image")}
         alt="product image"
         width={100}
         height={100}
@@ -112,20 +114,29 @@ export const columns: ColumnDef<Reviews>[] = [
     },
     cell: ({ row }) => {
       const data = row.original;
+      console.log("id ", data._id);
       const dispatch = useDispatch();
+      const deleteReview = useDeleteData(["reviews"], `reviews/review-delete`);
+      const handleDelete = (id: string) => {
+        deleteReview.mutate(id, {
+          onSuccess: () => {
+            toast.success("Review deleted successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to delete review!");
+          },
+        });
+      };
       return (
         <div className="flex items-center justify-center gap-2">
           <ButtonF onClick={() => dispatch(setModalData(data))}>View</ButtonF>
           <DynamicAlertDialogue
             triggerText="Delete"
             triggerClass="rounded-md text-center px-4 py-2 bg-red-700 hover:bg-bg-500 text-textLight"
-            title={`Are sure yor want to delete ${data.name} image ?`}
+            title={`Are sure yor want to delete ${data.title} image ?`}
             content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-            onAction={() => {
-              console.log("delete");
-              alert("Product deleted successfully!");
-            }}
+            onAction={() => handleDelete(data._id)}
             cancelText="Cancel"
             actionText="Delete"
             actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
@@ -141,10 +152,7 @@ export function AllReviews() {
     isLoading,
     error,
     data = [],
-  } = useQuery({
-    queryKey: ["allReviews"],
-    queryFn: getAllReviews,
-  });
+  } = useFetchData(["reviews"], `reviews/get-all-reviews`);
   const dispatch = useDispatch();
   const photoData = useSelector((state: RootState) => state.modal);
 
@@ -198,10 +206,10 @@ export function AllReviews() {
       </div>
       <div className="flex items-center gap-10">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter title..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -313,11 +321,11 @@ export function AllReviews() {
         <DialogContent className="w-[80%] bg-white rounded-lg p-8 shadow-lg">
           <DialogHeader className="text-center mb-4">
             <DialogTitle className="text-2xl font-semibold text-primary">
-              {photoData?.data?.name}
+              {photoData?.data?.title}
             </DialogTitle>
             <DialogDescription className="text-base text-gray-600 mt-2">
               <Image
-                src={photoData?.data?.imageUrl}
+                src={photoData?.data?.image}
                 alt="photo image"
                 width={200}
                 height={200}

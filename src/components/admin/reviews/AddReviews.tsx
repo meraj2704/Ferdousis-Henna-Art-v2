@@ -1,19 +1,26 @@
 "use client";
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useAddData } from "@/hooks/useApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import MiniLoader from "@/components/share/MiniLoader";
 
-interface ProductFormValues {
-  name: string;
+interface ReviewFormValues {
+  title: string;
   image: FileList | null;
+  active: boolean;
 }
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  title: yup.string().required("Name is required"),
+  active: yup.boolean().required("Active is required"),
   image: yup
     .mixed()
     .required("Image is required")
@@ -35,13 +42,37 @@ const AddReviews: React.FC = () => {
     reset,
     watch,
     setValue,
+    control,
     formState: { errors },
-  } = useForm<ProductFormValues>({
+  } = useForm<ReviewFormValues>({
     resolver: yupResolver(schema) as any,
   });
+  const router = useRouter();
+  const addReviews = useAddData(["reviews"], `reviews/create-review`);
 
-  const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
+  const onSubmit: SubmitHandler<ReviewFormValues> = (data) => {
     console.log("Product Data:", data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("active", data.active ? "true" : "false");
+    if (data.image) {
+      formData.append("image", data.image[0]);
+    }
+    try {
+      addReviews.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Review added successfully");
+          reset();
+          router.push(`/admin/reviews/all-reviews`);
+        },
+        onError: (error: any) => {
+          toast.error("Failed to add review");
+        },
+      });
+    } catch (error: any) {
+      console.error("Error uploading image:", error);
+    }
+
     reset();
   };
 
@@ -63,14 +94,37 @@ const AddReviews: React.FC = () => {
         <DynamicBreadcrumb items={breadCrumbItems} />
       </div>
       <h2 className="text-xl font-semibold text-primary">Add New Review</h2>
+      <div className="flex items-center space-x-2">
+        <Controller
+          name="active"
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className="mr-2"
+            />
+          )}
+        />
+        <label
+          htmlFor="active"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Active
+        </label>
+      </div>
+      {errors.active && (
+        <p className="text-red-500 text-sm">{errors.active.message}</p>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Input
-          label="Product Name"
-          name="name"
+          label="Title"
+          name="title"
           type="text"
-          placeholder="Enter product name"
+          placeholder="Enter title"
           register={register}
-          error={errors.name}
+          error={errors.title}
           required
         />
 
@@ -87,9 +141,16 @@ const AddReviews: React.FC = () => {
 
       <button
         type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring"
+        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex items-center justify-center mb-10"
       >
-        Add Product
+        {addReviews.status === "pending" ? (
+          <>
+            <MiniLoader />
+            <span className="ml-2">Adding...</span>
+          </>
+        ) : (
+          "Add Reviews"
+        )}
       </button>
     </form>
   );
