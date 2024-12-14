@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 interface ReviewProps {
@@ -6,8 +7,14 @@ interface ReviewProps {
 
 const ReviewCard: React.FC<ReviewProps> = ({ imageUrl }) => {
   return (
-    <div className="bg-[#E7F0DC] border border-[#729762] rounded-lg shadow-lg p-4 max-w-md mx-auto mb-6">
-      <img src={imageUrl} alt="Review Screenshot" className="rounded-lg" />
+    <div className="w-full h-[210px] bg-[#E7F0DC] border border-[#729762] rounded-lg shadow-lg p-4 max-w-md mx-auto mb-6">
+      <Image
+        src={imageUrl}
+        width={300}
+        height={200}
+        alt="Review Screenshot"
+        className="w-full h-full object-cover rounded-lg"
+      />
     </div>
   );
 };

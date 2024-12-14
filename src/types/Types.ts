@@ -95,3 +95,13 @@ export interface MessageI{
   email: string;
   message: string;
 }
+export interface ReviewI{
+  _id: string;
+  title: string;
+  image: string;
+}
+export interface PhotoI{
+  _id: string;
+  title: string;
+  image: string;
+}
