@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import Loader from "@/components/share/Loader";
 import MiniLoader from "@/components/share/MiniLoader";
+import FormSubmitButton from "@/components/share/FormSubmitButton";
 const EditProduct: React.FC = () => {
   const router = useRouter();
   const params = useParams();
@@ -205,19 +206,11 @@ const EditProduct: React.FC = () => {
       </div>
       {/* Product Name */}
 
-      <button
-        type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none  flex justify-center items-center mb-10"
-      >
-        {editProduct.status === "pending" ? (
-          <>
-            <MiniLoader />
-            <span className="ml-2">Updating...</span>
-          </>
-        ) : (
-          <>Update</>
-        )}
-      </button>
+      <FormSubmitButton
+        status={editProduct.status}
+        buttonName="Add Photo"
+        context="Updating..."
+      />
     </form>
   );
 };

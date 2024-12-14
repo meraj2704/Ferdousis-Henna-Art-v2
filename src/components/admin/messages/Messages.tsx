@@ -22,11 +22,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -45,20 +41,11 @@ import { setModalData, setModalOpen } from "@/redux/Reducer/modalSlice";
 import { RootState } from "@/redux/Store/store";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import MessageCard from "./MessageCard";
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
+import { MessageI } from "@/types/Types";
+import { toast } from "sonner";
 
-export type Message = {
-  name: string;
-  emailAddress: number;
-  message: string;
-};
-
-export const columns: ColumnDef<Message>[] = [
+export const columns: ColumnDef<MessageI>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -82,9 +69,11 @@ export const columns: ColumnDef<Message>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("fullName")}</div>
+    ),
   },
   {
     accessorKey: "email",
@@ -102,19 +91,30 @@ export const columns: ColumnDef<Message>[] = [
     cell: ({ row }) => {
       const data = row.original;
       const dispatch = useDispatch();
+      const deleteMessage = useDeleteData(
+        ["messages"],
+        `messages/delete-message`
+      );
+      const handleDelete = (id: string) => {
+        deleteMessage.mutate(id, {
+          onSuccess: () => {
+            toast.success("Message deleted successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to delete message!");
+          },
+        });
+      };
       return (
         <div className="flex items-center justify-center gap-2">
           <ButtonF onClick={() => dispatch(setModalData(data))}>View</ButtonF>
           <DynamicAlertDialogue
             triggerText="Delete"
             triggerClass="rounded-md text-center px-4 py-2 bg-red-700 hover:bg-bg-500 text-textLight"
-            title={`Are sure yor want to delete ${data.name} image ?`}
+            title={`Are sure yor want to delete ${data.fullName} image ?`}
             content="This action cannot be undone. This will permanently delete your
             product and remove your product data from our servers."
-            onAction={() => {
-              console.log("delete");
-              alert("Product deleted successfully!");
-            }}
+            onAction={() => handleDelete(data._id)}
             cancelText="Cancel"
             actionText="Delete"
             actionButtonClass={"bg-red-700 hover:bg-red-500 text-white"}
@@ -130,10 +130,7 @@ export function Messages() {
     isLoading,
     error,
     data = [],
-  } = useQuery({
-    queryKey: ["allMessages"],
-    queryFn: getAllMessages,
-  });
+  } = useFetchData(["messages"], "messages/get-all-messages");
   const dispatch = useDispatch();
   const modalData = useSelector((state: RootState) => state.modal);
 
@@ -298,7 +295,7 @@ export function Messages() {
       >
         <DialogContent className="w-[80%] bg-white rounded-lg p-8 shadow-lg">
           <MessageCard
-            name={modalData?.data?.name}
+            name={modalData?.data?.fullName}
             email={modalData?.data?.email}
             message={modalData?.data?.message}
           />

@@ -2,6 +2,10 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form"; // Assuming your Input component is in this path
 import Input from "../share/Input";
+import { useAddData } from "@/hooks/useApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import FormSubmitButton from "../share/FormSubmitButton";
 
 interface IFormInput {
   name: string;
@@ -13,12 +17,32 @@ const ContactUsPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormInput>();
+  const router = useRouter();
+  const newMessage = useAddData(["messages"], `messages/create-message`);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data); // Simulate form submission (e.g., API call)
-    alert("Message sent successfully!");
+    const formData = new FormData();
+    formData.append("fullName", data.name);
+    formData.append("email", data.email);
+    formData.append("message", data.message);
+    try {
+      newMessage.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Message send successfully");
+          reset();
+          router.push(`/`);
+        },
+        onError: (error: any) => {
+          toast.error("Failed to send message");
+        },
+      });
+    } catch (error: any) {
+      console.error("Error uploading message:", error);
+    }
   };
 
   return (
@@ -70,12 +94,11 @@ const ContactUsPage = () => {
 
             {/* Submit Button */}
             <div className="flex justify-center">
-              <button
-                type="submit"
-                className="bg-[#729762] hover:bg-[#597445] text-white font-semibold py-2 px-6 rounded-lg focus:outline-none"
-              >
-                Send Message
-              </button>
+              <FormSubmitButton
+                status={newMessage.status}
+                buttonName="Send Message"
+                context="Sending..."
+              />
             </div>
           </div>
         </form>

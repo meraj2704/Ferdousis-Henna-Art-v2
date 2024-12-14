@@ -16,7 +16,7 @@ const MessageCard: React.FC<MessageProps> = ({ name, email, message }) => {
   return (
     <div className="p-4 border rounded-lg shadow-md bg-white">
       <h2 className="text-lg font-bold text-gray-800">Name: {name}</h2>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col md:flex-row items-center gap-2">
         <p className="text-sm text-gray-600">Email: {email}</p>
         <button
           onClick={handleCopyEmail}

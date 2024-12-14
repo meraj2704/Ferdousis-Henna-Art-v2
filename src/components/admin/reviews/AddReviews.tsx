@@ -11,6 +11,7 @@ import { useAddData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import MiniLoader from "@/components/share/MiniLoader";
+import FormSubmitButton from "@/components/share/FormSubmitButton";
 
 interface ReviewFormValues {
   title: string;
@@ -72,8 +73,6 @@ const AddReviews: React.FC = () => {
     } catch (error: any) {
       console.error("Error uploading image:", error);
     }
-
-    reset();
   };
 
   const onError = (e: any) => {
@@ -139,19 +138,11 @@ const AddReviews: React.FC = () => {
       </div>
       {/* Product Name */}
 
-      <button
-        type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex items-center justify-center mb-10"
-      >
-        {addReviews.status === "pending" ? (
-          <>
-            <MiniLoader />
-            <span className="ml-2">Adding...</span>
-          </>
-        ) : (
-          "Add Reviews"
-        )}
-      </button>
+      <FormSubmitButton
+        status={addReviews.status}
+        buttonName="Add Reviews"
+        context="Adding"
+      />
     </form>
   );
 };

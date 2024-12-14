@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -49,6 +48,7 @@ import { RootState } from "@/redux/Store/store";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export type Payment = {
   id: string;
@@ -204,145 +204,159 @@ export function AllReviews() {
           <ButtonF>Add New Review</ButtonF>
         </Link>
       </div>
-      <div className="flex items-center gap-10">
-        <Input
-          placeholder="Filter title..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
+      {isLoading ? (
+        <>
+          <div className="container mx-auto w-full flex flex-col items-center justify-between gap-5">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Skeleton key={index} className="w-full h-10 rounded-xl" />
             ))}
-          </TableHeader>
-          <TableBody>
-            {table?.getRowModel().rows?.length ? (
-              table?.getRowModel().rows.map((row: any) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell: any) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center gap-10">
+            <Input
+              placeholder="Filter title..."
+              value={
+                (table.getColumn("title")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("title")?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                  Columns <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table?.getRowModel().rows?.length ? (
+                  table?.getRowModel().rows.map((row: any) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell: any) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex items-center justify-end space-x-2">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+          <Dialog
+            open={photoData.isOpen}
+            onOpenChange={() => dispatch(setModalOpen())}
+          >
+            <DialogContent className="w-[80%] bg-white rounded-lg p-8 shadow-lg">
+              <DialogHeader className="text-center mb-4">
+                <DialogTitle className="text-2xl font-semibold text-primary">
+                  {photoData?.data?.title}
+                </DialogTitle>
+                <DialogDescription className="text-base text-gray-600 mt-2">
+                  <Image
+                    src={photoData?.data?.image}
+                    alt="photo image"
+                    width={200}
+                    height={200}
+                    className="w-full h-full rounded-md object-cover"
+                  />
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex justify-center">
+                <Button
+                  onClick={() => dispatch(setModalOpen())}
+                  className="bg-primary text-white py-2 px-6 rounded-md hover:bg-secondary transition duration-300"
                 >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
-      <Dialog
-        open={photoData.isOpen}
-        onOpenChange={() => dispatch(setModalOpen())}
-      >
-        <DialogContent className="w-[80%] bg-white rounded-lg p-8 shadow-lg">
-          <DialogHeader className="text-center mb-4">
-            <DialogTitle className="text-2xl font-semibold text-primary">
-              {photoData?.data?.title}
-            </DialogTitle>
-            <DialogDescription className="text-base text-gray-600 mt-2">
-              <Image
-                src={photoData?.data?.image}
-                alt="photo image"
-                width={200}
-                height={200}
-                className="w-full h-full rounded-md object-cover"
-              />
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-center">
-            <Button
-              onClick={() => dispatch(setModalOpen())}
-              className="bg-primary text-white py-2 px-6 rounded-md hover:bg-secondary transition duration-300"
-            >
-              Close
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+                  Close
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 }

@@ -82,3 +82,16 @@ export interface ClientPostI{
   link: string;
   image: string;
 }
+
+export interface PhotosI{
+  _id: string;
+  title: string;
+  image: string;
+}
+
+export interface MessageI{
+  _id: string;
+  fullName: string;
+  email: string;
+  message: string;
+}

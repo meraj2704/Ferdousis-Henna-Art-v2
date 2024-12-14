@@ -12,6 +12,7 @@ import { AddProductI } from "@/types/Types";
 import { schema } from "./Schema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import FormSubmitButton from "@/components/share/FormSubmitButton";
 const AddProductForm: React.FC = () => {
   const router = useRouter();
   const {
@@ -182,19 +183,11 @@ const AddProductForm: React.FC = () => {
       </div>
       {/* Product Name */}
 
-      <button
-        type="submit"
-        className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none flex items-center justify-center mb-10"
-      >
-        {addProduct.status === "pending" ? (
-          <>
-            <MiniLoader />
-            <span className="ml-2">Adding...</span>
-          </>
-        ) : (
-          "Add Product"
-        )}
-      </button>
+      <FormSubmitButton
+        status={addProduct.status}
+        buttonName="Add Product"
+        context="Adding"
+      />
     </form>
   );
 };
