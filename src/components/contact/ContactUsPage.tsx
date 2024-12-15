@@ -64,7 +64,7 @@ const ContactUsPage = () => {
               register={register}
               error={errors.name}
               required
-            />
+              />
 
             {/* Email Field */}
             <Input
