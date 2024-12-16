@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import Input from "../share/Input";
@@ -9,46 +9,151 @@ import SuccessModal from "./SuccessModal";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { clearCart } from "@/redux/Reducer/cartSlice";
+import { useAddData, useFetchData } from "@/hooks/useApi";
+import { toast } from "sonner";
+import FormSubmitButton from "../share/FormSubmitButton";
 
 interface CheckoutInputs {
   state: string;
   district: string;
+  upazila: string;
   address: string;
   fullName: string;
   email: string;
   phone: string;
-  paymentMethod: string;
-  paymentNumber?: string;
-  transactionId?: string;
+  addressDetails: string;
+  // paymentMethod: string;
+  // paymentNumber?: string;
+  // transactionId?: string;
 }
-
-const statesWithDistricts = {
-  Dhaka: ["Dhaka", "Gazipur", "Narayanganj"],
-  Chittagong: ["Chittagong", "Cox's Bazar", "Rangamati"],
-  Rajshahi: ["Rajshahi", "Pabna", "Natore"],
-  // Add more states and districts as needed
-};
 
 const CheckoutPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [statesWithDistricts, setStatesWithDistricts] = useState<any>({});
+  const [upazilas, setUpazilas] = useState<any[]>([]);
+
   const {
     control,
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<CheckoutInputs>();
+  } = useForm<CheckoutInputs>({});
+
+  const { isLoading, data, error } = useFetchData(
+    ["divisions"],
+    `divisions-get-all`
+  );
+
+  const newOrder = useAddData(["orders"], "orders/new-order");
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const divisions = data;
+      const statesDistricts = divisions.reduce((acc: any, division: any) => {
+        acc[division.name] = division.districts.map((district: any) => ({
+          label: district.name,
+          value: district.name,
+          upazilas: district.upazilas.map((upazila: any) => ({
+            label: upazila,
+            value: upazila,
+          })),
+        }));
+        return acc;
+      }, {});
+      setStatesWithDistricts(statesDistricts);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (watch("district")) {
+      const selectedDistrictUpazilas = statesWithDistricts[
+        watch("state")
+      ]?.find(
+        (district: any) => district.value === watch("district")
+      )?.upazilas;
+      if (selectedDistrictUpazilas) {
+        setUpazilas(selectedDistrictUpazilas);
+      }
+    }
+  }, [watch("district"), watch("state"), statesWithDistricts]);
+
+  useEffect(() => {
+    // Clear district and upazila when state changes
+    setValue("district", "");
+    setValue("upazila", "");
+    if (watch("state")) {
+      const selectedDistrictUpazilas =
+        statesWithDistricts[watch("state")] || [];
+      setUpazilas([]);
+    }
+  }, [watch("state")]);
+
+  useEffect(() => {
+    // Clear upazila when district changes
+    setValue("upazila", "");
+    if (watch("district")) {
+      const selectedDistrictUpazilas = statesWithDistricts[
+        watch("state")
+      ]?.find(
+        (district: any) => district.value === watch("district")
+      )?.upazilas;
+      if (selectedDistrictUpazilas) {
+        setUpazilas(selectedDistrictUpazilas);
+      }
+    }
+  }, [watch("district"), watch("state"), statesWithDistricts]);
+  const cartItems = useAppSelector((state: RootState) => state.cart);
+  const selectedState = watch("state");
+  const selectedDistrict = watch("district");
+  const selectedUpazila = watch("upazila");
 
   const onSubmit: SubmitHandler<CheckoutInputs> = (data) => {
-    console.log("Form Data:", data);
+    // console.log("Form Data:", data);
     alert(JSON.stringify(data));
-    if (data) {
-      setOpenSuccessModal(true);
+    const orderData = {
+      cartItems: cartItems?.items.map((item) => ({
+        productId: item._id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      customerInformation: {
+        name: data.fullName,
+        phone: data.phone,
+        address: {
+          state: data.state,
+          district: data.district,
+          upazila: data.upazila,
+          courierOffice: data.address,
+          details: data.addressDetails,
+        },
+      },
+      courierServiceFee: selectedUpazila === "Hajiganj" ? 60 : 120,
+      totalAmount: cartItems.totalAmount,
+    };
+
+    try {
+      newOrder.mutate(orderData, {
+        onSuccess: () => {
+          setOpenSuccessModal(true);
+          dispatch(clearCart()); // Clear the cart after successful order placement
+          // toast.success("Order placed successfully!");
+          reset(); // Reset the form or state if applicable
+          router.push(`/products`); // Navigate to products or any relevant page
+        },
+        onError: (error: any) => {
+          console.error("Error placing order:", error); // Log the error for debugging
+          toast.error("Failed to place the order. Please try again.");
+        },
+      });
+    } catch (error: any) {
+      console.error("Unexpected error while placing the order:", error);
+      toast.error("An unexpected error occurred. Please try again later.");
     }
-    dispatch(clearCart());
   };
 
   const closSuccessModal = () => {
@@ -56,22 +161,9 @@ const CheckoutPage = () => {
     router.push("/products");
   };
 
-  const cartItems = useAppSelector((state: RootState) => state.cart.items);
-  console.log("cartItems:", cartItems);
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
-
-  const selectedState = watch("state");
-  const selectedDistrict = watch("district");
-  const paymentMethod = watch("paymentMethod");
-
   const districts =
     selectedState && selectedState in statesWithDistricts
-      ? statesWithDistricts[selectedState as keyof typeof statesWithDistricts]
+      ? statesWithDistricts[selectedState]
       : [];
 
   return (
@@ -91,15 +183,7 @@ const CheckoutPage = () => {
             error={errors.fullName}
             required
           />
-          <Input
-            label="Email Address"
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            register={register}
-            error={errors.email}
-            required
-          />
+
           <Input
             label="Phone Number"
             name="phone"
@@ -120,18 +204,27 @@ const CheckoutPage = () => {
             rules={{ required: "State is required" }}
             placeholder="Select your state"
             error={errors.state}
+            required={true}
           />
           <CustomSelect
             label="District"
             name="district"
             control={control}
-            options={districts.map((district) => ({
-              label: district,
-              value: district,
-            }))}
+            options={districts}
             rules={{ required: "District is required" }}
             placeholder="Select your district"
             error={errors.district}
+            required={true}
+          />
+          <CustomSelect
+            label="Upazila"
+            name="upazila"
+            control={control}
+            options={upazilas}
+            rules={{ required: "Upazila is required" }}
+            placeholder="Select your upazila"
+            error={errors.upazila}
+            required={true}
           />
           <Input
             label="Courier Office Address"
@@ -142,84 +235,72 @@ const CheckoutPage = () => {
             error={errors.address}
             required
           />
+          <Input
+            label="Address Details"
+            name="addressDetails"
+            type="text"
+            placeholder="House No , Road No"
+            register={register}
+            error={errors.addressDetails}
+            required
+          />
         </div>
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Payment Information
         </h2>
-        <CustomSelect
-          label="Payment Method"
-          name="paymentMethod"
-          control={control}
-          options={[
-            { label: "Cash on Delivery", value: "cash" },
-            { label: "Bkash", value: "bkash" },
-            { label: "Nagad", value: "nagad" },
-            { label: "Other", value: "other" },
-          ]}
-          rules={{ required: "Select Payment Method is Required" }}
-          placeholder="Select Payment Method"
-          error={errors.paymentMethod}
-        />
-        {paymentMethod !== "cash" && paymentMethod && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Input
-              label="Payment Number"
-              name="paymentNumber"
-              type="text"
-              placeholder="Enter payment number"
-              register={register}
-              error={errors.paymentNumber}
-              required
-            />
-            <Input
-              label="Transaction ID"
-              name="transactionId"
-              type="text"
-              placeholder="Enter transaction ID"
-              register={register}
-              error={errors.transactionId}
-              required
-            />
-          </div>
-        )}
+        <div className="bg-white rounded-md border border-primary w-full h-auto p-4 space-y-3">
+          <h1 className="text-center text-xl font-semibold text-primary">
+            Cash On Delivery Only
+          </h1>
+          <p className="text-center">
+            Currently, we are accepting <strong>Cash on Delivery</strong> only.
+            The payment will be completed once the product is delivered to your
+            address.
+          </p>
+        </div>
 
-        <div className="mt-6 border-t pt-6">
+        <div className="mt-6 border-t border-t-accent pt-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             Order Summary
           </h2>
           <div className="space-y-4">
-            {cartItems.map((item) => (
+            {cartItems?.items.map((item) => (
               <div
                 key={item._id}
-                className="flex justify-between items-center border-b pb-2 text-sm"
+                className="flex justify-between items-center border-b border-b-accent pb-2 text-sm"
               >
                 <p className="font-medium text-gray-800">{item.name}</p>
                 <p className="text-gray-500">x {item.quantity}</p>
                 <p className="font-medium text-gray-800">
-                  ({item.price} * {item.quantity}) ={" "}
-                  {(item.price * item.quantity).toFixed(2)} TK
+                  ({item.discountedPrice} * {item.quantity}) ={" "}
+                  {(item.discountedPrice * item.quantity).toFixed(2)} TK
                 </p>
               </div>
             ))}
-            <div className="flex justify-between items-center pt-4 border-t text-sm font-medium">
+            <div className="flex justify-between items-center  text-sm font-medium">
               <p>Subtotal</p>
-              <p>{getTotalPrice().toFixed(2)} TK</p>
+              <p>{cartItems?.totalAmount.toFixed(2)} TK</p>
             </div>
             <div className="flex justify-between items-center text-sm font-medium">
-              <p>Courier Service Fee</p>
-              <p>50.00 TK</p>
+              <p>Delivery Fee</p>
+              <p>{selectedUpazila === "Hajiganj" ? "60 TK." : "120 TK."}</p>
             </div>
             <div className="flex justify-between items-center text-lg font-semibold text-gray-800">
               <p>Total</p>
-              <p>{(getTotalPrice() + 50).toFixed(2)} TK</p>
+              <p>
+                {(
+                  cartItems?.totalAmount +
+                  (selectedUpazila === "Hajiganj" ? 60 : 120)
+                ).toFixed(2)}{" "}
+                TK
+              </p>
             </div>
           </div>
-          <button
-            type="submit"
-            className="mt-6 bg-primary text-white py-2 px-6 rounded-md hover:bg-secondary transition w-full"
-          >
-            Place Order
-          </button>
+          <FormSubmitButton
+            status={newOrder.status}
+            buttonName="Place Order"
+            context="Ordering..."
+          />
         </div>
       </form>
       <div className="mt-6 text-center">

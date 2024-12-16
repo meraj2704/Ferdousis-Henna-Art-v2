@@ -16,6 +16,7 @@ interface CustomSelectProps {
   control: Control<any>; // `any` can be replaced with your form type
   rules?: object;
   error?: FieldError;
+  required?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -26,10 +27,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   control,
   rules,
   error,
+  required
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-gray-800 font-medium">{label}</label>
+      <label className="text-gray-800 font-medium"> {label} {required && <span className="text-red-500">*</span>}</label> 
       <Controller
         name={name}
         control={control}
@@ -37,12 +39,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         render={({ field }) => (
           <>
             <Select onValueChange={field.onChange}>
-              <SelectTrigger className="w-full border rounded-md px-4 py-2 bg-background text-base focus:outline-primary">
-                <SelectValue placeholder={placeholder} />
+              <SelectTrigger className="w-full border rounded-md px-4  bg-white text-base focus:outline-primary">
+                <SelectValue
+                  placeholder={placeholder}
+                />
               </SelectTrigger>
-              <SelectContent className="bg-background">
+              <SelectContent className="bg-white">
                 {options.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    className={`hover:bg-background ${field.value === option.value && "bg-background"}`}
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
