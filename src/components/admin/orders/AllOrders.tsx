@@ -1,17 +1,16 @@
 "use client";
-
 import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  flexRender,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,14 +40,11 @@ import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
-import { Order } from "@/types/Types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Order, OrderI } from "@/types/Types";
+import { useDeleteData, useFetchData } from "@/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+import { setModalData } from "@/redux/Reducer/modalSlice";
 
 export type Payment = {
   _id: string;
@@ -64,8 +60,7 @@ export type Product = {
   imageUrl: string;
   description: string;
 };
-
-export const columns: ColumnDef<Order>[] = [
+export const columns: ColumnDef<OrderI>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -89,47 +84,41 @@ export const columns: ColumnDef<Order>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "orderId",
+    accessorKey: "_id",
     header: "Order ID",
+    cell: ({ row }) => <div>{row.getValue("_id")}</div>,
+  },
+  {
+    accessorKey: "customerInformation.name",
+    header: "Name",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("orderId")}</div>
+      <div className="capitalize">{row.original.customerInformation.name}</div>
     ),
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => {
-      const user = row.original.user;
-      return <div className="capitalize">{user.name}</div>;
-    },
-  },
-  {
-    accessorKey: "phone",
+    accessorKey: "customerInformation.phone",
     header: "Phone",
-    cell: ({ row }) => {
-      const user = row.original.user;
-      return <div className="capitalize">{user.phone}</div>;
-    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.original.customerInformation.phone}</div>
+    ),
   },
   {
-    accessorKey: "orderDetails",
-    header: ({ column }) => {
-      return (
-        <button
-          className="flex items-center gap-1"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Total
-          <ArrowUpDown className="h-4 w-4" />
-        </button>
-      );
-    },
+    accessorKey: "totalAmount",
+    header: ({ column }) => (
+      <button
+        className="flex items-center gap-1"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Total
+        <ArrowUpDown className="h-4 w-4" />
+      </button>
+    ),
     cell: ({ row }) => {
-      const orderDetails = row.original.orderDetails;
+      const total = row.original.totalAmount;
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "BDT",
-      }).format(orderDetails.total);
+      }).format(total);
 
       return <div className="text-left font-medium">{formatted}</div>;
     },
@@ -138,19 +127,26 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.original.orderStatus;
-      const statusStyles: any = {
-        Processing: "bg-blue-500 text-white",
-        Delivered: "bg-green-500 text-white",
-        Canceled: "bg-red-500 text-white",
-      };
+      const status = row.original.status as
+        | "pending"
+        | "delivered"
+        | "canceled";
+      const statusStyles: Record<"pending" | "delivered" | "canceled", string> =
+        {
+          pending: "bg-blue-200 text-blue-600",
+          delivered: "bg-green-200 text-green-700",
+          canceled: "bg-red-200 text-red-700",
+        };
+
       return (
-        <div
-          className={`px-2 py-1 rounded-md ${
-            statusStyles[status] || "bg-gray-600"
-          }`}
-        >
-          {status}
+        <div className="flex justify-start items-center">
+          <div
+            className={`capitalize px-2 py-1 rounded ${
+              statusStyles[status] || ""
+            }`}
+          >
+            {status}
+          </div>
         </div>
       );
     },
@@ -171,10 +167,10 @@ export const columns: ColumnDef<Order>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link href={`/admin/orders/${order.orderId}`}>
+            <Link href={`/admin/orders/${order._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
-            <Link href={`/admin/products/edit/${order.orderId}`}>
+            <Link href={`/admin/products/edit/${order._id}`}>
               <DropdownMenuItem>Edit</DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
@@ -187,12 +183,10 @@ export const columns: ColumnDef<Order>[] = [
 export function AllOrders() {
   const {
     isLoading,
-    error,
     data = [],
-  } = useQuery({
-    queryKey: ["allOrders"],
-    queryFn: getAlOrders,
-  });
+    error,
+  } = useFetchData(["orders"], "orders/all-orders");
+  console.log("data", data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -243,20 +237,29 @@ export function AllOrders() {
       </div>
       <div className="flex items-center gap-10">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter name..."
+          value={
+            (table
+              .getColumn("customerInformation.name")
+              ?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table
+              .getColumn("customerInformation.name")
+              ?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button
+              variant="outline"
+              className="ml-auto hover:text-background border-accent"
+            >
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="border border-accent">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -277,15 +280,15 @@ export function AllOrders() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+      <div className="rounded-md border border-accent">
+        <Table className="rounded-md">
+          <TableHeader className="">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
+                      {header?.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,

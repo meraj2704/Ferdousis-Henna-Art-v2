@@ -74,7 +74,7 @@ export interface AddPostI {
   active: boolean;
 }
 
-export interface ClientPostI{
+export interface ClientPostI {
   _id: string;
   title?: string;
   description?: string;
@@ -83,25 +83,53 @@ export interface ClientPostI{
   image: string;
 }
 
-export interface PhotosI{
+export interface PhotosI {
   _id: string;
   title: string;
   image: string;
 }
 
-export interface MessageI{
+export interface MessageI {
   _id: string;
   fullName: string;
   email: string;
   message: string;
 }
-export interface ReviewI{
+export interface ReviewI {
   _id: string;
   title: string;
   image: string;
 }
-export interface PhotoI{
+export interface PhotoI {
   _id: string;
   title: string;
   image: string;
+}
+
+export interface CartItemsI {
+  productID: string;
+  quantity: number;
+  price: number;
+}
+
+export interface CustomerInformationI {
+  name: string;
+  phone: string;
+  address: {
+    state: string;
+    district: string;
+    upazila: string;
+    courierOffice: string;
+    details: string;
+  };
+}
+
+export interface OrderI {
+  _id: string;
+  cartItems: CartItemsI[];
+  customerInformation: CustomerInformationI;
+  courierServiceFee: number;
+  totalAmount: number;
+  status: string;
+  orderDate: string;
 }

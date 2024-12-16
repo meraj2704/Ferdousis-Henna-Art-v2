@@ -249,8 +249,8 @@ export function AllPosts() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <div className="rounded-md border">
-            <Table>
+         <div className="rounded-md border border-accent">
+        <Table className="rounded-md">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
