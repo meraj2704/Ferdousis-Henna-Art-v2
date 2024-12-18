@@ -83,17 +83,19 @@ export const columns: ColumnDef<OrderI>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "_id",
-    header: "Order ID",
-    cell: ({ row }) => <div>{row.getValue("_id")}</div>,
-  },
+  // {
+  //   accessorKey: "_id",
+  //   header: "Order ID",
+  //   cell: ({ row }) => <div>{row.getValue("_id")}</div>,
+  //   // meta: { responsive: "hidden sm:table-cell" },
+  // },
   {
     accessorKey: "customerInformation.name",
     header: "Name",
     cell: ({ row }) => (
       <div className="capitalize">{row.original.customerInformation.name}</div>
     ),
+    // meta: { responsive: "hidden sm:table-cell" },
   },
   {
     accessorKey: "customerInformation.phone",
@@ -170,9 +172,9 @@ export const columns: ColumnDef<OrderI>[] = [
             <Link href={`/admin/orders/${order._id}`}>
               <DropdownMenuItem>View</DropdownMenuItem>
             </Link>
-            <Link href={`/admin/products/edit/${order._id}`}>
+            {/* <Link href={`/admin/products/edit/${order._id}`}>
               <DropdownMenuItem>Edit</DropdownMenuItem>
-            </Link>
+            </Link> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

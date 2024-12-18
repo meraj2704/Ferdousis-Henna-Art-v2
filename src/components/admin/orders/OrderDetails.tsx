@@ -8,29 +8,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useFetchData, useUpdateData } from "@/hooks/useApi";
 import { Order } from "@/types/Types";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const OrderDetails = () => {
   const params = useParams();
   const { id } = params;
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["allOrders", id],
-    queryFn: getAlOrders,
-  });
-
-  const order = data?.find((order: Order) => order.orderId === String(id));
+  const {
+    isLoading,
+    error,
+    data = [],
+  } = useFetchData(["orderDetails"], `orders/order-details/${id}`);
+  const updateOrderStatus = useUpdateData(
+    ["orderDetails"],
+    `orders/update-order-status/${id}`
+  );
+  const [selectedStatus, setSelectedStatus] = useState<string>(data?.status);
+  const { customerInformation, cartItems } = data;
   const statusStyles: any = {
-    Processing: "bg-blue-500 text-white",
-    Delivered: "bg-green-500 text-white",
-    Canceled: "bg-red-500 text-white",
+    pending: "bg-blue-500 text-white",
+    delivered: "bg-green-500 text-white",
+    canceled: "bg-red-500 text-white",
   };
 
-  const handleStatusChange = (id: string, newStatus: string) => {
-    // setStatus(newStatus);
-    // Add your logic to update the order status in the backend here.
+  useEffect(() => {
+    setSelectedStatus(data?.status);
+  }, [data?.status]);
+
+  const handleStatusChange = (newStatus: string) => {
+    const updatedStatus = {
+      status: newStatus,
+    };
+    try {
+      updateOrderStatus.mutate(updatedStatus, {
+        onSuccess: () => {
+          toast.success("Order Status updated successfully");
+          setSelectedStatus(newStatus);
+        },
+        onError: () => {
+          toast.error("Failed to update order status!");
+        },
+      });
+    } catch (error: any) {
+      console.error("Error updating order status:", error);
+      toast.error("Failed to update order status");
+      return;
+    }
   };
 
   return (
@@ -38,47 +65,47 @@ const OrderDetails = () => {
       <DynamicBreadcrumb
         items={[
           { label: "Dashboard", href: "/admin/dashboard" },
-          {label:'Orders' ,href: "/admin/orders" },
-          { label: order?.orderId },
+          { label: "Orders", href: "/admin/orders" },
+          { label: data?._id },
         ]}
       />
       <h2 className="text-xl font-semibold text-center text-textColor">
-        Order ID: {order?.orderId}
+        Order ID: {data?._id}
       </h2>
 
       <div className="">
         <h3 className="font-bold text-primary">User Information:</h3>
         <p>
           <strong>Name:</strong>
-          <span className="font-bold">{order?.user.name} </span>
+          <span className="font-bold">{customerInformation?.name} </span>
         </p>
-        <p>
+        {/* <p>
           <strong>Email:</strong> {order?.user.email}
-        </p>
+        </p> */}
         <p>
-          <strong>Phone:</strong> {order?.user.phone}
+          <strong>Phone:</strong> {customerInformation?.phone}
         </p>
-        <p>
+        {/* <p>
           <strong>Address:</strong> {order?.user.address.courierOfficeName},{" "}
           {order?.user.address.location}, {order?.user.address.state},{" "}
           {order?.user.address.district}, {order?.user.address.upazila}
-        </p>
+        </p> */}
       </div>
 
       <div className="">
         <h3 className="font-bold text-primary">Products:</h3>
-        {order?.products.map((product: any) => (
+        {cartItems?.map((product: any) => (
           <div
-            key={product.id}
+            key={product._id}
             className="flex items-center justify-between mt-2"
           >
             <div className="flex items-center">
               <img
-                src={product.imageUrl}
-                alt={product.name}
+                src={product.productId.image}
+                alt={product.productId.name}
                 className="w-16 h-16 mr-4"
               />
-              <p>{product.name}</p>
+              <p>{product.productId.name}</p>
             </div>
             <p>
               {product.quantity} x ${product.price}
@@ -90,16 +117,14 @@ const OrderDetails = () => {
       <div className="">
         <h3 className="font-bold text-primary">Order Summary:</h3>
         <p>
-          <strong>Subtotal:</strong> ${order?.orderDetails.subtotal}
+          <strong>Subtotal:</strong> {data?.totalAmount}
+        </p>
+
+        <p>
+          <strong>Courier Fee:</strong> {data?.courierServiceFee}
         </p>
         <p>
-          <strong>Tax:</strong> ${order?.orderDetails.tax}
-        </p>
-        <p>
-          <strong>Shipping Fee:</strong> ${order?.orderDetails.shippingFee}
-        </p>
-        <p>
-          <strong>Total:</strong> ${order?.orderDetails.total}
+          <strong>Total:</strong> {data?.totalAmount + data?.courierServiceFee}
         </p>
       </div>
 
@@ -107,44 +132,30 @@ const OrderDetails = () => {
         <h3 className="font-bold text-primary">Order Status:</h3>
         <div
           className={`px-4 py-2 rounded-md text-center ${
-            statusStyles[order?.orderStatus] || "bg-gray-200 text-black"
+            statusStyles[data?.status] || "bg-gray-200 text-black"
           }`}
         >
-          {order?.orderStatus}
+          {data?.status}
         </div>
         <h3 className="font-bold text-primary">Update Order Status</h3>
         <Select
-          value={order?.orderStatus}
-          onValueChange={(newStatus) => handleStatusChange(order.id, newStatus)}
+          value={selectedStatus}
+          onValueChange={(newStatus) => handleStatusChange(newStatus)}
         >
           <SelectTrigger className="w-full bg-background">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent className="bg-background">
-            <SelectItem value="Processing">Processing</SelectItem>
-            <SelectItem value="Delivered">Delivered</SelectItem>
-            <SelectItem value="Canceled">Canceled</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="delivered">Delivered</SelectItem>
+            <SelectItem value="canceled">Canceled</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="">
         <p>
-          <strong>Payment Status:</strong> {order?.paymentStatus}
-        </p>
-        <p>
-          <strong>Payment Method:</strong> {order?.paymentMethod}
-        </p>
-      </div>
-
-      <div className="">
-        <p>
-          <strong>Created At:</strong>{" "}
-          {new Date(order?.createdAt).toLocaleString()}
-        </p>
-        <p>
-          <strong>Updated At:</strong>{" "}
-          {new Date(order?.updatedAt).toLocaleString()}
+          <strong>Date:</strong> {new Date(data?.orderDate).toLocaleString()}
         </p>
       </div>
     </div>
