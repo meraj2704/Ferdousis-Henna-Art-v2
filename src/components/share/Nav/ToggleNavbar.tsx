@@ -49,7 +49,7 @@ const ToggleNavbar = ({
     <div
       className={`fixed w-screen ${
         isNavbarFixed ? "top-20" : "h-32"
-      }  left-0 right-0 z-[999] transform ${
+      }  left-0 right-0 z-[200] transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
       } bg-background transition-transform duration-300 ease-in-out text-textColor border-t border-t-primary`}
       style={{ height: "calc(100vh - 6rem)" }}

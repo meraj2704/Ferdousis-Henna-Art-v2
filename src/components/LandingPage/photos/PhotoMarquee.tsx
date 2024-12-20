@@ -27,7 +27,7 @@ const PhotoMarquee = () => {
               width={200}
               height={320}
               alt={`Photo ${index}`}
-              className="w-[200px] lg:w-72 h-80 lg:h-96"
+              className="w-[200px] lg:w-72 h-80 lg:h-96 object-cover"
             />
           </div>
         );

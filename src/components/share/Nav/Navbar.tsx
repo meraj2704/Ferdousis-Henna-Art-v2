@@ -92,11 +92,11 @@ const Navbar = () => {
             <div className="col-span-1  flex justify-end items-center gap-3">
               <div className="flex gap-2">
                 <Link href="/cart"></Link>
-                <Sheet>
+                <Sheet >
                   <SheetTrigger>
                     <CartIcon />
                   </SheetTrigger>
-                  <SheetContent className="z-[999]">
+                  <SheetContent className="z-[99999] rounded-l-xl">
                     <CartPage />
                   </SheetContent>
                 </Sheet>
