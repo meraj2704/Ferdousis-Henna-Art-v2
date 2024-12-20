@@ -61,34 +61,8 @@ export type Product = {
   description: string;
 };
 export const columns: ColumnDef<OrderI>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  // {
-  //   accessorKey: "_id",
-  //   header: "Order ID",
-  //   cell: ({ row }) => <div>{row.getValue("_id")}</div>,
-  //   // meta: { responsive: "hidden sm:table-cell" },
-  // },
+  
+  
   {
     accessorKey: "customerInformation.name",
     header: "Name",

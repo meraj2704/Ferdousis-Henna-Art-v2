@@ -9,7 +9,7 @@ interface DashboardCardProps {
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ cardName, number, content }) => {
   return (
-    <Card>
+    <Card className="border border-accent hover:shadow-lg">
       <CardHeader>
         <CardTitle>{cardName}</CardTitle>
       </CardHeader>

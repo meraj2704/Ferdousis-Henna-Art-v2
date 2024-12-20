@@ -18,12 +18,12 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 const chartData = [
-  { month: "January", cone: 186, hair: 80 },
-  { month: "February", cone: 305, hair: 200 },
-  { month: "March", cone: 237, hair: 120 },
-  { month: "April", cone: 73, hair: 190 },
-  { month: "May", cone: 209, hair: 130 },
-  { month: "June", cone: 214, hair: 140 },
+  { month: "January", cone: 186 },
+  { month: "February", cone: 305 },
+  { month: "March", cone: 237 },
+  { month: "April", cone: 73 },
+  { month: "May", cone: 209 },
+  { month: "June", cone: 214 },
 ];
 
 const chartConfig = {
@@ -37,7 +37,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function SellChart() {
+export function SellChart({ chartData }: { chartData: any }) {
   return (
     <Card>
       <CardHeader>
@@ -59,8 +59,8 @@ export function SellChart() {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="cone" fill="#729762" radius={4} />
-            <Bar dataKey="hair" fill="#3E5C29" radius={4} />
+            {/* <Bar dataKey="cone" fill="#729762" radius={4} /> */}
+            <Bar dataKey="totalSell" fill="#3E5C29" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>

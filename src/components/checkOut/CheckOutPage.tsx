@@ -49,7 +49,7 @@ const CheckoutPage = () => {
     `divisions-get-all`
   );
 
-  const newOrder = useAddData(["orders"], "orders/new-order");
+  const newOrder = useAddData(["orders","dashboard"], "orders/new-order");
 
   useEffect(() => {
     if (data && data.length > 0) {

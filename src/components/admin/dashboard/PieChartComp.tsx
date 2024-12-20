@@ -18,17 +18,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "#597445" }, // Primary Green
-  { browser: "safari", visitors: 200, fill: "#9ACD32" }, // Lime Green
-  { browser: "firefox", visitors: 287, fill: "#FF4500" }, // Orange-Red
-  { browser: "edge", visitors: 173, fill: "#4B8A3B" }, // Olive Green
-  { browser: "other", visitors: 190, fill: "#F4A300" }, // Golden Yellow
-];
-
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  sale: {
+    label: "Sale",
   },
   chrome: {
     label: "Chrome",
@@ -52,16 +44,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function PieChartComp() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
-
+export function PieChartComp({
+  chartData,
+  totalSale,
+}: {
+  chartData: any;
+  totalSale: number;
+}) {
+  console.log("pie chart data: ", chartData);
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Pie Chart - Sold Products</CardTitle>
+        <CardDescription>2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -75,8 +70,8 @@ export function PieChartComp() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="sale"
+              nameKey="productName"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -95,14 +90,14 @@ export function PieChartComp() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalSale.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Quantity
                         </tspan>
                       </text>
                     );
@@ -114,11 +109,9 @@ export function PieChartComp() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
+        
         <div className="leading-none text-muted-foreground">
-          Showing total selling products for the last 6 months
+          Showing total selling products for the last year.
         </div>
       </CardFooter>
     </Card>

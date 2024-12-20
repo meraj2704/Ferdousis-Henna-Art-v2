@@ -1,5 +1,4 @@
 "use client";
-import { getAlOrders } from "@/api/api";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import {
   Select,
@@ -9,10 +8,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFetchData, useUpdateData } from "@/hooks/useApi";
-import { Order } from "@/types/Types";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { toast } from "sonner";
 
 const OrderDetails = () => {
@@ -22,22 +19,17 @@ const OrderDetails = () => {
     isLoading,
     error,
     data = [],
-  } = useFetchData(["orderDetails"], `orders/order-details/${id}`);
+  } = useFetchData([`orderDetails-${id}`], `orders/order-details/${id}`);
   const updateOrderStatus = useUpdateData(
-    ["orderDetails"],
+    [`orderDetails-${id}`, "dashboard", "orders"],
     `orders/update-order-status/${id}`
   );
-  const [selectedStatus, setSelectedStatus] = useState<string>(data?.status);
   const { customerInformation, cartItems } = data;
   const statusStyles: any = {
     pending: "bg-blue-500 text-white",
     delivered: "bg-green-500 text-white",
     canceled: "bg-red-500 text-white",
   };
-
-  useEffect(() => {
-    setSelectedStatus(data?.status);
-  }, [data?.status]);
 
   const handleStatusChange = (newStatus: string) => {
     const updatedStatus = {
@@ -47,7 +39,6 @@ const OrderDetails = () => {
       updateOrderStatus.mutate(updatedStatus, {
         onSuccess: () => {
           toast.success("Order Status updated successfully");
-          setSelectedStatus(newStatus);
         },
         onError: () => {
           toast.error("Failed to update order status!");
@@ -101,8 +92,8 @@ const OrderDetails = () => {
           >
             <div className="flex items-center">
               <img
-                src={product.productId.image}
-                alt={product.productId.name}
+                src={product?.productId?.image}
+                alt={product?.productId?.name}
                 className="w-16 h-16 mr-4"
               />
               <p>{product.productId.name}</p>
@@ -139,7 +130,7 @@ const OrderDetails = () => {
         </div>
         <h3 className="font-bold text-primary">Update Order Status</h3>
         <Select
-          value={selectedStatus}
+          value={data?.status as string}
           onValueChange={(newStatus) => handleStatusChange(newStatus)}
         >
           <SelectTrigger className="w-full bg-background">
