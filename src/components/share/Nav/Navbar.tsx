@@ -9,6 +9,15 @@ import dynamic from "next/dynamic"; // For code-splitting
 import Logo from "../Logo";
 import NavItem from "./NavItem";
 import CartIcon from "./CartIcon";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import CartPage from "@/components/cart/cartPage/CartPage";
 
 const ToggleNavbar = dynamic(() => import("./ToggleNavbar")); // Lazy-load
 
@@ -82,11 +91,17 @@ const Navbar = () => {
             </div>
             <div className="col-span-1  flex justify-end items-center gap-3">
               <div className="flex gap-2">
-                <Link href="/cart">
-                  <CartIcon />
-                </Link>
+                <Link href="/cart"></Link>
+                <Sheet>
+                  <SheetTrigger>
+                    <CartIcon />
+                  </SheetTrigger>
+                  <SheetContent className="z-[999]">
+                    <CartPage />
+                  </SheetContent>
+                </Sheet>
               </div>
-              <div className="transition-all duration-300">
+              <div className="transition-all duration-300 w-6 flex justify-center items-center">
                 {isMobileMenuOpen ? (
                   <TfiClose
                     className="text-xl md:text-2xl lg:text-3xl xl:text-4xl hover:text-brandColor cursor-pointer"

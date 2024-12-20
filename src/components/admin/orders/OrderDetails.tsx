@@ -76,11 +76,6 @@ const OrderDetails = () => {
         <p>
           <strong>Phone:</strong> {customerInformation?.phone}
         </p>
-        {/* <p>
-          <strong>Address:</strong> {order?.user.address.courierOfficeName},{" "}
-          {order?.user.address.location}, {order?.user.address.state},{" "}
-          {order?.user.address.district}, {order?.user.address.upazila}
-        </p> */}
       </div>
 
       <div className="">

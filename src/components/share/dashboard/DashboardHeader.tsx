@@ -26,12 +26,12 @@ const DashboardHeader: React.FC = () => {
       <div className="transition-all duration-300">
         {isMobileMenuOpen ? (
           <TfiClose
-            className="text-xl md:text-2xl lg:text-3xl xl:text-4xl hover:text-brandColor"
+            className="lg:hidden text-xl md:text-2xl lg:text-3xl xl:text-4xl hover:text-brandColor"
             onClick={() => setMobileMenuOpen(false)}
           />
         ) : (
           <FaBars
-            className="md:hidden text-xl md:text-2xl lg:text-3xl xl:text-4xl cursor-pointer hover:text-brandColor"
+            className="lg:hidden text-xl md:text-2xl lg:text-3xl xl:text-4xl cursor-pointer hover:text-brandColor"
             size={24}
             onClick={toggleMobileMenu}
           />

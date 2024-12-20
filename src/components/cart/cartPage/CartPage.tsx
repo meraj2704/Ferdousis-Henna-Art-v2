@@ -64,8 +64,8 @@ const CartPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-2 py-4">
-      <div className="w-full flex justify-between items-center mb-6">
+    <div className="h-full flex flex-col">
+      <div className="w-full flex justify-between items-center mb-6 mt-6">
         <h1 className="text-2xl  text-gray-800">Your Cart</h1>
         <Link href={"/products"}>
           <div className="text-primary font-medium text-xl flex items-center gap-2">
@@ -74,61 +74,67 @@ const CartPage = () => {
           </div>
         </Link>
       </div>
-      <div className="flex flex-col gap-6 md:gap-8">
+      <div className="grow flex flex-col gap-6 md:gap-8">
         {/* Cart Item List */}
         {cartItems.map((item) => (
           <div
             key={item._id}
-            className="w-full flex justify-between gap-4  items-center border-b py-4"
+            className="w-full flex justify-between gap-4  items-center border-b border-b-accent py-4"
           >
-            <div className="">
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={200}
-                height={200}
-                className="w-24 h-24 lg:w-52 lg:h-52 object-cover rounded-md"
-              />
-            </div>
-            <div className="flex flex-col">
-              <Link href={`/products/${item._id}`}>
-                <h2 className="text-lg font-semibold text-gray-800">
-                  {item.name}
-                </h2>
-              </Link>
-              <p className="text-sm text-gray-800 mt-2">
-                {item.price.toFixed(2)} <span className="text-sm">TK</span>
-              </p>
-            </div>
-            <div className="flex justify-between gap-10 items-center">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleDecreaseQuantity(item)}
-                  className="p-2 bg-gray-200 rounded-full hover:bg-primary transition"
-                >
-                  <FaMinus className="text-sm text-gray-600" />
-                </button>
-                <span className="text-lg font-semibold">{item.quantity}</span>
-                <button
-                  onClick={() => handleIncreaseQuantity(item)}
-                  className="p-2 bg-gray-200 rounded-full hover:bg-primary transition"
-                >
-                  <FaPlus className="text-sm text-gray-600" />
-                </button>
+            <div className="flex items-center gap-3">
+              <div className="">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={200}
+                  height={200}
+                  className="w-24 h-24 object-cover rounded-md"
+                />
               </div>
-              <button
-                onClick={() => handleRemoveItem(item._id, item.name)}
-                className="text-gray-600 hover:text-red-600 transition"
-              >
-                <IoTrashOutline className="text-xl" />
-              </button>
+              <div className="flex flex-col justify-start items-start gap-2">
+                <div className="flex flex-col">
+                  <Link href={`/products/${item._id}`}>
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {item.name}
+                    </h2>
+                  </Link>
+                  <p className="text-sm text-gray-800 mt-2">
+                    {item.price.toFixed(2)} <span className="text-sm">TK</span>
+                  </p>
+                </div>
+                <div className="flex justify-between gap-10 items-center">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleDecreaseQuantity(item)}
+                      className="p-2 bg-gray-200 rounded-full hover:bg-primary transition"
+                    >
+                      <FaMinus className="text-sm text-gray-600" />
+                    </button>
+                    <span className="text-lg font-semibold">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => handleIncreaseQuantity(item)}
+                      className="p-2 bg-gray-200 rounded-full hover:bg-primary transition"
+                    >
+                      <FaPlus className="text-sm text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
+            <button
+              onClick={() => handleRemoveItem(item._id, item.name)}
+              className="text-gray-600 hover:text-red-600 transition"
+            >
+              <IoTrashOutline className="text-xl" />
+            </button>
           </div>
         ))}
       </div>
 
       {/* Cart Summary */}
-      <div className="flex justify-between items-center mt-6 border-t pt-6">
+      <div className="flex flex-col justify-between items-center mt-6">
         <div className="text-lg font-semibold text-gray-800">
           <p>
             Total: {getTotalPrice().toFixed(2)}{" "}
@@ -137,7 +143,7 @@ const CartPage = () => {
         </div>
         <Link
           href="/check-out"
-          className="bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition"
+          className="w-full text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition"
         >
           Proceed to Checkout
         </Link>

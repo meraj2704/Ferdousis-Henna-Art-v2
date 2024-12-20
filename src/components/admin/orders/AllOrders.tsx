@@ -45,6 +45,7 @@ import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { setModalData } from "@/redux/Reducer/modalSlice";
+import { CiEdit } from "react-icons/ci";
 
 export type Payment = {
   _id: string;
@@ -61,8 +62,6 @@ export type Product = {
   description: string;
 };
 export const columns: ColumnDef<OrderI>[] = [
-  
-  
   {
     accessorKey: "customerInformation.name",
     header: "Name",
@@ -134,23 +133,11 @@ export const columns: ColumnDef<OrderI>[] = [
       const order = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <Link href={`/admin/orders/${order._id}`}>
-              <DropdownMenuItem>View</DropdownMenuItem>
-            </Link>
-            {/* <Link href={`/admin/products/edit/${order._id}`}>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-            </Link> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Link href={`/admin/orders/${order._id}`}>
+          <button className="bg-primary hover:bg-accent rounded-md p-2 text-white ">
+            <CiEdit />
+          </button>
+        </Link>
       );
     },
   },
