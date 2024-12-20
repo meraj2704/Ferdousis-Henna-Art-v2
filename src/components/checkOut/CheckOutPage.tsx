@@ -113,8 +113,6 @@ const CheckoutPage = () => {
   const selectedUpazila = watch("upazila");
 
   const onSubmit: SubmitHandler<CheckoutInputs> = (data) => {
-    // console.log("Form Data:", data);
-    alert(JSON.stringify(data));
     const orderData = {
       cartItems: cartItems?.items.map((item) => ({
         productId: item._id,
