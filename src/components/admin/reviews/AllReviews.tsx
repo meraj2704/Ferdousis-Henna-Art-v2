@@ -50,8 +50,7 @@ import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCookies } from "next-client-cookies";
-const cookies = useCookies();
-const token = cookies.get("henna-token");
+
 
 export type Payment = {
   id: string;
@@ -116,6 +115,8 @@ export const columns: ColumnDef<Reviews>[] = [
       return <div className="w-full text-center">Actions</div>;
     },
     cell: ({ row }) => {
+      const cookies = useCookies();
+      const token = cookies.get("henna-token");
       const data = row.original;
       console.log("id ", data._id);
       const dispatch = useDispatch();
@@ -155,6 +156,8 @@ export const columns: ColumnDef<Reviews>[] = [
 ];
 
 export function AllReviews() {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     isLoading,
     error,

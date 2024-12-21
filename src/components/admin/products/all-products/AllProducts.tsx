@@ -43,8 +43,6 @@ import { toast } from "sonner";
 import { Product } from "@/types/Types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCookies } from "next-client-cookies";
-const cookies = useCookies();
-const token = cookies.get("henna-token");
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -140,6 +138,8 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const cookies = useCookies();
+      const token = cookies.get("henna-token");
       const product = row.original;
       const deleteProduct = useDeleteData(
         ["products"],
@@ -193,6 +193,8 @@ export const columns: ColumnDef<Product>[] = [
 ];
 
 export function AllProducts() {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     data = [],
     isLoading,

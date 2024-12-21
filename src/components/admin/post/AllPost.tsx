@@ -44,8 +44,6 @@ import { PostI } from "@/types/Types";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCookies } from "next-client-cookies";
-const cookies = useCookies();
-  const token = cookies.get("henna-token");
 
 export const columns: ColumnDef<PostI>[] = [
   {
@@ -101,8 +99,14 @@ export const columns: ColumnDef<PostI>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const cookies = useCookies();
+      const token = cookies.get("henna-token");
       const post = row.original;
-      const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`, token);
+      const deletePost = useDeleteData(
+        ["allPosts"],
+        `hero-post/post-delete`,
+        token
+      );
       const handleDelete = (id: string) => {
         deletePost.mutate(id, {
           onSuccess: () => {
@@ -151,7 +155,8 @@ export const columns: ColumnDef<PostI>[] = [
 ];
 
 export function AllPosts() {
-  
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     data = [],
     isLoading,
@@ -190,7 +195,7 @@ export function AllPosts() {
       href: "/admin/dashboard",
     },
     {
-      label: "All Products",
+      label: "All Posts",
     },
   ];
 

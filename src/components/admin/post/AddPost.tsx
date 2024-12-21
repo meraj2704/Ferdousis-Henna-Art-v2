@@ -63,7 +63,7 @@ const AddPost: React.FC = () => {
 
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
-    { label: "All Posts", href: "/admin/posts/all-posts" },
+    { label: "All Posts", href: "/admin/post/all-posts" },
     { label: "Add New Post" },
   ];
 

@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 const OrderDetails = () => {
   const cookies = useCookies();
-    const token = cookies.get("henna-token");
+  const token = cookies.get("henna-token");
   const params = useParams();
   const { id } = params;
   const {
@@ -25,7 +25,8 @@ const OrderDetails = () => {
   } = useFetchData([`orderDetails-${id}`], `orders/order-details/${id}`, token);
   const updateOrderStatus = useUpdateData(
     [`orderDetails-${id}`, "dashboard", "orders"],
-    `orders/update-order-status/${id}`,token
+    `orders/update-order-status/${id}`,
+    token
   );
   const { customerInformation, cartItems } = data;
   const statusStyles: any = {
@@ -66,55 +67,87 @@ const OrderDetails = () => {
       <h2 className="text-xl font-semibold text-center text-textColor">
         Order ID: {data?._id}
       </h2>
-
       <div className="">
-        <h3 className="font-bold text-primary">User Information:</h3>
         <p>
-          <strong>Name:</strong>
-          <span className="font-bold">{customerInformation?.name} </span>
+          <strong>Order Date:</strong>{" "}
+          {new Date(data?.orderDate).toLocaleString()}
         </p>
-        {/* <p>
+      </div>
+      <div className="w-full flex flex-col md:flex-row gap-5">
+        <div className="w-full md:w-1/2">
+          <h3 className="font-bold text-primary">User Information:</h3>
+          <p>
+            <strong>Name:</strong>
+            <span className="font-bold">{customerInformation?.name} </span>
+          </p>
+          {/* <p>
           <strong>Email:</strong> {order?.user.email}
         </p> */}
-        <p>
-          <strong>Phone:</strong> {customerInformation?.phone}
-        </p>
+          <p>
+            <strong>Phone:</strong> {customerInformation?.phone}
+          </p>
+        </div>
+        <div className="w-full md:w-1/2">
+          <h3 className="font-bold text-primary">User Address:</h3>
+          <p>
+            <strong>Division:</strong>
+            <span className="font-bold">
+              {customerInformation?.address?.state}{" "}
+            </span>
+          </p>
+          <p>
+            <strong>District:</strong> {customerInformation?.address?.district}
+          </p>
+          <p>
+            <strong>Upazila:</strong> {customerInformation?.address?.upazila}
+          </p>
+          <p>
+            <strong>Address Details:</strong>{" "}
+            {customerInformation?.address?.details}
+          </p>
+          <p>
+            <strong>Courier Office:</strong>{" "}
+            {customerInformation?.address?.courierOffice}
+          </p>
+        </div>
       </div>
-
-      <div className="">
-        <h3 className="font-bold text-primary">Products:</h3>
-        {cartItems?.map((product: any) => (
-          <div
-            key={product._id}
-            className="flex items-center justify-between mt-2"
-          >
-            <div className="flex items-center">
-              <img
-                src={product?.productId?.image}
-                alt={product?.productId?.name}
-                className="w-16 h-16 mr-4"
-              />
-              <p>{product.productId.name}</p>
+      <div className="w-full flex flex-col md:flex-row gap-5">
+        <div className="w-full md:w-1/2">
+          <h3 className="font-bold text-primary">Products:</h3>
+          {cartItems?.map((product: any) => (
+            <div
+              key={product._id}
+              className="flex items-center justify-between mt-2"
+            >
+              <div className="flex items-center">
+                <img
+                  src={product?.productId?.image}
+                  alt={product?.productId?.name}
+                  className="w-16 h-16 mr-4"
+                />
+                <p>{product.productId.name}</p>
+              </div>
+              <p>
+                {product.quantity} x ${product.price}
+              </p>
             </div>
-            <p>
-              {product.quantity} x ${product.price}
-            </p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="">
-        <h3 className="font-bold text-primary">Order Summary:</h3>
-        <p>
-          <strong>Subtotal:</strong> {data?.totalAmount}
-        </p>
+        <div className="w-full md:w-1/2">
+          <h3 className="font-bold text-primary">Order Summary:</h3>
+          <p>
+            <strong>Subtotal:</strong> {data?.totalAmount}
+          </p>
 
-        <p>
-          <strong>Courier Fee:</strong> {data?.courierServiceFee}
-        </p>
-        <p>
-          <strong>Total:</strong> {data?.totalAmount + data?.courierServiceFee}
-        </p>
+          <p>
+            <strong>Courier Fee:</strong> {data?.courierServiceFee}
+          </p>
+          <p>
+            <strong>Total:</strong>{" "}
+            {data?.totalAmount + data?.courierServiceFee}
+          </p>
+        </div>
       </div>
 
       <div className=" space-y-2">
@@ -131,21 +164,30 @@ const OrderDetails = () => {
           value={data?.status as string}
           onValueChange={(newStatus) => handleStatusChange(newStatus)}
         >
-          <SelectTrigger className="w-full bg-background">
+          <SelectTrigger className="w-full bg-background border border-accent">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
-          <SelectContent className="bg-background">
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="delivered">Delivered</SelectItem>
-            <SelectItem value="canceled">Canceled</SelectItem>
+          <SelectContent className="bg-background border border-accent">
+            <SelectItem
+              value="pending"
+              className="hover:bg-primary hover:text-white"
+            >
+              Pending
+            </SelectItem>
+            <SelectItem
+              value="delivered"
+              className="hover:bg-primary hover:text-white"
+            >
+              Delivered
+            </SelectItem>
+            <SelectItem
+              value="canceled"
+              className="hover:bg-primary hover:text-white"
+            >
+              Canceled
+            </SelectItem>
           </SelectContent>
         </Select>
-      </div>
-
-      <div className="">
-        <p>
-          <strong>Date:</strong> {new Date(data?.orderDate).toLocaleString()}
-        </p>
       </div>
     </div>
   );

@@ -44,8 +44,6 @@ import { MessageI } from "@/types/Types";
 import { toast } from "sonner";
 import { useCookies } from "next-client-cookies";
 
-const cookies = useCookies();
-const token = cookies.get("henna-token");
 export const columns: ColumnDef<MessageI>[] = [
   {
     id: "select",
@@ -90,6 +88,8 @@ export const columns: ColumnDef<MessageI>[] = [
       return <div className="w-full text-center">Actions</div>;
     },
     cell: ({ row }) => {
+      const cookies = useCookies();
+      const token = cookies.get("henna-token");
       const data = row.original;
       const dispatch = useDispatch();
       const deleteMessage = useDeleteData(
@@ -128,6 +128,8 @@ export const columns: ColumnDef<MessageI>[] = [
 ];
 
 export function Messages() {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     isLoading,
     error,
