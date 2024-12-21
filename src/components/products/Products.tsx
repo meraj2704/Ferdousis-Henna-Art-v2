@@ -1,5 +1,4 @@
 "use client";
-import { getAlProductsHome } from "@/api/api";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import ProductCart from "@/components/share/ProductsCart";
 import { useFetchData } from "@/hooks/useApi";
