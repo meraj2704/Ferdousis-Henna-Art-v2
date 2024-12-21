@@ -39,8 +39,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAllPhotos } from "@/api/api";
 import Image from "next/image";
 import ButtonF from "@/components/customUi/ButtonF";
 import Link from "next/link";
@@ -53,7 +51,9 @@ import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { PhotosI } from "@/types/Types";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import { useCookies } from "next-client-cookies";
+const cookies = useCookies();
+const token = cookies.get("henna-token");
 export const columns: ColumnDef<PhotosI>[] = [
   {
     id: "select",
@@ -106,7 +106,11 @@ export const columns: ColumnDef<PhotosI>[] = [
     cell: ({ row }) => {
       const data = row.original;
       const dispatch = useDispatch();
-      const deletePhoto = useDeleteData(["photos"], `photos/photo-delete`);
+      const deletePhoto = useDeleteData(
+        ["photos"],
+        `photos/photo-delete`,
+        token
+      );
       const handleDelete = (id: string) => {
         deletePhoto.mutate(id, {
           onSuccess: () => {
@@ -142,7 +146,7 @@ export function AllPhotos() {
     isLoading,
     error,
     data = [],
-  } = useFetchData(["photos"], `photos/get-all-photos`);
+  } = useFetchData(["photos"], `photos/get-all-photos`, token);
   const dispatch = useDispatch();
   const photoData = useSelector((state: RootState) => state.modal);
 
@@ -242,8 +246,8 @@ export function AllPhotos() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-         <div className="rounded-md border border-accent">
-        <Table className="rounded-md">
+          <div className="rounded-md border border-accent">
+            <Table className="rounded-md">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

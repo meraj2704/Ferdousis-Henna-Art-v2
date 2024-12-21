@@ -4,6 +4,7 @@ import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import Loader from "@/components/share/Loader";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
+import { useCookies } from "next-client-cookies";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -11,14 +12,17 @@ import React from "react";
 import { toast } from "sonner";
 
 const PostDetails = () => {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const params = useParams();
   const router = useRouter();
   const { id } = params;
   const { isLoading, error, data } = useFetchData(
     ["postDetails"],
-    `hero-post/post-details/${id}`
+    `hero-post/post-details/${id}`,
+    token
   );
-  const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`);
+  const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`,token);
   const handleDelete = (id: string) => {
     deletePost.mutate(id, {
       onSuccess: () => {

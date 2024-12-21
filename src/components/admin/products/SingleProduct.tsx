@@ -3,6 +3,7 @@ import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import Loader from "@/components/share/Loader";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
+import { useCookies } from "next-client-cookies";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -10,6 +11,8 @@ import React from "react";
 import { toast } from "sonner";
 
 const AdminProductDetails = () => {
+  const cookies = useCookies();
+    const token = cookies.get("henna-token");
   const params = useParams();
   const { id } = params;
   const router = useRouter();
@@ -19,9 +22,9 @@ const AdminProductDetails = () => {
     data: product,
     isLoading,
     error,
-  } = useFetchData(["product"], `product/product-details/${id}`);
+  } = useFetchData(["product"], `product/product-details/${id}`,token);
 // delete products
-  const deleteProduct = useDeleteData(["products"], `product/product-delete`);
+  const deleteProduct = useDeleteData(["products"], `product/product-delete`,token);
   const handleDelete = (id: string) => {
     deleteProduct.mutate(id, {
       onSuccess: () => {

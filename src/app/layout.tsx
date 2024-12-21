@@ -3,6 +3,7 @@ import { Khand } from "next/font/google";
 import "./globals.css";
 import WrapProvider from "./WrapProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { CookiesProvider } from "next-client-cookies/server";
 
 const rakkas = Khand({ weight: "400", subsets: ["latin"] });
 
@@ -52,12 +53,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <WrapProvider>
-        <body className={`${rakkas.className} bg-background`}>
-          {children}
-          <Toaster richColors />
-        </body>
-      </WrapProvider>
+      <CookiesProvider>
+        <WrapProvider>
+          <body className={`${rakkas.className} bg-background`}>
+            {children}
+            <Toaster richColors />
+          </body>
+        </WrapProvider>
+      </CookiesProvider>
     </html>
   );
 }

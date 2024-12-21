@@ -49,6 +49,9 @@ import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCookies } from "next-client-cookies";
+const cookies = useCookies();
+const token = cookies.get("henna-token");
 
 export type Payment = {
   id: string;
@@ -116,7 +119,11 @@ export const columns: ColumnDef<Reviews>[] = [
       const data = row.original;
       console.log("id ", data._id);
       const dispatch = useDispatch();
-      const deleteReview = useDeleteData(["reviews"], `reviews/review-delete`);
+      const deleteReview = useDeleteData(
+        ["reviews"],
+        `reviews/review-delete`,
+        token
+      );
       const handleDelete = (id: string) => {
         deleteReview.mutate(id, {
           onSuccess: () => {
@@ -152,7 +159,7 @@ export function AllReviews() {
     isLoading,
     error,
     data = [],
-  } = useFetchData(["reviews"], `reviews/get-all-reviews`);
+  } = useFetchData(["reviews"], `reviews/get-all-reviews`, token);
   const dispatch = useDispatch();
   const photoData = useSelector((state: RootState) => state.modal);
 
@@ -252,8 +259,8 @@ export function AllReviews() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-         <div className="rounded-md border border-accent">
-        <Table className="rounded-md">
+          <div className="rounded-md border border-accent">
+            <Table className="rounded-md">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

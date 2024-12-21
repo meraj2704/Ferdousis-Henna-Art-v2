@@ -19,9 +19,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -33,19 +30,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAlOrders, getAlProducts } from "@/api/api";
-import Image from "next/image";
-import ButtonF from "@/components/customUi/ButtonF";
+
 import Link from "next/link";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
-import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
-import { Order, OrderI } from "@/types/Types";
-import { useDeleteData, useFetchData } from "@/hooks/useApi";
-import { useDispatch } from "react-redux";
-import { toast } from "sonner";
-import { setModalData } from "@/redux/Reducer/modalSlice";
+import { OrderI } from "@/types/Types";
+import { useFetchData } from "@/hooks/useApi";
 import { CiEdit } from "react-icons/ci";
+import { useCookies } from "next-client-cookies";
 
 export type Payment = {
   _id: string;
@@ -144,11 +135,13 @@ export const columns: ColumnDef<OrderI>[] = [
 ];
 
 export function AllOrders() {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     isLoading,
     data = [],
     error,
-  } = useFetchData(["orders"], "orders/all-orders");
+  } = useFetchData(["orders"], "orders/all-orders", token);
   console.log("data", data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

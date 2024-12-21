@@ -32,8 +32,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { getAllMessages } from "@/api/api";
 import ButtonF from "@/components/customUi/ButtonF";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +42,10 @@ import MessageCard from "./MessageCard";
 import { useDeleteData, useFetchData } from "@/hooks/useApi";
 import { MessageI } from "@/types/Types";
 import { toast } from "sonner";
+import { useCookies } from "next-client-cookies";
 
+const cookies = useCookies();
+const token = cookies.get("henna-token");
 export const columns: ColumnDef<MessageI>[] = [
   {
     id: "select",
@@ -93,7 +94,8 @@ export const columns: ColumnDef<MessageI>[] = [
       const dispatch = useDispatch();
       const deleteMessage = useDeleteData(
         ["messages"],
-        `messages/delete-message`
+        `messages/delete-message`,
+        token
       );
       const handleDelete = (id: string) => {
         deleteMessage.mutate(id, {
@@ -130,7 +132,7 @@ export function Messages() {
     isLoading,
     error,
     data = [],
-  } = useFetchData(["messages"], "messages/get-all-messages");
+  } = useFetchData(["messages"], "messages/get-all-messages", token);
   const dispatch = useDispatch();
   const modalData = useSelector((state: RootState) => state.modal);
 

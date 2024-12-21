@@ -5,17 +5,16 @@ import DashboardCard from "./DashboardCard";
 import { PieChartComp } from "./PieChartComp";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useFetchData } from "@/hooks/useApi";
+import { useCookies } from "next-client-cookies";
 
 const Dashboard = () => {
-  const { data, isLoading, error } = useFetchData(["dashboard"], "dashboard");
-  const salesData = [
-    { month: "Jan", sales: 400 },
-    { month: "Feb", sales: 300 },
-    { month: "Mar", sales: 500 },
-    { month: "Apr", sales: 200 },
-    { month: "May", sales: 700 },
-    { month: "Jun", sales: 600 },
-  ];
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
+  const { data, isLoading, error } = useFetchData(
+    ["dashboard"],
+    "dashboard",
+    token
+  );
 
   return (
     <div className="p-6 space-y-6">

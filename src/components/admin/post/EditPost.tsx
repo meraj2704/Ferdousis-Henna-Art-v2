@@ -12,8 +12,11 @@ import { useFetchData, useUpdateData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { editSchema } from "./Schema";
 import MiniLoader from "@/components/share/MiniLoader";
+import { useCookies } from "next-client-cookies";
 
 const EditPost: React.FC = () => {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const router = useRouter();
   const params = useParams();
   const { id } = params;
@@ -30,14 +33,15 @@ const EditPost: React.FC = () => {
   });
   const editPost = useUpdateData(
     ["allProducts"],
-    `hero-post/post-update/${id}`
+    `hero-post/post-update/${id}`,
+    token
   );
 
   const {
     isLoading,
     error,
     data: post,
-  } = useFetchData(["postDetails"], `hero-post/post-details/${id}`);
+  } = useFetchData(["postDetails"], `hero-post/post-details/${id}`, token);
   useEffect(() => {
     if (post) {
       const resetData = {

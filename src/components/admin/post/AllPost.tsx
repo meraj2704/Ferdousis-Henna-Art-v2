@@ -43,6 +43,9 @@ import Loader from "@/components/share/Loader";
 import { PostI } from "@/types/Types";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCookies } from "next-client-cookies";
+const cookies = useCookies();
+  const token = cookies.get("henna-token");
 
 export const columns: ColumnDef<PostI>[] = [
   {
@@ -99,7 +102,7 @@ export const columns: ColumnDef<PostI>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const post = row.original;
-      const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`);
+      const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`, token);
       const handleDelete = (id: string) => {
         deletePost.mutate(id, {
           onSuccess: () => {
@@ -148,11 +151,12 @@ export const columns: ColumnDef<PostI>[] = [
 ];
 
 export function AllPosts() {
+  
   const {
     data = [],
     isLoading,
     error,
-  } = useFetchData(["allPosts"], `hero-post/get-all-posts`);
+  } = useFetchData(["allPosts"], `hero-post/get-all-posts`, token);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -249,8 +253,8 @@ export function AllPosts() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-         <div className="rounded-md border border-accent">
-        <Table className="rounded-md">
+          <div className="rounded-md border border-accent">
+            <Table className="rounded-md">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

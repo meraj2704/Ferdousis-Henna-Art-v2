@@ -14,14 +14,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Loader from "@/components/share/Loader";
 import MiniLoader from "@/components/share/MiniLoader";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
+import { useCookies } from "next-client-cookies";
 const EditProduct: React.FC = () => {
+  const cookies = useCookies();
+    const token = cookies.get("henna-token");
   const router = useRouter();
   const params = useParams();
   const { id } = params;
   // hook call for update
   const editProduct = useUpdateData(
     ["product"],
-    `product/product-update/${id}`
+    `product/product-update/${id}`,token
   );
   const {
     control,
@@ -40,7 +43,7 @@ const EditProduct: React.FC = () => {
     data: product,
     isLoading,
     error,
-  } = useFetchData(["product"], `product/product-details/${id}`);
+  } = useFetchData(["product"], `product/product-details/${id}`, token);
 
   useEffect(() => {
     if (product) {

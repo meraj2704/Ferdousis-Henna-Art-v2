@@ -42,6 +42,9 @@ import Loader from "@/components/share/Loader";
 import { toast } from "sonner";
 import { Product } from "@/types/Types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCookies } from "next-client-cookies";
+const cookies = useCookies();
+const token = cookies.get("henna-token");
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -140,7 +143,8 @@ export const columns: ColumnDef<Product>[] = [
       const product = row.original;
       const deleteProduct = useDeleteData(
         ["products"],
-        `product/product-delete`
+        `product/product-delete`,
+        token
       );
       const handleDelete = (id: string) => {
         deleteProduct.mutate(id, {
@@ -193,7 +197,7 @@ export function AllProducts() {
     data = [],
     isLoading,
     error,
-  } = useFetchData(["products"], "product/all-products");
+  } = useFetchData(["products"], "product/all-products", token);
   console.log("all products data", data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -293,8 +297,8 @@ export function AllProducts() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-         <div className="rounded-md border border-accent">
-        <Table className="rounded-md">
+          <div className="rounded-md border border-accent">
+            <Table className="rounded-md">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

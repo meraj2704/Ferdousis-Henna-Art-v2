@@ -8,21 +8,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFetchData, useUpdateData } from "@/hooks/useApi";
+import { useCookies } from "next-client-cookies";
 import { useParams } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
 const OrderDetails = () => {
+  const cookies = useCookies();
+    const token = cookies.get("henna-token");
   const params = useParams();
   const { id } = params;
   const {
     isLoading,
     error,
     data = [],
-  } = useFetchData([`orderDetails-${id}`], `orders/order-details/${id}`);
+  } = useFetchData([`orderDetails-${id}`], `orders/order-details/${id}`, token);
   const updateOrderStatus = useUpdateData(
     [`orderDetails-${id}`, "dashboard", "orders"],
-    `orders/update-order-status/${id}`
+    `orders/update-order-status/${id}`,token
   );
   const { customerInformation, cartItems } = data;
   const statusStyles: any = {
