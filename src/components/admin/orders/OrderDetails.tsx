@@ -1,5 +1,6 @@
 "use client";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
+import Loader from "@/components/share/Loader";
 import {
   Select,
   SelectContent,
@@ -54,6 +55,8 @@ const OrderDetails = () => {
       return;
     }
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="container mx-auto px-4 space-y-5 py-5">
@@ -117,7 +120,7 @@ const OrderDetails = () => {
           {cartItems?.map((product: any) => (
             <div
               key={product._id}
-              className="flex items-center justify-between mt-2"
+              className="flex items-center justify-start ga"
             >
               <div className="flex items-center">
                 <img
@@ -125,11 +128,13 @@ const OrderDetails = () => {
                   alt={product?.productId?.name}
                   className="w-16 h-16 mr-4"
                 />
-                <p>{product.productId.name}</p>
               </div>
-              <p>
-                {product.quantity} x ${product.price}
-              </p>
+              <div>
+                <p>{product.productId.name}</p>
+                <p>
+                  {product.quantity} x ${product.price}
+                </p>
+              </div>
             </div>
           ))}
         </div>

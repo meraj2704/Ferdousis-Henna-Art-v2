@@ -35,66 +35,22 @@ export const adminSidebarItems: SidebarMenu = {
     {
       label: "Products",
       icon: ShoppingBasket,
-      subItems: [
-        {
-          label: "All Products",
-          icon: ListPlus,
-          href: "/admin/products/all-products",
-        },
-        {
-          label: "Add Product",
-          icon: Plus,
-          href: "/admin/products/add-product",
-        },
-      ],
+      href: "/admin/products/all-products",
     },
     {
       label: "Photo Gallery",
       icon: Image,
-      subItems: [
-        {
-          label: "All Photos",
-          icon: ListPlus,
-          href: "/admin/photo-gallery/all-photos",
-        },
-        {
-          label: "Add Photos",
-          icon: Plus,
-          href: "/admin/photo-gallery/add-photo",
-        },
-      ],
+      href: "/admin/photo-gallery/all-photos",
     },
     {
       label: "Post",
       icon: PiSignpostDuotone,
-      subItems: [
-        {
-          label: "All Posts",
-          icon: ListPlus,
-          href: "/admin/post/all-posts",
-        },
-        {
-          label: "Add post",
-          icon: Plus,
-          href: "/admin/post/add-post",
-        },
-      ],
+      href: "/admin/post/all-posts",
     },
     {
       label: "Reviews",
       icon: Star,
-      subItems: [
-        {
-          label: "All Reviews",
-          icon: ListPlus,
-          href: "/admin/reviews/all-reviews",
-        },
-        {
-          label: "Add Review",
-          icon: Plus,
-          href: "/admin/reviews/add-reviews",
-        },
-      ],
+      href: "/admin/reviews/all-reviews",
     },
     {
       label: "Messages",

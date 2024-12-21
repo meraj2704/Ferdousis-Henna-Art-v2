@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 const AdminProductDetails = () => {
   const cookies = useCookies();
-    const token = cookies.get("henna-token");
+  const token = cookies.get("henna-token");
   const params = useParams();
   const { id } = params;
   const router = useRouter();
@@ -22,9 +22,13 @@ const AdminProductDetails = () => {
     data: product,
     isLoading,
     error,
-  } = useFetchData(["product"], `product/product-details/${id}`,token);
-// delete products
-  const deleteProduct = useDeleteData(["products"], `product/product-delete`,token);
+  } = useFetchData(["product"], `product/product-details/${id}`, token);
+  // delete products
+  const deleteProduct = useDeleteData(
+    ["products"],
+    `product/product-delete`,
+    token
+  );
   const handleDelete = (id: string) => {
     deleteProduct.mutate(id, {
       onSuccess: () => {
@@ -39,7 +43,7 @@ const AdminProductDetails = () => {
 
   if (isLoading) return <Loader />;
   if (error) return <p>Error fetching data</p>;
-// bread crumbs lists
+  // bread crumbs lists
   const breadCrumbItems = [
     { label: "Dashboard", href: "/admin/dashboard" },
     { label: "All Products", href: "/admin/products/all-products" },
@@ -78,6 +82,30 @@ const AdminProductDetails = () => {
                 </span>
               </p>
               <p>
+                <span className="font-medium text-secondary">Discount(%):</span>{" "}
+                <span className="text-accent font-semibold">
+                  {product.discountPercentage > 0
+                    ? product.discountPercentage
+                    : "No Discount"}
+                </span>
+              </p>
+              <p>
+                <span className="font-medium text-secondary">
+                  Discounted Price:
+                </span>{" "}
+                <span className="text-accent font-semibold">
+                  {product.discountPercentage > 0
+                    ? product.discountedPrice
+                    : "No Discount"}
+                </span>
+              </p>
+              <p>
+                <span className="font-medium text-secondary">Created At:</span>{" "}
+                {product.createdAt
+                  ? new Date(product.createdAt).toLocaleDateString()
+                  : "Not available"}
+              </p>
+              {/* <p>
                 <span className="font-medium text-secondary">Stock:</span>{" "}
                 <span
                   className={`font-semibold ${
@@ -90,40 +118,9 @@ const AdminProductDetails = () => {
                     ? `${product.stock} units available`
                     : "Out of stock"}
                 </span>{" "}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Sales and Performance */}
-        <div className="bg-complementary p-6 rounded-lg shadow text-textLight">
-          <h2 className="text-xl font-bold text-textLight border-b">
-            Performance
-          </h2>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+              </p> */}
               <p>
-                <span className="font-medium text-background">
-                  Total Sales:
-                </span>{" "}
-                {product.totalSales || 0}
-              </p>
-              <p>
-                <span className="font-medium text-background">
-                  Revenue Generated:
-                </span>{" "}
-                ${product.revenueGenerated || 0}
-              </p>
-            </div>
-            <div>
-              <p>
-                <span className="font-medium text-background">Created At:</span>{" "}
-                {product.createdAt
-                  ? new Date(product.createdAt).toLocaleDateString()
-                  : "Not available"}
-              </p>
-              <p>
-                <span className="font-medium text-background">Status:</span>{" "}
+                <span className="font-medium text-secondary">Status:</span>{" "}
                 {product.active ? (
                   <span className="text-accent font-semibold">Active</span>
                 ) : (
@@ -134,6 +131,8 @@ const AdminProductDetails = () => {
           </div>
         </div>
 
+        {/* Sales and Performance */}
+       
         {/* Actions */}
         <div className="flex space-x-4 w-full">
           <Link className="w-full" href={`/admin/products/edit/${product?.id}`}>

@@ -1,5 +1,6 @@
 "use client";
 import SectionTitle from "@/components/customUi/SectionTitle";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchData } from "@/hooks/useApi";
 import { PhotoI } from "@/types/Types";
 import Image from "next/image";
@@ -11,7 +12,13 @@ const PhotoMarquee = () => {
     `photos/get-all-client-photos`
   );
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="container mx-auto mt-20 w-full  flex items-center justify-between gap-5">
+        <Skeleton className="w-full h-[300px] md:h-[400px] rounded-xl" />
+      </div>
+    );
+  }
   if (error) return <p>Error loading photos</p>;
 
   const renderPattern = (photos: PhotoI[]) => {
