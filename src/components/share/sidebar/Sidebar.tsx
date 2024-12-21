@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import Logo from "../Logo";
 import { PiSignpostDuotone } from "react-icons/pi";
@@ -18,6 +18,7 @@ import {
   ShoppingBasket,
   Star,
 } from "lucide-react";
+import { useCookies } from "next-client-cookies";
 
 // LayoutDashboard
 export const adminSidebarItems: SidebarMenu = {
@@ -78,6 +79,8 @@ export interface SidebarMenu {
 }
 
 const Sidebar = () => {
+  const cookies = useCookies();
+  const router = useRouter();
   const pathName = typeof window !== "undefined" ? usePathname() : "";
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
   // const selectedSidebarItems: SidebarMenu = useSidebarItems(pathName);
@@ -94,6 +97,11 @@ const Sidebar = () => {
     });
   };
 
+  const handleLogout = () => {
+    cookies.remove("henna-token");
+    router.push("/");
+  };
+
   return (
     <section
       className={`print:hidden bg-primary h-screen fixed w-64 z-10 overflow-auto scrollbar`}
@@ -102,8 +110,8 @@ const Sidebar = () => {
         <div className="h-20 w-full bg-secondary py-4 pr-4 flex justify-between items-center">
           <Logo context="" />
         </div>
-        <main className="grow w-full flex flex-col justify-between">
-          <div className="grow">
+        <main className="grow h-full w-full flex flex-col justify-between">
+          <div className="grow ">
             {adminSidebarItems.menu.map((item, index) => (
               <div key={index} className="w-full grow">
                 {item.subItems ? (
@@ -211,6 +219,34 @@ const Sidebar = () => {
                 )}
               </div>
             ))}
+          </div>
+
+          <div
+            onClick={handleLogout}
+            className={`cursor-pointer h-16 pl-10 flex justify-start items-center gap-3 w-full hover:bg-secondary group ${
+              pathName === `${adminSidebarItems.extra.href}` ? "bg-white" : ""
+            }`}
+          >
+            <div className=" flex items-center gap-4">
+              {adminSidebarItems.extra.icon && (
+                <adminSidebarItems.extra.icon
+                  className={`w-6 h-6 group-hover:text-white ${
+                    pathName === `${adminSidebarItems.extra.href}`
+                      ? "text-primary"
+                      : "text-white"
+                  }`}
+                />
+              )}
+              <h1
+                className={`text-base font-normal group-hover:text-white ${
+                  pathName === `${adminSidebarItems.extra.href}`
+                    ? "text-primary"
+                    : "text-white"
+                }`}
+              >
+                {adminSidebarItems.extra.label}
+              </h1>
+            </div>
           </div>
         </main>
       </aside>
