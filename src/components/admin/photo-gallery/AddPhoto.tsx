@@ -11,6 +11,7 @@ import { useAddData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
+import { useCookies } from "next-client-cookies";
 
 interface ProductFormValues {
   title: string;
@@ -36,6 +37,8 @@ const schema = yup.object().shape({
 });
 
 const AddPhoto: React.FC = () => {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     register,
     handleSubmit,
@@ -48,7 +51,7 @@ const AddPhoto: React.FC = () => {
     resolver: yupResolver(schema) as any,
   });
   const router = useRouter();
-  const addPhoto = useAddData(["photos"], `photos/create-photo`);
+  const addPhoto = useAddData(["photos"], `photos/create-photo`, token);
 
   const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
     console.log("Product Data:", data);

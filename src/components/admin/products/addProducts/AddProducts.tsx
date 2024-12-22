@@ -13,8 +13,11 @@ import { schema } from "./Schema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
+import { useCookies } from "next-client-cookies";
 const AddProductForm: React.FC = () => {
   const router = useRouter();
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     control,
     register,
@@ -26,7 +29,7 @@ const AddProductForm: React.FC = () => {
   } = useForm<AddProductI>({
     resolver: yupResolver(schema) as any,
   });
-  const addProduct = useAddData(["products"], "product/add-product");
+  const addProduct = useAddData(["products"], "product/add-product", token);
   console.log("status", addProduct.status);
   //
   const price = watch("price");

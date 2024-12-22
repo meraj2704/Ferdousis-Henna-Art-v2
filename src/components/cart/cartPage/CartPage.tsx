@@ -9,14 +9,20 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { CiCirclePlus } from "react-icons/ci";
 import { Product } from "@/types/Types";
+import { useRouter } from "next/navigation";
 
 interface CartProductI extends Product {
   quantity: number;
 }
 
-const CartPage = () => {
+const CartPage = ({
+  setOpenDrawer,
+}: {
+  setOpenDrawer: (val: boolean) => void;
+}) => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   // Track if component has mounted on the client
   const [isClient, setIsClient] = useState(false);
@@ -141,12 +147,15 @@ const CartPage = () => {
             <span className="text-sm">TK</span>
           </p>
         </div>
-        <Link
-          href="/check-out"
+        <button
+          onClick={() => {
+            setOpenDrawer(false);
+            router.push("/check-out");
+          }}
           className="w-full text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition"
         >
           Proceed to Checkout
-        </Link>
+        </button>
       </div>
     </div>
   );

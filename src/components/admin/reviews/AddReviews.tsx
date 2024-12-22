@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import MiniLoader from "@/components/share/MiniLoader";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
+import { useCookies } from "next-client-cookies";
 
 interface ReviewFormValues {
   title: string;
@@ -37,6 +38,8 @@ const schema = yup.object().shape({
 });
 
 const AddReviews: React.FC = () => {
+  const cookies = useCookies();
+  const token = cookies.get("henna-token");
   const {
     register,
     handleSubmit,
@@ -49,7 +52,7 @@ const AddReviews: React.FC = () => {
     resolver: yupResolver(schema) as any,
   });
   const router = useRouter();
-  const addReviews = useAddData(["reviews"], `reviews/create-review`);
+  const addReviews = useAddData(["reviews"], `reviews/create-review`, token);
 
   const onSubmit: SubmitHandler<ReviewFormValues> = (data) => {
     console.log("Product Data:", data);

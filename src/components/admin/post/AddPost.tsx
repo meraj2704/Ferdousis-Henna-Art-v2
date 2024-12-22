@@ -11,11 +11,14 @@ import { useAddData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import MiniLoader from "@/components/share/MiniLoader";
+import { useCookies } from "next-client-cookies";
 
 const AddPost: React.FC = () => {
+  const cookies = useCookies();
+    const token = cookies.get("henna-token");
   const router = useRouter();
   const [isManual, setIsManual] = useState<boolean>(true);
-  const addPost = useAddData(["allPosts"], `hero-post/create-post`);
+  const addPost = useAddData(["allPosts"], `hero-post/create-post`, token);
   const {
     register,
     handleSubmit,

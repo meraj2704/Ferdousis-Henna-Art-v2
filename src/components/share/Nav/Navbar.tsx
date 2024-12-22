@@ -25,6 +25,7 @@ const Navbar = () => {
   const [isNavbarFixed, setNavbarFixed] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathName = usePathname();
+  const [isOpenDrawer, setOpenDrawer] = useState(false);
 
   // Optimized scroll handler
   const handleScroll = useCallback(() => {
@@ -92,12 +93,12 @@ const Navbar = () => {
             <div className="col-span-1  flex justify-end items-center gap-3">
               <div className="flex gap-2">
                 <Link href="/cart"></Link>
-                <Sheet >
+                <Sheet open={isOpenDrawer} onOpenChange={setOpenDrawer}>
                   <SheetTrigger>
                     <CartIcon />
                   </SheetTrigger>
                   <SheetContent className="z-[99999] rounded-l-xl">
-                    <CartPage />
+                    <CartPage setOpenDrawer={setOpenDrawer} />
                   </SheetContent>
                 </Sheet>
               </div>
