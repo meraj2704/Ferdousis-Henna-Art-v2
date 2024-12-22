@@ -18,7 +18,7 @@ interface CartProductI extends Product {
 const CartPage = ({
   setOpenDrawer,
 }: {
-  setOpenDrawer: (val: boolean) => void;
+  setOpenDrawer?: (val: boolean) => void;
 }) => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const dispatch = useAppDispatch();
@@ -149,7 +149,9 @@ const CartPage = ({
         </div>
         <button
           onClick={() => {
-            setOpenDrawer(false);
+            if (setOpenDrawer) {
+              setOpenDrawer(false);
+            }
             router.push("/check-out");
           }}
           className="w-full text-center bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition"
