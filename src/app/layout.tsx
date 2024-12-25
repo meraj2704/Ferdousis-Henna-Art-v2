@@ -57,7 +57,7 @@ export default function RootLayout({
         <WrapProvider>
           <body className={`${rakkas.className} bg-background`}>
             {children}
-            <Toaster richColors />
+            <Toaster richColors position="top-left" />
           </body>
         </WrapProvider>
       </CookiesProvider>
