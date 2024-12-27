@@ -83,9 +83,6 @@ const OrderDetails = () => {
             <strong>Name:</strong>
             <span className="font-bold">{customerInformation?.name} </span>
           </p>
-          {/* <p>
-          <strong>Email:</strong> {order?.user.email}
-        </p> */}
           <p>
             <strong>Phone:</strong> {customerInformation?.phone}
           </p>

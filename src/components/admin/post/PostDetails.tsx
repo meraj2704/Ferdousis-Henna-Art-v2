@@ -17,15 +17,20 @@ const PostDetails = () => {
   const params = useParams();
   const router = useRouter();
   const { id } = params;
-  const { isLoading, error, data } = useFetchData(
-    ["postDetails"],
+  const { isLoading, error, data, refetch } = useFetchData(
+    [`postDetails+id`],
     `hero-post/post-details/${id}`,
     token
   );
-  const deletePost = useDeleteData(["allPosts"], `hero-post/post-delete`,token);
+  const deletePost = useDeleteData(
+    ["allPosts"],
+    `hero-post/post-delete`,
+    token
+  );
   const handleDelete = (id: string) => {
     deletePost.mutate(id, {
       onSuccess: () => {
+        refetch();
         toast.success("Post deleted successfully!");
         router.push("/admin/post/all-posts");
       },

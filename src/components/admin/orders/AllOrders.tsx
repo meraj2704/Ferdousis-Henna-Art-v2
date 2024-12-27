@@ -12,9 +12,8 @@ import {
   useReactTable,
   flexRender,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -59,7 +58,6 @@ export const columns: ColumnDef<OrderI>[] = [
     cell: ({ row }) => (
       <div className="capitalize">{row.original.customerInformation.name}</div>
     ),
-    // meta: { responsive: "hidden sm:table-cell" },
   },
   {
     accessorKey: "customerInformation.phone",

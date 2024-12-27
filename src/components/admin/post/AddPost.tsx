@@ -15,7 +15,7 @@ import { useCookies } from "next-client-cookies";
 
 const AddPost: React.FC = () => {
   const cookies = useCookies();
-    const token = cookies.get("henna-token");
+  const token = cookies.get("henna-token");
   const router = useRouter();
   const [isManual, setIsManual] = useState<boolean>(true);
   const addPost = useAddData(["allPosts"], `hero-post/create-post`, token);

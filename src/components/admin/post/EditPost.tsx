@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Checkbox } from "@/components/ui/checkbox";
 import Input from "@/components/share/Input";

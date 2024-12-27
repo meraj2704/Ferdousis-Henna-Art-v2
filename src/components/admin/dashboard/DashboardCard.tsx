@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // ShadCN components
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DashboardCardProps {
   cardName: string;
-  number: number | string; // Accepts both numeric and formatted string values
+  number: number | string;
   content: string;
 }
 
