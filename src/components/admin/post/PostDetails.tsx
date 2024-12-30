@@ -1,5 +1,4 @@
 "use client";
-
 import DynamicAlertDialogue from "@/components/share/DynamicAlertDialogue";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import Loader from "@/components/share/Loader";

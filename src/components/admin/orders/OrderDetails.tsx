@@ -22,6 +22,7 @@ const OrderDetails = () => {
   const {
     isLoading,
     error,
+    refetch,
     data = [],
   } = useFetchData([`orderDetails-${id}`], `orders/order-details/${id}`, token);
   const updateOrderStatus = useUpdateData(
@@ -44,6 +45,7 @@ const OrderDetails = () => {
       updateOrderStatus.mutate(updatedStatus, {
         onSuccess: () => {
           toast.success("Order Status updated successfully");
+          refetch();
         },
         onError: () => {
           toast.error("Failed to update order status!");
@@ -112,12 +114,12 @@ const OrderDetails = () => {
         </div>
       </div>
       <div className="w-full flex flex-col md:flex-row gap-5">
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 space-y-3 md:space-y-5">
           <h3 className="font-bold text-primary">Products:</h3>
           {cartItems?.map((product: any) => (
             <div
               key={product._id}
-              className="flex items-center justify-start ga"
+              className="flex items-center justify-start gap"
             >
               <div className="flex items-center">
                 <img

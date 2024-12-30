@@ -191,14 +191,14 @@ const Sidebar = () => {
                   <Link href={`${item.href}`}>
                     <div
                       className={`h-16 pl-10 flex justify-start items-center gap-3 w-full hover:bg-secondary group ${
-                        pathName === `${item.href}` ? "bg-white" : ""
+                        pathName.includes(String(item.href)) ? "bg-white" : ""
                       }`}
                     >
                       <div className="flex items-center gap-4">
                         {item.icon && (
                           <item.icon
                             className={`w-6 h-6 group-hover:text-white ${
-                              pathName === `${item.href}`
+                              pathName.includes(String(item.href))
                                 ? "text-primary"
                                 : "text-white"
                             }`}
@@ -206,7 +206,7 @@ const Sidebar = () => {
                         )}
                         <h1
                           className={`text-base font-normal group-hover:text-white ${
-                            pathName === `${item.href}`
+                            pathName.includes(String(item.href)) 
                               ? "text-primary"
                               : "text-white"
                           }`}
