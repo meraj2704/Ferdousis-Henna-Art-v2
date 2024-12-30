@@ -79,8 +79,10 @@ const PhotoMarquee = () => {
       <div className="h-80 lg:h-96 space-x-2">
         <Marquee
           speed={100}
-          gradient={false}
+          gradient={true}
           className="flex items-center space-x-4 gap-4"
+          autoFill={true}
+          gradientColor="black"
         >
           <div className="flex items-center gap-2">{renderPattern(data)}</div>
         </Marquee>

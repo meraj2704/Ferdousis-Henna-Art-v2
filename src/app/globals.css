@@ -42,3 +42,8 @@
     color: hsl(var(--sidebar-foreground));
   }
 }
+
+.marquee-item {
+  margin: 0;
+  padding: 0;
+}
