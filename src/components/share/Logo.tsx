@@ -1,11 +1,14 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 const logo = "/images/logo.PNG";
 
 const Logo = ({ context }: { context: string }) => {
   return (
     <div className="flex justify-center items-center ">
-      <Image src={logo} alt="Logo" width={50} height={50} priority />
+      <Link href={"/"}>
+        <Image src={logo} alt="Logo" width={50} height={50} priority />
+      </Link>
       <h1
         className={`${
           context === "nav" ? "text-primary" : "text-textLight"

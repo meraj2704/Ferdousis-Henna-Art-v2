@@ -49,7 +49,7 @@ const CheckoutPage = () => {
     `divisions-get-all`
   );
 
-  const newOrder = useAddData(["orders","dashboard"], "orders/new-order");
+  const newOrder = useAddData(["orders", "dashboard"], "orders/new-order");
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -173,76 +173,82 @@ const CheckoutPage = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Input
-            label="Full Name"
+            label="Full Name (পূর্ণ নাম)"
             name="fullName"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="Enter your full name (আপনার পূর্ণ নাম লিখুন)"
             register={register}
             error={errors.fullName}
             required
           />
 
           <Input
-            label="Phone Number"
+            label="Phone Number (ফোন নম্বর)"
             name="phone"
             type="text"
-            placeholder="Enter your phone number"
+            placeholder="Enter your phone number (আপনার ফোন নম্বর লিখুন)"
             register={register}
             error={errors.phone}
             required
           />
+
           <CustomSelect
-            label="State"
+            label="Division (বিভাগ)"
             name="state"
             control={control}
             options={Object.keys(statesWithDistricts).map((state) => ({
               label: state,
               value: state,
             }))}
-            rules={{ required: "State is required" }}
-            placeholder="Select your state"
+            rules={{ required: "Division is required (বিভাগ প্রয়োজন)" }}
+            placeholder="Select your division (আপনার বিভাগ নির্বাচন করুন)"
             error={errors.state}
             required={true}
           />
+
           <CustomSelect
-            label="District"
+            label="District (জেলা)"
             name="district"
             control={control}
             options={districts}
-            rules={{ required: "District is required" }}
-            placeholder="Select your district"
+            rules={{ required: "District is required (জেলা প্রয়োজন)" }}
+            placeholder="Select your district (আপনার জেলা নির্বাচন করুন)"
             error={errors.district}
             required={true}
           />
+
           <CustomSelect
-            label="Upazila"
+            label="Upazila (উপজেলা)"
             name="upazila"
             control={control}
             options={upazilas}
-            rules={{ required: "Upazila is required" }}
-            placeholder="Select your upazila"
+            rules={{ required: "Upazila is required (উপজেলা প্রয়োজন)" }}
+            placeholder="Select your upazila (আপনার উপজেলা নির্বাচন করুন)"
             error={errors.upazila}
             required={true}
           />
+
           <Input
-            label="Courier Office Address"
+            label="Courier Office Address (কুরিয়ার অফিসের ঠিকানা)"
             name="address"
             type="text"
-            placeholder="Enter the courier office address"
+            placeholder="Enter the courier office address (কুরিয়ার অফিসের ঠিকানা লিখুন)"
             register={register}
             error={errors.address}
             required
           />
+
           <Input
-            label="Address Details"
+            label="Address Details (ঠিকানার বিবরণ)"
             name="addressDetails"
             type="text"
-            placeholder="House No , Road No"
+            placeholder="House No , Road No (বাড়ি নম্বর, রোড নম্বর)"
             register={register}
             error={errors.addressDetails}
             required
           />
         </div>
+
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Payment Information
         </h2>
