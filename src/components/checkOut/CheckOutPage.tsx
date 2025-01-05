@@ -12,6 +12,8 @@ import { clearCart } from "@/redux/Reducer/cartSlice";
 import { useAddData, useFetchData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import FormSubmitButton from "../share/FormSubmitButton";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { checkoutSchema } from "./Schema";
 
 interface CheckoutInputs {
   state: string;
@@ -19,7 +21,6 @@ interface CheckoutInputs {
   upazila: string;
   address: string;
   fullName: string;
-  email: string;
   phone: string;
   addressDetails: string;
   // paymentMethod: string;
@@ -42,7 +43,10 @@ const CheckoutPage = () => {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<CheckoutInputs>({});
+  } = useForm<CheckoutInputs>({
+    resolver: yupResolver(checkoutSchema),
+
+  });
 
   const { isLoading, data, error } = useFetchData(
     ["divisions"],
