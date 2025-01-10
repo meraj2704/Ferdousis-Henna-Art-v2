@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:4040"; // Replace with your backend URL
+const SOCKET_URL = "https://ferdousis-henna-art-backend.vercel.app"; // Replace with your backend URL
 
 const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
