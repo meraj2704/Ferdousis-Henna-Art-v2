@@ -12,14 +12,31 @@ import { usePathname, useRouter } from "next/navigation";
 import ToggleSidebar from "./ToggleSidebar";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
+import useSocket from "@/hooks/useSocket";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { RxCross2 } from "react-icons/rx";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const DashboardHeader: React.FC = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRoutes, setFilteredRoutes] = useState<any[]>([]);
+  const [isNotificationsDropdownOpen, setIsNotificationsDropdownOpen] =
+    useState(false);
+  useEffect(() => {
+    console.log("isNotificationsDropdownOpen", isNotificationsDropdownOpen);
+  }, [isNotificationsDropdownOpen]);
   const pathName = usePathname();
   const router = useRouter();
+  const { notifications } = useSocket();
+  console.log("notifications", notifications);
 
   const routes = [
     { name: "Dashboard", path: "/admin/dashboard" },
@@ -72,9 +89,7 @@ const DashboardHeader: React.FC = () => {
       </div>
 
       <div className="flex-1 flex justify-end items-center relative">
-        <div
-          className={`flex items-center transition-all duration-300`}
-        >
+        <div className={`flex items-center transition-all duration-300`}>
           <input
             type="text"
             placeholder="Search..."
@@ -116,9 +131,47 @@ const DashboardHeader: React.FC = () => {
       </div>
 
       <div className="flex items-center space-x-2 lg:space-x-6">
-        <button className="px-2 py-2 bg-secondary text-textLight rounded-full hover:bg-accent focus:outline-none">
-          <IoIosNotifications />
-        </button>
+        <Popover
+        // open={isNotificationsDropdownOpen}
+        // onOpenChange={setIsNotificationsDropdownOpen}
+        >
+          <PopoverTrigger>
+            <button
+              type="button"
+              // onClick={() => setIsNotificationsDropdownOpen(true)}
+              className="px-2 py-2 bg-secondary text-textLight rounded-full hover:bg-accent focus:outline-none"
+            >
+              <div className="relative">
+                <IoIosNotifications />
+                {notifications.length > 0 && (
+                  <div className="absolute size-5 flex justify-center items-center top-[-18px] right-[-12px] bg-background text-black rounded-full  text-xs">
+                    {notifications.length}
+                  </div>
+                )}
+              </div>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 z-[9000] bg-background p-0">
+            {notifications.map((notification, index) => (
+              <div
+                key={index}
+                className={`grid grid-cols-4 gap-4 items-center p-3 ${
+                  index !== notifications.length - 1
+                    ? "border-b border-accent"
+                    : ""
+                }`}
+              >
+                <div className="col-span-3 flex flex-col justify-start">
+                  <p>{notification.userId}</p>
+                  <p>{notification.message}</p>
+                </div>
+                <div className="flex justify-end">
+                  <RxCross2 />
+                </div>
+              </div>
+            ))}
+          </PopoverContent>
+        </Popover>
         <FaUserCircle className="text-3xl text-textLight cursor-pointer" />
       </div>
       <ToggleSidebar
