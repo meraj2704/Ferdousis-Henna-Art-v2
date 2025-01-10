@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = "https://ferdousis-henna-art-backend.vercel.app/";
+const SOCKET_URL = "https://api.ferdousishenna.cfd/";
 // const SOCKET_URL = "http://localhost:4040/";
 
 const useSocket = () => {

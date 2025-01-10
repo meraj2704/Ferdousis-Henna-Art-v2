@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const url = "https://ferdousis-henna-art-backend.vercel.app/api/";
+export const url = "https://api.ferdousishenna.cfd/api/";
 
 const axiosInstance = axios.create({
   baseURL: url,
