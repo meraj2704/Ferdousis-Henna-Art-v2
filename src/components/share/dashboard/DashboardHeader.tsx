@@ -1,27 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import Logo from "../Logo";
 import UserInfo from "./UserInfo";
 import { IoIosNotifications } from "react-icons/io";
-import { CiSearch } from "react-icons/ci";
-import ToggleNavbar from "../Nav/ToggleNavbar";
 import { TfiClose } from "react-icons/tfi";
 import { FaBars } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import ToggleSidebar from "./ToggleSidebar";
-import { MessageCircle } from "lucide-react";
-import Link from "next/link";
 import useSocket from "@/hooks/useSocket";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { RxCross2 } from "react-icons/rx";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import moment from "moment";
 
 const DashboardHeader: React.FC = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -35,8 +28,8 @@ const DashboardHeader: React.FC = () => {
   }, [isNotificationsDropdownOpen]);
   const pathName = usePathname();
   const router = useRouter();
-  const { notifications } = useSocket();
-  console.log("notifications", notifications);
+  const { notifications, markNotificationAsRead, unreadCount } = useSocket();
+  console.log("notifications", notifications, unreadCount);
 
   const routes = [
     { name: "Dashboard", path: "/admin/dashboard" },
@@ -44,7 +37,6 @@ const DashboardHeader: React.FC = () => {
     { name: "Products", path: "/admin/products/all-products" },
     { name: "Photo Gallery", path: "/admin/photo-gallery/all-photos" },
     { name: "Notifications", path: "/notifications" },
-    // Add more routes here
   ];
 
   const toggleMobileMenu = () => {
@@ -63,9 +55,9 @@ const DashboardHeader: React.FC = () => {
   }, [searchQuery]);
 
   const handleSelect = (path: string) => {
-    router.push(path); // Redirect to selected route
-    setSearchQuery(""); // Clear the search query
-    setFilteredRoutes([]); // Clear search results
+    router.push(path);
+    setSearchQuery("");
+    setFilteredRoutes([]);
   };
 
   return (
@@ -115,43 +107,26 @@ const DashboardHeader: React.FC = () => {
             </ul>
           )}
         </div>
-        {/* {searchQuery && filteredRoutes.length > 0 && (
-          <ul className="absolute top-full left-0 w-full bg-white shadow-md rounded-lg mt-2 z-10">
-            {filteredRoutes.map((route) => (
-              <li
-                key={route.path}
-                className="p-2 cursor-pointer hover:bg-gray-200"
-                onClick={() => handleSelect(route.path)}
-              >
-                {route.name}
-              </li>
-            ))}
-          </ul>
-        )} */}
       </div>
 
       <div className="flex items-center space-x-2 lg:space-x-6">
-        <Popover
-        // open={isNotificationsDropdownOpen}
-        // onOpenChange={setIsNotificationsDropdownOpen}
-        >
+        <Popover>
           <PopoverTrigger>
             <button
               type="button"
-              // onClick={() => setIsNotificationsDropdownOpen(true)}
               className="px-2 py-2 bg-secondary text-textLight rounded-full hover:bg-accent focus:outline-none"
             >
               <div className="relative">
                 <IoIosNotifications />
-                {notifications.length > 0 && (
+                {unreadCount > 0 && (
                   <div className="absolute size-5 flex justify-center items-center top-[-18px] right-[-12px] bg-background text-black rounded-full  text-xs">
-                    {notifications.length}
+                    {unreadCount}
                   </div>
                 )}
               </div>
             </button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 z-[9000] bg-background p-0">
+          <PopoverContent className="w-80 h-96 z-[9000] bg-background p-0 overflow-hidden overflow-y-scroll">
             {notifications.map((notification, index) => (
               <div
                 key={index}
@@ -159,14 +134,27 @@ const DashboardHeader: React.FC = () => {
                   index !== notifications.length - 1
                     ? "border-b border-accent"
                     : ""
-                }`}
+                } ${!notification.read && "text-accent"}`}
               >
                 <div className="col-span-3 flex flex-col justify-start">
-                  <p>{notification.userId}</p>
-                  <p>{notification.message}</p>
+                  <div className="flex items-center gap-3">
+                    {/* <p>{notification.userId}</p> */}
+                    {!notification.read && (
+                      <p className="font-bold text-red-500">New</p>
+                    )}
+                  </div>
+                  <p className={`${!notification.read && "font-bold"}`}>
+                    {notification.message}
+                  </p>
+                  <p className={`text-sm`}>
+                    {moment(notification.createdAt).format("MMMM Do YYYY")}
+                  </p>
                 </div>
-                <div className="flex justify-end">
-                  <RxCross2 />
+                <div
+                  onClick={() => markNotificationAsRead(notification._id)}
+                  className="flex justify-end cursor-pointer"
+                >
+                  {!notification.read && <RxCross2 />}
                 </div>
               </div>
             ))}

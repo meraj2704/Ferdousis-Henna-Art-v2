@@ -49,20 +49,20 @@ const ImageCarousel = () => {
                 width={1920}
                 height={620}
                 className="w-full h-[40vh] md:h-[50vh] 2xl:h-[calc(100vh-550px)] object-cover"
+                priority={index === 0}
               />
             </div>
             <div className="absolute w-full h-full  top-0 left-0 right-0 bg-gradient-to-t from-black to-transparent flex flex-col justify-center items-center p-8 ">
               {post?.title && (
-                  <h2 className="text-center text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold mb-4 ">
-                    {post.title}
-                  </h2>
-                
+                <h2 className="text-center text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold mb-4 ">
+                  {post.title}
+                </h2>
               )}
               {post?.description && (
                 <div className="flex justify-center items-center">
-                <p className="max-w-xl text-white text-center text-lg mb-6">
-                  {post.description}
-                </p>
+                  <p className="max-w-xl text-white text-center text-lg mb-6">
+                    {post.description}
+                  </p>
                 </div>
               )}
               <Link href={post.link}>

@@ -1,7 +1,6 @@
 "use client";
 import ButtonF from "@/components/customUi/ButtonF";
 import SectionTitle from "@/components/customUi/SectionTitle";
-import Loader from "@/components/share/Loader";
 import ProductCart from "@/components/share/ProductsCart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchData } from "@/hooks/useApi";
@@ -19,25 +18,40 @@ const ProductsHome = () => {
     isLoading,
     error,
   } = useFetchData(["homeProducts"], `product/home-products`);
-  const handleAddToCart = (product: Product) => {
-    dispatch(addToCart(product));
-    toast.success("Product added successfully");
-  };
-  console.log("data", products);
+
+  const handleAddToCart = React.useCallback(
+    (product: Product) => {
+      dispatch(addToCart(product));
+      toast.success("Product added successfully");
+    },
+    [dispatch]
+  );
 
   if (isLoading) {
+    const skeletonCount = 4;
     return (
       <div className="container mx-auto mt-20 w-full  flex items-center justify-between gap-5">
-        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
-        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl" />
-        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden md:block" />
-        <Skeleton className="w-[300px] h-[300px] md:h-[400px] rounded-xl hidden lg:block" />
+        {Array.from({ length: skeletonCount }).map((_, index) => (
+          <Skeleton
+            key={index}
+            className="w-[300px] h-[300px] md:h-[400px] rounded-xl"
+          />
+        ))}
       </div>
     );
   }
-  if (error) return <p>Error fetching products: {error.message}</p>;
-
-  console.log("products data", products);
+  if (error) {
+    return (
+      <div className="container mx-auto mt-20 text-center">
+        <p className="text-lg text-red-600">
+          Failed to fetch products: {error.message}
+        </p>
+        <ButtonF variant="primary" onClick={() => window.location.reload()}>
+          Retry
+        </ButtonF>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-1 md:px-2 ">
