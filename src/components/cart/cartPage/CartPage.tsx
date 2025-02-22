@@ -24,11 +24,9 @@ const CartPage = ({
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  // Track if component has mounted on the client
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Ensure the component is rendered client-side
     setIsClient(true);
   }, []);
 
@@ -80,7 +78,7 @@ const CartPage = ({
           </div>
         </Link>
       </div>
-      <div className="grow flex flex-col gap-6 md:gap-8">
+      <div className="flex flex-col gap-6 md:gap-8">
         {/* Cart Item List */}
         {cartItems.map((item) => (
           <div
