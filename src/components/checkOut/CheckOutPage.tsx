@@ -14,18 +14,14 @@ import { toast } from "sonner";
 import FormSubmitButton from "../share/FormSubmitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { checkoutSchema } from "./Schema";
+import CustomCombobox from "../share/CustomCombobox";
 
 interface CheckoutInputs {
-  state: string;
   district: string;
   upazila: string;
-  address: string;
   fullName: string;
   phone: string;
   addressDetails: string;
-  // paymentMethod: string;
-  // paymentNumber?: string;
-  // transactionId?: string;
 }
 
 const CheckoutPage = () => {
@@ -45,7 +41,6 @@ const CheckoutPage = () => {
     formState: { errors },
   } = useForm<CheckoutInputs>({
     resolver: yupResolver(checkoutSchema),
-
   });
 
   const { isLoading, data, error } = useFetchData(
@@ -75,44 +70,20 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (watch("district")) {
-      const selectedDistrictUpazilas = statesWithDistricts[
-        watch("state")
-      ]?.find(
-        (district: any) => district.value === watch("district")
+      const selectedDistrictUpazilas = data?.find(
+        (district: any) => district.name === watch("district")
       )?.upazilas;
       if (selectedDistrictUpazilas) {
         setUpazilas(selectedDistrictUpazilas);
       }
     }
-  }, [watch("district"), watch("state"), statesWithDistricts]);
+  }, [watch("district"), data]);
 
   useEffect(() => {
-    // Clear district and upazila when state changes
-    setValue("district", "");
     setValue("upazila", "");
-    if (watch("state")) {
-      const selectedDistrictUpazilas =
-        statesWithDistricts[watch("state")] || [];
-      setUpazilas([]);
-    }
-  }, [watch("state")]);
+  }, [watch("district")]);
 
-  useEffect(() => {
-    // Clear upazila when district changes
-    setValue("upazila", "");
-    if (watch("district")) {
-      const selectedDistrictUpazilas = statesWithDistricts[
-        watch("state")
-      ]?.find(
-        (district: any) => district.value === watch("district")
-      )?.upazilas;
-      if (selectedDistrictUpazilas) {
-        setUpazilas(selectedDistrictUpazilas);
-      }
-    }
-  }, [watch("district"), watch("state"), statesWithDistricts]);
   const cartItems = useAppSelector((state: RootState) => state.cart);
-  const selectedState = watch("state");
   const selectedDistrict = watch("district");
   const selectedUpazila = watch("upazila");
 
@@ -127,10 +98,8 @@ const CheckoutPage = () => {
         name: data.fullName,
         phone: data.phone,
         address: {
-          state: data.state,
           district: data.district,
           upazila: data.upazila,
-          courierOffice: data.address,
           details: data.addressDetails,
         },
       },
@@ -142,13 +111,12 @@ const CheckoutPage = () => {
       newOrder.mutate(orderData, {
         onSuccess: () => {
           setOpenSuccessModal(true);
-          dispatch(clearCart()); // Clear the cart after successful order placement
-          // toast.success("Order placed successfully!");
-          reset(); // Reset the form or state if applicable
-          router.push(`/products`); // Navigate to products or any relevant page
+          dispatch(clearCart());
+          reset();
+          router.push(`/products`);
         },
         onError: (error: any) => {
-          console.error("Error placing order:", error); // Log the error for debugging
+          console.error("Error placing order:", error);
           toast.error("Failed to place the order. Please try again.");
         },
       });
@@ -163,11 +131,6 @@ const CheckoutPage = () => {
     router.push("/products");
   };
 
-  const districts =
-    selectedState && selectedState in statesWithDistricts
-      ? statesWithDistricts[selectedState]
-      : [];
-
   return (
     <div className="container mx-auto px-2 py-4">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
@@ -177,76 +140,51 @@ const CheckoutPage = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Input
-            label="Full Name (পূর্ণ নাম)"
+            label="Full Name"
             name="fullName"
             type="text"
-            placeholder="Enter your full name (আপনার পূর্ণ নাম লিখুন)"
+            placeholder="Enter your full name"
             register={register}
             error={errors.fullName}
             required
           />
-
           <Input
-            label="Phone Number (ফোন নম্বর)"
+            label="Phone Number"
             name="phone"
             type="text"
-            placeholder="Enter your phone number (আপনার ফোন নম্বর লিখুন)"
+            placeholder="Enter your phone number"
             register={register}
             error={errors.phone}
             required
           />
-
-          <CustomSelect
-            label="Division (বিভাগ)"
-            name="state"
-            control={control}
-            options={Object.keys(statesWithDistricts).map((state) => ({
-              label: state,
-              value: state,
-            }))}
-            rules={{ required: "Division is required (বিভাগ প্রয়োজন)" }}
-            placeholder="Select your division (আপনার বিভাগ নির্বাচন করুন)"
-            error={errors.state}
-            required={true}
-          />
-
-          <CustomSelect
-            label="District (জেলা)"
+          <CustomCombobox
+            label="District"
             name="district"
             control={control}
-            options={districts}
-            rules={{ required: "District is required (জেলা প্রয়োজন)" }}
-            placeholder="Select your district (আপনার জেলা নির্বাচন করুন)"
+            options={data?.map((district: any) => ({
+              label: district.name,
+              value: district.name,
+            }))}
+            rules={{ required: "District is required" }}
+            placeholder="Select your district"
             error={errors.district}
-            required={true}
+            required
           />
-
           <CustomSelect
-            label="Upazila (উপজেলা)"
+            label="Upazila"
             name="upazila"
             control={control}
             options={upazilas}
-            rules={{ required: "Upazila is required (উপজেলা প্রয়োজন)" }}
-            placeholder="Select your upazila (আপনার উপজেলা নির্বাচন করুন)"
+            rules={{ required: "Upazila is required" }}
+            placeholder="Select your upazila"
             error={errors.upazila}
-            required={true}
-          />
-
-          <Input
-            label="Courier Office Address (কুরিয়ার অফিসের ঠিকানা)"
-            name="address"
-            type="text"
-            placeholder="Enter the courier office address (কুরিয়ার অফিসের ঠিকানা লিখুন)"
-            register={register}
-            error={errors.address}
             required
           />
-
           <Input
-            label="Address Details (ঠিকানার বিবরণ)"
+            label="Address Details"
             name="addressDetails"
             type="text"
-            placeholder="House No , Road No (বাড়ি নম্বর, রোড নম্বর)"
+            placeholder="House No, Road No"
             register={register}
             error={errors.addressDetails}
             required
