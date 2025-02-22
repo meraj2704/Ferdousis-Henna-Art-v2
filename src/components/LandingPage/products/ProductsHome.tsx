@@ -30,7 +30,7 @@ const ProductsHome = () => {
   if (isLoading) {
     const skeletonCount = 4;
     return (
-      <div className="container mx-auto mt-20 w-full  flex items-center justify-between gap-5">
+      <div className="container mx-auto mt-20 w-full   flex flex-col md:flex-row items-center justify-between gap-5">
         {Array.from({ length: skeletonCount }).map((_, index) => (
           <Skeleton
             key={index}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-// const SOCKET_URL = "http://localhost:4040/";
-const SOCKET_URL = "https://api.ferdousishenna.cfd/";
+const SOCKET_URL = "http://localhost:4040/";
+// const SOCKET_URL = "https://api.ferdousishenna.cfd/";
 
 const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
