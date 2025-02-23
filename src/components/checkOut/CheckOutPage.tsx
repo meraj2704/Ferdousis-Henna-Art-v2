@@ -44,8 +44,8 @@ const CheckoutPage = () => {
   });
 
   const { isLoading, data, error } = useFetchData(
-    ["divisions"],
-    `divisions-get-all`
+    ["districts"],
+    `district-get-all`
   );
 
   const newOrder = useAddData(["orders", "dashboard"], "orders/new-order");
