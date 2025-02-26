@@ -7,10 +7,9 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
-import { CiCirclePlus } from "react-icons/ci";
-import { Product } from "@/types/Types";
-import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Product } from "@/types/Types";
 
 interface CartProductI extends Product {
   quantity: number;
@@ -48,7 +47,15 @@ const CartPage = ({
 
   const getTotalPrice = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.discountedPrice * item.quantity,
+      0
+    );
+  };
+
+  const getTotalSavings = () => {
+    return cartItems.reduce(
+      (total, item) =>
+        total + (item.price) * item.quantity,
       0
     );
   };
@@ -71,10 +78,10 @@ const CartPage = ({
   return (
     <div className="h-full flex flex-col">
       <div className="w-full flex justify-between items-center mb-6 mt-6">
-        <h1 className="text-2xl  text-gray-800">Your Cart</h1>
+        <h1 className="text-2xl text-gray-800">Your Cart</h1>
         <Link href={"/products"}>
-          <div className="text-primary   flex items-center gap-2">
-            <Plus className="font-bold text-2xl"/>
+          <div className="text-primary flex items-center gap-2">
+            <Plus className="font-bold text-2xl" />
             <h1 className="hover:underline text-xl font-medium">Add More</h1>
           </div>
         </Link>
@@ -84,18 +91,16 @@ const CartPage = ({
         {cartItems.map((item) => (
           <div
             key={item._id}
-            className="w-full flex justify-between gap-4  items-center border-b border-b-accent py-4"
+            className="w-full flex justify-between gap-4 items-center border-b border-b-accent py-4"
           >
             <div className="flex items-center gap-3">
-              <div className="">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={200}
-                  height={200}
-                  className="w-24 h-24 object-cover rounded-md"
-                />
-              </div>
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={200}
+                height={200}
+                className="w-24 h-24 object-cover rounded-md"
+              />
               <div className="flex flex-col justify-start items-start gap-2">
                 <div className="flex flex-col">
                   <Link href={`/products/${item._id}`}>
@@ -103,9 +108,17 @@ const CartPage = ({
                       {item.name}
                     </h2>
                   </Link>
-                  <p className="text-gray-800 mt-2">
-                    {item.price.toFixed(2)} <span className="text-sm">TK</span>
-                  </p>
+                  <div className="flex items-end gap-2">
+                    <p className="text-gray-800 mt-2">
+                      {item.discountedPrice.toFixed(2)}{" "}
+                      <span className="text-sm">TK</span>
+                    </p>
+                    {item.discountPercentage > 0 && (
+                      <span className="text-sm line-through text-gray-500">
+                        ({item.price} TK)
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between gap-10 items-center">
                   <div className="flex items-center gap-2">
@@ -140,11 +153,16 @@ const CartPage = ({
 
       {/* Cart Summary */}
       <div className="flex flex-col justify-between items-center mt-6">
-        <div className="text-lg font-semibold text-gray-800">
+        <div className="text-lg font-semibold text-gray-800 flex gap-2">
           <p>
             Total: {getTotalPrice().toFixed(2)}{" "}
-            <span className="text-sm">TK</span>
+            <span className="">TK</span>
           </p>
+          {getTotalSavings() > 0 && (
+            <p className="text-sm line-through text-red-500 mt-1">
+              {getTotalSavings().toFixed(2)} TK!
+            </p>
+          )}
         </div>
         <button
           onClick={() => {
