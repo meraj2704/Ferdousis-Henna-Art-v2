@@ -86,25 +86,25 @@ const CartPage = ({
           </div>
         </Link>
       </div>
-      <div className="flex flex-col gap-6 md:gap-8">
+      <div className="flex flex-col gap-2 md:gap-8">
         {/* Cart Item List */}
         {cartItems.map((item) => (
           <div
             key={item._id}
-            className="w-full flex justify-between gap-4 items-center border-b border-b-accent py-4"
+            className="w-full flex justify-between gap-2 items-center border-b border-b-accent py-2"
           >
             <div className="flex items-center gap-3">
               <Image
                 src={item.image}
                 alt={item.name}
-                width={200}
-                height={200}
-                className="w-24 h-24 object-cover rounded-md"
+                width={150}
+                height={150}
+                className="w-20 h-20 object-cover rounded-md"
               />
-              <div className="flex flex-col justify-start items-start gap-2">
+              <div className="flex flex-col justify-start items-start gap-1">
                 <div className="flex flex-col">
                   <Link href={`/products/${item._id}`}>
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <h2 className="text-base lg:text-lg font-semibold text-gray-800">
                       {item.name}
                     </h2>
                   </Link>
