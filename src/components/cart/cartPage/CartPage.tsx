@@ -76,7 +76,7 @@ const CartPage = ({
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-y-scroll">
       <div className="w-full flex justify-between items-center mb-6 mt-6">
         <h1 className="text-2xl text-gray-800">Your Cart</h1>
         <Link href={"/products"}>

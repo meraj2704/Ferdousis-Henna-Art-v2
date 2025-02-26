@@ -81,8 +81,6 @@ const Review: React.FC = () => {
   return (
     <section className="container mx-auto">
       <SectionTitle title="Customer Reviews" className="mb-4" width="w-32" />
-
-      {/* Write a Review Button */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6  p-4 ">
         {/* Left Section - Review Count & Average Rating */}
         <div className="text-center md:text-left">
@@ -118,11 +116,7 @@ const Review: React.FC = () => {
           {showForm ? "Close Review Form" : "Write a Review"}
         </button>
       </div>
-
-      {/* Review Form */}
       {showForm && <ReviewForm />}
-
-      {/* Reviews List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
         {dummyReviews?.map((review: any, index: number) => (
           <ReviewCard
