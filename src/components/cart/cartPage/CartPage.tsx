@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { CiCirclePlus } from "react-icons/ci";
 import { Product } from "@/types/Types";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 interface CartProductI extends Product {
   quantity: number;
@@ -72,9 +73,9 @@ const CartPage = ({
       <div className="w-full flex justify-between items-center mb-6 mt-6">
         <h1 className="text-2xl  text-gray-800">Your Cart</h1>
         <Link href={"/products"}>
-          <div className="text-primary font-medium text-xl flex items-center gap-2">
-            <CiCirclePlus />
-            <h1 className="hover:underline ">Add More</h1>
+          <div className="text-primary   flex items-center gap-2">
+            <Plus className="font-bold text-2xl"/>
+            <h1 className="hover:underline text-xl font-medium">Add More</h1>
           </div>
         </Link>
       </div>
@@ -102,7 +103,7 @@ const CartPage = ({
                       {item.name}
                     </h2>
                   </Link>
-                  <p className="text-sm text-gray-800 mt-2">
+                  <p className="text-gray-800 mt-2">
                     {item.price.toFixed(2)} <span className="text-sm">TK</span>
                   </p>
                 </div>

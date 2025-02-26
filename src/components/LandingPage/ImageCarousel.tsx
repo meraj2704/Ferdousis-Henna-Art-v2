@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useFetchData } from "@/hooks/useApi";
 import { ClientPostI } from "@/types/Types";
 import { Skeleton } from "../ui/skeleton";
+import { aclonica } from "../font/fonts";
 
 const ImageCarousel = () => {
   const { data, isLoading } = useFetchData(
@@ -54,7 +55,7 @@ const ImageCarousel = () => {
             </div>
             <div className="absolute w-full h-full  top-0 left-0 right-0 bg-gradient-to-t from-black to-transparent flex flex-col justify-center items-center p-8 ">
               {post?.title && (
-                <h2 className="text-center text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold mb-4 ">
+                <h2 className={`${aclonica.className} text-center text-white text-4xl md:5xl lg:6xl xl:text-8xl font-semibold mb-4 `}>
                   {post.title}
                 </h2>
               )}

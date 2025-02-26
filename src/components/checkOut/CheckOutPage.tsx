@@ -15,6 +15,11 @@ import FormSubmitButton from "../share/FormSubmitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { checkoutSchema } from "./Schema";
 import CustomCombobox from "../share/CustomCombobox";
+import { aclonica } from "../font/fonts";
+import SectionTitle from "../customUi/SectionTitle";
+import { CiMoneyBill } from "react-icons/ci";
+import { Package } from "lucide-react";
+import { MdPayment, MdSummarize } from "react-icons/md";
 
 interface CheckoutInputs {
   district: string;
@@ -28,8 +33,13 @@ const CheckoutPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [statesWithDistricts, setStatesWithDistricts] = useState<any>({});
-  const [upazilas, setUpazilas] = useState<any[]>([]);
+  interface DistrictData {
+    district: string;
+    thanas: { district: string }[];
+  }
+
+  const [selectedDistrictData, setSelectedDistrictData] =
+    useState<DistrictData | null>(null);
 
   const {
     control,
@@ -48,40 +58,11 @@ const CheckoutPage = () => {
     `district-get-all`
   );
 
+  useEffect(() => {
+    console.log("selectedDistrictData", selectedDistrictData);
+  }, [selectedDistrictData]);
+
   const newOrder = useAddData(["orders", "dashboard"], "orders/new-order");
-
-  useEffect(() => {
-    if (data && data.length > 0) {
-      const divisions = data;
-      const statesDistricts = divisions.reduce((acc: any, division: any) => {
-        acc[division.name] = division.districts.map((district: any) => ({
-          label: district.name,
-          value: district.name,
-          upazilas: district.upazilas.map((upazila: any) => ({
-            label: upazila,
-            value: upazila,
-          })),
-        }));
-        return acc;
-      }, {});
-      setStatesWithDistricts(statesDistricts);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (watch("district")) {
-      const selectedDistrictUpazilas = data?.find(
-        (district: any) => district.name === watch("district")
-      )?.upazilas;
-      if (selectedDistrictUpazilas) {
-        setUpazilas(selectedDistrictUpazilas);
-      }
-    }
-  }, [watch("district"), data]);
-
-  useEffect(() => {
-    setValue("upazila", "");
-  }, [watch("district")]);
 
   const cartItems = useAppSelector((state: RootState) => state.cart);
   const selectedDistrict = watch("district");
@@ -133,11 +114,16 @@ const CheckoutPage = () => {
 
   return (
     <div className="container mx-auto px-2 py-4">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Billing Information
-        </h2>
+      <SectionTitle title="Checkout" />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
+        <div className="flex gap-4 items-center">
+          <h2
+            className={`${aclonica.className} text-lg font-semibold text-gray-800`}
+          >
+            Shipping Information
+          </h2>
+          <Package className="h-6 w-6 text-gray-600" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Input
             label="Full Name"
@@ -152,6 +138,7 @@ const CheckoutPage = () => {
             label="Phone Number"
             name="phone"
             type="text"
+            maxLength={11}
             placeholder="Enter your phone number"
             register={register}
             error={errors.phone}
@@ -162,15 +149,31 @@ const CheckoutPage = () => {
             name="district"
             control={control}
             options={data?.map((district: any) => ({
-              label: district.name,
-              value: district.name,
+              label: district.district,
+              value: district.district,
+              ...district,
             }))}
+            setData={setSelectedDistrictData}
             rules={{ required: "District is required" }}
             placeholder="Select your district"
             error={errors.district}
             required
           />
-          <CustomSelect
+          <CustomCombobox
+            label="Thana"
+            name="upazila"
+            control={control}
+            options={selectedDistrictData?.thanas?.map((thana: any) => ({
+              label: thana,
+              value: thana,
+            }))}
+            rules={{ required: "Than is required" }}
+            placeholder="Select your thana"
+            error={errors.upazila}
+            required
+            disabled={selectedDistrictData?.thanas ? false : true}
+          />
+          {/* <CustomSelect
             label="Upazila"
             name="upazila"
             control={control}
@@ -179,7 +182,7 @@ const CheckoutPage = () => {
             placeholder="Select your upazila"
             error={errors.upazila}
             required
-          />
+          /> */}
           <Input
             label="Address Details"
             name="addressDetails"
@@ -191,10 +194,15 @@ const CheckoutPage = () => {
           />
         </div>
 
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Payment Information
-        </h2>
-        <div className="bg-white rounded-md border border-primary w-full h-auto p-4 space-y-3">
+        <div className="flex gap-4 items-center">
+          <h2
+            className={`${aclonica.className} text-lg font-semibold text-gray-800`}
+          >
+            Payment Information
+          </h2>
+          <MdPayment className="h-6 w-6 text-gray-600" />
+        </div>
+        <div className="bg-lightPrimary rounded-md border border-primary w-full h-auto p-4 space-y-3">
           <h1 className="text-center text-xl font-semibold text-primary">
             Cash On Delivery Only
           </h1>
@@ -206,14 +214,19 @@ const CheckoutPage = () => {
         </div>
 
         <div className="mt-6 border-t border-t-accent pt-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Order Summary
-          </h2>
+          <div className="flex gap-4 items-center mb-4">
+            <h2
+              className={`${aclonica.className} text-lg font-semibold text-gray-800`}
+            >
+              Order Summary
+            </h2>
+            <MdSummarize className="h-6 w-6 text-gray-600" />
+          </div>
           <div className="space-y-4">
             {cartItems?.items.map((item) => (
               <div
                 key={item._id}
-                className="flex justify-between items-center border-b border-b-accent pb-2 text-sm"
+                className="flex justify-between items-center border-b border-b-accent pb-2 "
               >
                 <p className="font-medium text-gray-800">{item.name}</p>
                 <p className="text-gray-500">x {item.quantity}</p>

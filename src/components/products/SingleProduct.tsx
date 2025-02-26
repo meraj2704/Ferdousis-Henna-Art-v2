@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useFetchData } from "@/hooks/useApi";
 import { Product } from "@/types/Types";
 import Loader from "../share/Loader";
+import { aclonica } from "../font/fonts";
 
 const SingleProduct: React.FC = () => {
   const params = useParams();
@@ -79,12 +80,13 @@ const SingleProduct: React.FC = () => {
               Mehendi
             </div>
           </div>
-          <h2 className="text-3xl font-semibold text-primary">
+          <h2 className={`${aclonica.className} text-3xl font-semibold text-primary`}>
             {product.name}
           </h2>
           <p className="text-xl font-bold text-accent">
             {product.price} <span className="text-sm">TK</span>
           </p>
+          
           <div className="w-full flex items-center gap-4 ">
             <ButtonF
               className="flex-1"

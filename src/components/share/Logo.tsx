@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { aclonica } from "../font/fonts";
 const logo = "/images/logo.PNG";
 
 const Logo = ({ context }: { context: string }) => {
@@ -10,7 +11,7 @@ const Logo = ({ context }: { context: string }) => {
         <Image src={logo} alt="Logo" width={50} height={50} priority />
       </Link>
       <h1
-        className={`${
+        className={`${aclonica.className} ${
           context === "nav" ? "text-primary" : "text-textLight"
         } ml-2 font-bold hidden lg:block text-xl lg:text-2xl`}
       >

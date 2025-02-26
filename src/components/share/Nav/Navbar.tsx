@@ -18,6 +18,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import CartPage from "@/components/cart/cartPage/CartPage";
+import { aclonica } from "@/components/font/fonts";
 
 const ToggleNavbar = dynamic(() => import("./ToggleNavbar")); // Lazy-load
 
@@ -77,7 +78,7 @@ const Navbar = () => {
         }`}
       >
         <div className="relative h-full">
-          <div className="container mx-auto h-full flex justify-between items-center lg:grid lg:grid-cols-3 gap-5 px-1 md:px-2">
+          <div className="container mx-auto h-full flex justify-between items-center lg:grid lg:grid-cols-3 gap-1 px-1 md:px-2">
             <div className="col-span-1 flex justify-start items-center">
               <Logo context="nav" />
             </div>
@@ -87,7 +88,7 @@ const Navbar = () => {
               <NavItem path="/about" name="About" />
               <NavItem path="/contact" name="Contact" />
             </div>
-            <div className="smM:flex justify-center items-center text-2xl text-primary hidden md:hidden">
+            <div className={`${aclonica.className} smM:flex justify-center items-center text-lg font-bold text-primary hidden md:hidden`}>
               Ferdousi's Henna Art
             </div>
             <div className="col-span-1  flex justify-end items-center gap-3">

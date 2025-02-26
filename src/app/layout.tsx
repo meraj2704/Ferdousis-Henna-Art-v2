@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Khand } from "next/font/google";
 import "./globals.css";
 import WrapProvider from "./WrapProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { CookiesProvider } from "next-client-cookies/server";
-
-const rakkas = Khand({ weight: "400", subsets: ["latin"] });
+import { roboto } from "@/components/font/fonts";
 
 export const metadata: Metadata = {
   title: "Ferdousi's Henna Art - Premium Henna Products & Artist Booking",
@@ -55,7 +53,7 @@ export default function RootLayout({
     <html lang="en">
       <CookiesProvider>
         <WrapProvider>
-          <body className={`${rakkas.className} bg-background`}>
+          <body className={`${roboto.className} bg-background`}>
             {children}
             <Toaster richColors position="bottom-left" />
           </body>

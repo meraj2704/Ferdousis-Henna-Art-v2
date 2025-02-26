@@ -25,6 +25,7 @@ module.exports = {
   			secondary: '#658147',
   			complementary: '#5E7B4D',
   			textColor: '#000000',
+			  lightPrimary: '#B6C9A5',
   		},
   		keyframes: {
   			'accordion-down': {

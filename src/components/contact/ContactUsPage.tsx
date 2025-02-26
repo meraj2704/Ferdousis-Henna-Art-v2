@@ -6,6 +6,7 @@ import { useAddData } from "@/hooks/useApi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormSubmitButton from "../share/FormSubmitButton";
+import SectionTitle from "../customUi/SectionTitle";
 
 interface IFormInput {
   name: string;
@@ -48,9 +49,7 @@ const ContactUsPage = () => {
   return (
     <div className=" bg-background">
       <div className="max-w-4xl mx-auto p-6 rounded-lg">
-        <h1 className="text-3xl font-bold text-center mb-8 text-primary">
-          Contact Us
-        </h1>
+      <SectionTitle title="Contacts" width="w-28" />
 
         {/* Contact Form */}
         <form onSubmit={handleSubmit(onSubmit)}>

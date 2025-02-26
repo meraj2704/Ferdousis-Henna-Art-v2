@@ -4,6 +4,7 @@ import ButtonF from "../customUi/ButtonF";
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types/Types";
+import { aclonica } from "../font/fonts";
 
 interface ProductCartProps {
   product: {
@@ -19,24 +20,21 @@ interface ProductCartProps {
 }
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
-  const truncatedDescription =
-    product.description?.length > 100
-      ? product.description.substring(0, 100) + "..."
-      : product.description || "No description available.";
-
   return (
     <div className="max-w-sm rounded overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300">
       {/* Product Image */}
-      <div className="relative h-40 lg:h-64">
-        <Image
-          src={product.image || "/fallback-image.jpg"}
-          alt={product.name || "Product image"}
-          width={300}
-          height={350}
-          className="object-cover w-full h-full"
-          loading="lazy"
-        />
-      </div>
+      <Link href={`/products/${product._id}`}>
+        <div className="relative h-40 lg:h-64">
+          <Image
+            src={product.image || "/fallback-image.jpg"}
+            alt={product.name || "Product image"}
+            width={300}
+            height={350}
+            className="object-cover w-full h-full"
+            loading="lazy"
+          />
+        </div>
+      </Link>
 
       {/* Product Information */}
       <div className="p-2 lg:p-6 flex flex-col justify-between">
@@ -45,12 +43,14 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
             href={`/products/${product._id}`}
             aria-label={`View details of ${product.name}`}
           >
-            <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-2 hover:underline">
+            <h3
+              className={`${aclonica.className} text-lg md:text-lg font-semibold text-gray-800 mb-2 hover:underline`}
+            >
               {product.name}
             </h3>
           </Link>
-          <p className="text-gray-600 text-xs md:text-sm mb-4">
-            {truncatedDescription}
+          <p className="text-gray-600 text-base mb-4 line-clamp-1">
+            {product.description}
           </p>
         </div>
         {/* Product Price and Add to Cart */}

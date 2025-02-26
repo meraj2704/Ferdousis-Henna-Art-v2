@@ -55,7 +55,7 @@ const ProductsHome = () => {
 
   return (
     <div className="container mx-auto px-1 md:px-2 ">
-      <SectionTitle title="Products" />
+      <SectionTitle title="Products" width="w-32" />
       <div className="grid grid-cols-1 smL:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
         {products?.map((product: Product) => (
           <ProductCart

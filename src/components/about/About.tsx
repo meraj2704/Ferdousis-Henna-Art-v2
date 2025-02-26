@@ -1,13 +1,12 @@
 import React from "react";
+import SectionTitle from "../customUi/SectionTitle";
 
 const About = () => {
   return (
     <>
       <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold text-primary text-center mb-8">
-          About Ferdousis Henna Art
-        </h1>
-        <p className="text-lg text-textColor leading-relaxed mb-6">
+        <SectionTitle title="About Ferdousi's Henna Art" width="w-60"/>
+        <p className="text-lg text-textColor leading-relaxed mb-6 mt-6">
           Ferdousis Henna Art, based in the picturesque Hazigonj Upazila of
           Chandpur District, Chittagong State, Bangladesh, is a name synonymous
           with creativity and authenticity in henna artistry. Our mission is to

@@ -21,13 +21,15 @@ import { Controller, FieldError, Control } from "react-hook-form";
 
 interface CustomComboboxProps {
   label: string;
-  options: { label: string; value: string }[];
+  options?: { label: string; value: string }[];
   placeholder: string;
   name: string;
   control: Control<any>;
   rules?: object;
   error?: FieldError;
   required?: boolean;
+  setData?: any;
+  disabled?: boolean;
 }
 
 const CustomCombobox: React.FC<CustomComboboxProps> = ({
@@ -39,6 +41,8 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   rules,
   error,
   required,
+  setData,
+  disabled
 }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -52,39 +56,48 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
         render={({ field }) => {
           const [open, setOpen] = useState(false);
           return (
-            <Popover open={open} onOpenChange={setOpen}>
+            <Popover open={open} onOpenChange={setOpen} >
               <PopoverTrigger asChild className="bg-background w-full">
                 <Button
                   variant="outline"
                   role="combobox"
                   aria-expanded={open}
                   className="w-full justify-between border rounded-md px-4 bg-white text-base focus:outline-primary"
+                  disabled={disabled}
                 >
                   {field.value
-                    ? options.find((option) => option.value === field.value)?.label
+                    ? (options?.find((option) => option.value === field.value) || { label: '' }).label
                     : placeholder}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-full bg-background p-0">
                 <Command>
-                  <CommandInput placeholder={`Search ${label.toLowerCase()}...`} />
+                  <CommandInput
+                    placeholder={`Search ${label.toLowerCase()}...`}
+                  />
                   <CommandList>
                     <CommandEmpty>No {label.toLowerCase()} found.</CommandEmpty>
                     <CommandGroup>
-                      {options?.map((option) => (
+                      {options?.map((option, index) => (
                         <CommandItem
-                          key={option.value}
+                          key={index}
                           value={option.value}
                           onSelect={(currentValue) => {
-                            field.onChange(currentValue === field.value ? "" : currentValue);
+                            field.onChange(
+                              currentValue === field.value ? "" : currentValue
+                            );
                             setOpen(false);
+                            setData(option);
+                            console.log("currentValue: " + currentValue);
                           }}
                         >
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              field.value === option.value ? "opacity-100" : "opacity-0"
+                              field.value === option.value
+                                ? "opacity-100"
+                                : "opacity-0"
                             )}
                           />
                           {option.label}

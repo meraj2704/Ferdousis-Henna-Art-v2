@@ -1,10 +1,12 @@
 import React from "react";
+import { aclonica } from "../font/fonts";
 
 interface SectionTitleProps {
   title: string;
   subtitle?: string;
   alignment?: "left" | "center" | "right";
-  className?: string; // Additional classes if needed
+  className?: string;
+  width?: string;
 }
 
 const SectionTitle: React.FC<SectionTitleProps> = ({
@@ -12,6 +14,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   subtitle,
   alignment = "center",
   className = "",
+  width = "w-16",
 }) => {
   const alignmentStyles = {
     left: "text-left",
@@ -22,12 +25,16 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   const selectedAlignment = alignmentStyles[alignment];
 
   return (
-    <div className={`w-full ${selectedAlignment} ${className}`}>
+    <div className={`w-full flex flex-col justify-center items-center ${selectedAlignment} ${className}`}>
       {subtitle && (
         <p className="text-secondary text-lg font-medium mb-2">{subtitle}</p>
       )}
-      <h2 className="text-2xl lg:text-4xl font-bold text-primary">{title}</h2>
-      <div className="mt-2 w-16 h-1 bg-accent mx-auto"></div>
+      <h2
+        className={`${aclonica.className} text-2xl lg:text-4xl font-bold text-primary`}
+      >
+        {title}
+      </h2>
+      <div className={`"mt-2 ${width} h-1 bg-accent mx-auto"`}></div>
     </div>
   );
 };
