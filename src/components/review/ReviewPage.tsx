@@ -1,17 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import ReviewCard from "./ReviewCard";
 import SectionTitle from "@/components/customUi/SectionTitle";
 import { useFetchData } from "@/hooks/useApi";
-import { ReviewI } from "@/types/Types";
 import { Skeleton } from "@/components/ui/skeleton";
-import ReviewForm from "./ReviewForm";
-import ButtonF from "@/components/customUi/ButtonF";
-import Link from "next/link";
+import ReviewForm from "../LandingPage/review/ReviewForm";
+import ReviewCard from "../LandingPage/review/ReviewCard";
 
-
-
-const Review: React.FC = () => {
+const ReviewPage: React.FC = () => {
   const { isLoading, data, error } = useFetchData(
     ["reviews"],
     "reviews/get-all-client-reviews"
@@ -74,20 +69,12 @@ const Review: React.FC = () => {
             fullName={review.fullName}
             rating={review.rating}
             reviewText={review.reviewText}
-            imageUrl={review.image}
             date={review.date}
-            verifiedBuyer={review.verifiedBuyer}
           />
         ))}
-      </div>
-      <div className="flex justify-center items-center mt-6">
-        <Link href={"/reviews"}>
-          {" "}
-          <ButtonF variant="primary">See All</ButtonF>
-        </Link>
       </div>
     </section>
   );
 };
 
-export default Review;
+export default ReviewPage;

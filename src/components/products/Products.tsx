@@ -5,7 +5,6 @@ import { useFetchData } from "@/hooks/useApi";
 import { addToCart } from "@/redux/Reducer/cartSlice";
 import { useAppDispatch } from "@/redux/Store/store";
 import { Product } from "@/types/Types";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "sonner";
 import Loader from "../share/Loader";
@@ -41,7 +40,7 @@ const Products = () => {
   return (
     <div className="container mx-auto px-2 2xl:px-0">
       <SectionTitle title="All Products" />
-      <div className="grid grid-cols-1 smL:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
+      <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
         {products?.map((product: Product) => (
           <ProductCart
             key={product._id}

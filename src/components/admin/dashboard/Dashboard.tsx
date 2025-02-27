@@ -27,16 +27,19 @@ const Dashboard = () => {
           cardName="Pending Orders"
           number={data?.orderStatusCounts?.pending}
           content="Counted by order status"
+          link="/admin/orders"
         />
         <DashboardCard
           cardName="Delivered Orders"
           number={data?.orderStatusCounts?.delivered}
           content="Counted by order status"
+          link="/admin/orders"
         />
         <DashboardCard
           cardName="Canceled Orders"
           number={data?.orderStatusCounts?.canceled}
           content="Counted by order status"
+          link="/admin/orders"
         />
 
         <DashboardCard

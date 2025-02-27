@@ -21,7 +21,7 @@ interface ProductCartProps {
 
 const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
   return (
-    <div className="max-w-sm rounded overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300 relative">
+    <div className=" rounded overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300 relative">
       {/* Discount Ribbon on Image Corner */}
       {product.discountPercentage > 0 && (
         <div className="absolute rotate-45 top-0 -right-8 bg-red-500 text-white  font-bold px-8 py-1 z-10 shadow-xl">

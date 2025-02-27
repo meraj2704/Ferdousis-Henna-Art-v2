@@ -2,18 +2,17 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@/components/share/Input";
-import ImageInput from "@/components/share/ImageInput";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "sonner";
 import { useAddData } from "@/hooks/useApi";
 import CustomSelect from "@/components/share/CustomSelect";
+import FormSubmitButton from "@/components/share/FormSubmitButton";
 
 interface ReviewInputs {
   fullName: string;
   rating?: number;
   reviewText: string;
-  image?: FileList;
 }
 
 const reviewSchema = yup.object().shape({
@@ -26,7 +25,6 @@ const reviewSchema = yup.object().shape({
     .string()
     .required("Review text is required")
     .max(300, "Review cannot exceed 300 characters"),
-  image: yup.mixed(),
 });
 
 const ReviewForm: React.FC = () => {
@@ -42,14 +40,13 @@ const ReviewForm: React.FC = () => {
     resolver: yupResolver(reviewSchema),
   });
 
-  const newReview = useAddData(["reviews"], "reviews/add-review");
+  const newReview = useAddData(["reviews"], "reviews/create-review");
 
   const onSubmit: SubmitHandler<ReviewInputs> = async (data) => {
     const reviewData = {
       fullName: data.fullName,
       rating: data.rating,
       reviewText: data.reviewText,
-      image: data.image ? data.image[0] : null, // Assuming backend handles image upload
     };
 
     try {
@@ -68,7 +65,7 @@ const ReviewForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className=" p-4 rounded-md mb-6">
+    <form onSubmit={handleSubmit(onSubmit)} className=" p-4 rounded-md mb-6 space-y-4">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">
         Write a Review
       </h2>
@@ -111,20 +108,13 @@ const ReviewForm: React.FC = () => {
         maxLength={300}
       />
 
-      {/* Image Upload */}
-      <ImageInput
-        label="Upload Image (Optional)"
-        name="image"
-        register={register}
-      />
-
       {/* Submit Button */}
-      <button
-        type="submit"
-        className="w-full bg-primary text-white py-2 mt-4 rounded-md hover:bg-secondary transition"
-      >
-        Submit Review
-      </button>
+      <FormSubmitButton
+        status={newReview.status}
+        buttonName="Upload"
+        context="Uploading"
+      
+      />
     </form>
   );
 };

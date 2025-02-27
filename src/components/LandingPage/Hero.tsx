@@ -14,7 +14,7 @@ const LandingPage = () => {
     <div className="w-full h-full space-y-5 md:space-y-10 lg:space-y-16">
       <ImageCarousel />
       <ProductsHome />
-      <PhotoMarquee />
+    <PhotoMarquee />
       <Review />
     </div>
   );
