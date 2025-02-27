@@ -80,13 +80,15 @@ const SingleProduct: React.FC = () => {
               Mehendi
             </div>
           </div>
-          <h2 className={`${aclonica.className} text-3xl font-semibold text-primary`}>
+          <h2
+            className={`${aclonica.className} text-3xl font-semibold text-primary`}
+          >
             {product.name}
           </h2>
           <p className="text-xl font-bold text-accent">
             {product.price} <span className="text-sm">TK</span>
           </p>
-          
+
           <div className="w-full flex items-center gap-4 ">
             <ButtonF
               className="flex-1"
@@ -98,7 +100,10 @@ const SingleProduct: React.FC = () => {
               <MdOutlineFavoriteBorder className="text-primary" />
             </div>
           </div>
-          <p className="text-gray-600">{product.description}</p>
+          <p
+            className="text-textColor leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          />
           <Delivery />
         </div>
       </div>

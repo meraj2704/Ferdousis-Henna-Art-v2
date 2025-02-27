@@ -6,14 +6,14 @@ import Input from "@/components/share/Input";
 import ImageInput from "@/components/share/ImageInput";
 import { DynamicBreadcrumb } from "@/components/share/DynamicBreadCrumb";
 import { useAddData } from "@/hooks/useApi";
-import { Checkbox } from "@/components/ui/checkbox";
-import MiniLoader from "@/components/share/MiniLoader";
 import { AddProductI } from "@/types/Types";
 import { schema } from "./Schema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
 import { useCookies } from "next-client-cookies";
+
+import RichTextEditor from "@/components/share/RichTextEditor";
 const AddProductForm: React.FC = () => {
   const router = useRouter();
   const cookies = useCookies();
@@ -43,7 +43,7 @@ const AddProductForm: React.FC = () => {
   }
 
   const onSubmit: SubmitHandler<AddProductI> = (data) => {
-    // setLoading(true);
+    console.log("data", data);
 
     const formData = new FormData();
     formData.append("name", data.name);
@@ -142,15 +142,14 @@ const AddProductForm: React.FC = () => {
           required
         />
 
-        {/* Description */}
-        <Input
+
+
+        <RichTextEditor
           label="Description"
           name="description"
-          type="text"
-          placeholder="Enter product description"
-          register={register}
-          error={errors.description}
+          control={control}
           required
+          errors={errors}
         />
 
         {/* Image Upload */}
@@ -161,28 +160,6 @@ const AddProductForm: React.FC = () => {
           error={errors.image}
           required
         />
-        <div className="flex items-center space-x-2">
-          <Controller
-            name="active"
-            control={control}
-            render={({ field }) => (
-              <Checkbox
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className="mr-2"
-              />
-            )}
-          />
-          <label
-            htmlFor="active"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Active
-          </label>
-        </div>
-        {errors.active && (
-          <p className="text-red-500 text-sm">{errors.active.message}</p>
-        )}
       </div>
       {/* Product Name */}
 

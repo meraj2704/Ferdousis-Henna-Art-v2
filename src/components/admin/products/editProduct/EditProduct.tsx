@@ -15,16 +15,18 @@ import Loader from "@/components/share/Loader";
 import MiniLoader from "@/components/share/MiniLoader";
 import FormSubmitButton from "@/components/share/FormSubmitButton";
 import { useCookies } from "next-client-cookies";
+import RichTextEditor from "@/components/share/RichTextEditor";
 const EditProduct: React.FC = () => {
   const cookies = useCookies();
-    const token = cookies.get("henna-token");
+  const token = cookies.get("henna-token");
   const router = useRouter();
   const params = useParams();
   const { id } = params;
   // hook call for update
   const editProduct = useUpdateData(
     ["product"],
-    `product/product-update/${id}`,token
+    `product/product-update/${id}`,
+    token
   );
   const {
     control,
@@ -168,14 +170,12 @@ const EditProduct: React.FC = () => {
         />
 
         {/* Description */}
-        <Input
+        <RichTextEditor
           label="Description"
           name="description"
-          type="text"
-          placeholder="Enter product description"
-          register={register}
-          error={errors.description}
+          control={control}
           required
+          errors={errors}
         />
 
         {/* Image Upload */}

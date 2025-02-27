@@ -31,7 +31,7 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
 
       {/* Product Image */}
       <Link href={`/products/${product._id}`}>
-        <div className="relative h-40 lg:h-64 overflow-hidden rounded-t-lg">
+        <div className="relative h-64 overflow-hidden rounded-t-lg">
           <Image
             src={product.image || "/fallback-image.jpg"}
             alt={product.name || "Product image"}
@@ -56,9 +56,11 @@ const ProductCart: React.FC<ProductCartProps> = ({ product, onAddToCart }) => {
               {product.name}
             </h3>
           </Link>
-          <p className="text-gray-600 text-base mb-4 line-clamp-1">
-            {product.description}
-          </p>
+
+          <p
+            className="text-gray-600 text-base mb-4 line-clamp-1"
+            dangerouslySetInnerHTML={{ __html: product.description }}
+          />
         </div>
 
         {/* Product Price and Add to Cart */}

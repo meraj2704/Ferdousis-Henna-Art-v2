@@ -67,9 +67,11 @@ const AdminProductDetails = () => {
           </div>
           <div className="w-full md:w-1/2 flex flex-col justify-start items-start space-y-4 mt-4 lg:mt-0">
             <h1 className="text-3xl font-bold text-primary">{product.name}</h1>
-            <p className="text-textColor leading-relaxed">
-              {product.description}
-            </p>
+            <p
+              className="text-textColor leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+
             <div className="space-y-2">
               <p>
                 <span className="font-medium text-secondary">Category:</span>{" "}
@@ -132,10 +134,13 @@ const AdminProductDetails = () => {
         </div>
 
         {/* Sales and Performance */}
-       
+
         {/* Actions */}
         <div className="flex space-x-4 w-full">
-          <Link className="w-full" href={`/admin/products/edit/${product?.id}`}>
+          <Link
+            className="w-full"
+            href={`/admin/products/edit/${product?._id}`}
+          >
             <button className="w-full bg-primary text-textLight py-2 px-4 rounded-md hover:bg-secondary transition">
               Edit Product
             </button>
