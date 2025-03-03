@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import Input from "../share/Input";
-import CustomSelect from "../share/CustomSelect";
 import { RootState, useAppSelector } from "@/redux/Store/store";
 import SuccessModal from "./SuccessModal";
 import { useRouter } from "next/navigation";
@@ -17,7 +16,6 @@ import { checkoutSchema } from "./Schema";
 import CustomCombobox from "../share/CustomCombobox";
 import { aclonica } from "../font/fonts";
 import SectionTitle from "../customUi/SectionTitle";
-import { CiMoneyBill } from "react-icons/ci";
 import { Package } from "lucide-react";
 import { MdPayment, MdSummarize } from "react-icons/md";
 
@@ -33,6 +31,7 @@ const CheckoutPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [eligibleOffer, setEligibleOffer] = useState<any>();
   interface DistrictData {
     district: string;
     thanas: { district: string }[];
@@ -57,16 +56,37 @@ const CheckoutPage = () => {
     ["districts"],
     `district-get-all`
   );
+  const { data: offers } = useFetchData(["offers"], `/get-all-offers`);
+  const activeOffer = offers?.find((offer: any) => offer.isActive);
 
-  useEffect(() => {
-    console.log("selectedDistrictData", selectedDistrictData);
-  }, [selectedDistrictData]);
+
 
   const newOrder = useAddData(["orders", "dashboard"], "orders/new-order");
 
   const cartItems = useAppSelector((state: RootState) => state.cart);
+
   const selectedDistrict = watch("district");
   const selectedUpazila = watch("upazila");
+
+  useEffect(() => {
+    if (!cartItems || !activeOffer) return;
+    const totalQuantity = cartItems?.items.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+    if (totalQuantity >= activeOffer.minQuantity) {
+      setEligibleOffer(activeOffer);
+    } else {
+      setEligibleOffer(null);
+    }
+  }, [cartItems, activeOffer]);
+
+  const deliveryFee =
+    eligibleOffer && eligibleOffer?.discountType === "free_delivery"
+      ? 0
+      : selectedUpazila === "Hajiganj"
+      ? 60
+      : 120;
 
   const onSubmit: SubmitHandler<CheckoutInputs> = (data) => {
     const orderData = {
@@ -84,7 +104,8 @@ const CheckoutPage = () => {
           details: data.addressDetails,
         },
       },
-      courierServiceFee: selectedUpazila === "Hajiganj" ? 60 : 120,
+      courierServiceFee: deliveryFee,
+      appliedOffer:eligibleOffer._id,
       totalAmount: cartItems.totalAmount,
     };
 
@@ -173,16 +194,7 @@ const CheckoutPage = () => {
             required
             disabled={selectedDistrictData?.thanas ? false : true}
           />
-          {/* <CustomSelect
-            label="Upazila"
-            name="upazila"
-            control={control}
-            options={upazilas}
-            rules={{ required: "Upazila is required" }}
-            placeholder="Select your upazila"
-            error={errors.upazila}
-            required
-          /> */}
+
           <Input
             label="Address Details"
             name="addressDetails"
@@ -241,18 +253,20 @@ const CheckoutPage = () => {
               <p>{cartItems?.totalAmount.toFixed(2)} TK</p>
             </div>
             <div className="flex justify-between items-center text-sm font-medium">
-              <p>Delivery Fee</p>
-              <p>{selectedUpazila === "Hajiganj" ? "60 TK." : "120 TK."}</p>
+              <p>Delivery Charge</p>
+              <p>
+                {eligibleOffer?.discountType === "free_delivery" ? (
+                  <span className="text-xs text-green-600">
+                    You get free delivery.
+                  </span>
+                ) : (
+                  deliveryFee
+                )}
+              </p>
             </div>
             <div className="flex justify-between items-center text-lg font-semibold text-gray-800">
               <p>Total</p>
-              <p>
-                {(
-                  cartItems?.totalAmount +
-                  (selectedUpazila === "Hajiganj" ? 60 : 120)
-                ).toFixed(2)}{" "}
-                TK
-              </p>
+              <p>{(cartItems?.totalAmount + deliveryFee).toFixed(2)} TK</p>
             </div>
           </div>
           <FormSubmitButton

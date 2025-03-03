@@ -54,8 +54,7 @@ const CartPage = ({
 
   const getTotalSavings = () => {
     return cartItems.reduce(
-      (total, item) =>
-        total + (item.price) * item.quantity,
+      (total, item) => total + item.price * item.quantity,
       0
     );
   };
@@ -155,10 +154,9 @@ const CartPage = ({
       <div className="flex flex-col justify-between items-center mt-6">
         <div className="text-lg font-semibold text-gray-800 flex gap-2">
           <p>
-            Total: {getTotalPrice().toFixed(2)}{" "}
-            <span className="">TK</span>
+            Total: {getTotalPrice().toFixed(2)} <span className="">TK</span>
           </p>
-          {getTotalSavings() > 0 && (
+          {getTotalSavings() > getTotalPrice() && (
             <p className="text-sm line-through text-red-500 mt-1">
               {getTotalSavings().toFixed(2)} TK!
             </p>
