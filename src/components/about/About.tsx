@@ -5,7 +5,7 @@ const About = () => {
   return (
     <>
       <div className="container mx-auto p-6">
-        <SectionTitle title="About Ferdousi's Henna Art" width="w-60"/>
+        <SectionTitle title="About Ferdousi's Henna Art" width="w-60" subtitle="Our Passion, Your Beauty – The Story Behind Our Henna"/>
         <p className="text-lg text-textColor leading-relaxed mb-6 mt-6">
           Ferdousis Henna Art, based in the picturesque Hazigonj Upazila of
           Chandpur District, Chittagong State, Bangladesh, is a name synonymous

@@ -39,7 +39,7 @@ const Products = () => {
 
   return (
     <div className="container mx-auto px-2 2xl:px-0">
-      <SectionTitle title="All Products" />
+      <SectionTitle title="All Products" subtitle="Enhance Your Elegance with Our Premium Henna Collection"/>
       <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
         {products?.map((product: Product) => (
           <ProductCart

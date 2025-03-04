@@ -179,7 +179,11 @@ const PhotoMarquee = () => {
 
   return (
     <section className="overflow-hidden ">
-      <SectionTitle title="Events" className="mb-4" />
+      <SectionTitle
+        title="Events"
+        subtitle="Celebrating Moments with the Art of Henna"
+        className="mb-4"
+      />
       <div className="h-80 lg:h-96 space-x-2">
         <Marquee
           speed={100}

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ButtonProps {
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" |"light";
   children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
@@ -19,6 +19,7 @@ const ButtonF: React.FC<ButtonProps> = ({
   
   const variants = {
     primary: "bg-primary text-textLight hover:bg-accent",
+    light: "bg-background text-primary hover:bg-accent",
     secondary: "bg-secondary text-textLight hover:bg-primary",
     outline: "border-2 border-primary text-primary hover:bg-primary hover:text-textLight",
   };

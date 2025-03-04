@@ -25,16 +25,23 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   const selectedAlignment = alignmentStyles[alignment];
 
   return (
-    <div className={`w-full flex flex-col justify-center items-center ${selectedAlignment} ${className}`}>
-      {subtitle && (
+    <div
+      className={`w-full flex flex-col justify-center items-center ${selectedAlignment} ${className}`}
+    >
+      {/* {subtitle && (
         <p className="text-secondary text-lg font-medium mb-2">{subtitle}</p>
-      )}
+      )} */}
       <h2
         className={`${aclonica.className} text-2xl lg:text-4xl font-bold text-primary`}
       >
         {title}
       </h2>
-      <div className={`"mt-2 ${width} h-1 bg-accent mx-auto"`}></div>
+      {subtitle && (
+        <p className="text-secondary text-sm lg:text-base font-medium mb-2 px-2">
+          {subtitle}
+        </p>
+      )}
+      {/* <div className={`"mt-2 ${width} h-1 bg-accent mx-auto"`}></div> */}
     </div>
   );
 };

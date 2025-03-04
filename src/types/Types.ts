@@ -76,6 +76,7 @@ export interface AddPostI {
 
 export interface ClientPostI {
   _id: string;
+  type?:string
   title?: string;
   description?: string;
   buttonName: string;

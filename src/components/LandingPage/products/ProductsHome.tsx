@@ -107,7 +107,7 @@ const ProductsHome = () => {
             </p>
           </div>
           <div className="flex justify-center mt-4">
-            <Link href={'/products'}>
+            <Link href={"/products"}>
               <ButtonF variant="primary" onClick={closeOfferModal}>
                 Grab the Offer
               </ButtonF>
@@ -116,7 +116,11 @@ const ProductsHome = () => {
         </DialogContent>
       </Dialog>
 
-      <SectionTitle title="Products" width="w-32" />
+      <SectionTitle
+        title="Products"
+        width="w-32"
+        subtitle="Discover Nature’s Beauty – 100% Pure & Organic Henna Products"
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-5 xl:gap-6 mt-4">
         {products?.map((product: Product) => (
           <ProductCart

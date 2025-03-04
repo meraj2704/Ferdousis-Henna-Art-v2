@@ -49,7 +49,11 @@ const ContactUsPage = () => {
   return (
     <div className=" bg-background">
       <div className="max-w-4xl mx-auto p-6 rounded-lg">
-      <SectionTitle title="Contacts" width="w-28" />
+        <SectionTitle
+          title="Contacts"
+          width="w-28"
+          subtitle="Let’s Connect – We’re Here for You!"
+        />
 
         {/* Contact Form */}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +67,7 @@ const ContactUsPage = () => {
               register={register}
               error={errors.name}
               required
-              />
+            />
 
             {/* Email Field */}
             <Input
