@@ -14,7 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import moment from "moment";
+import { format } from "date-fns";
+
 
 const DashboardHeader: React.FC = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -147,7 +148,7 @@ const DashboardHeader: React.FC = () => {
                     {notification.message}
                   </p>
                   <p className={`text-sm`}>
-                    {moment(notification.createdAt).format("MMMM Do YYYY")}
+                    {format(new Date(notification.createdAt), "MMMM do yyyy")}
                   </p>
                 </div>
                 <div
